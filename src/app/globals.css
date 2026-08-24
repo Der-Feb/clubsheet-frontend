@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* colors */
+  /* --color-primary: ; */
+  --color-primary: #005F31;
+  --color-secondary: #DFE3DA;
+  --color-tertiary: #01562D;
+  --color-quaternary: #F7FBF3;
+  --color-quinary: #EEF5ED;
+}
+
+/* Utility Wrapper Classes */
+
+/* Button Styles */
+.btn-primary {
+  @apply px-8 py-3 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-semibold;
+}
+
+.btn-secondary {
+  @apply px-8 py-3 border-2 border-gray-400 text-gray-700 rounded-lg hover:border-green-700 hover:text-green-700 transition-colors font-semibold;
+}
+
+.btn-sm {
+  @apply px-6 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-medium;
+}
+
+/* Flex Utilities */
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+/* Link Hover Effects */
+.nav-link {
+  @apply text-gray-700 hover:text-green-700 transition-colors;
+}
+
+@keyframes swell {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0px rgba(0, 95, 49, 0.4);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(0, 95, 49, 0.8);
+  }
+}
+.animate-swell {
+  animation: swell 2s infinite ease-in-out;
+}
+
+@keyframes bounceUp {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px); /* Moves up 8px */
+  }
+}
+.animate-wave {
+  animation: bounceUp 1.8s ease-in-out infinite;
+}
+
+
+.right-home-hero-section {
+  background: radial-gradient(
+    circle at top right, 
+    #E3EEE3, #F7FBF3, #F7FBF3
+  );
+}
+
+.left-home-hero-section {
+  background: radial-gradient(
+    circle at left, 
+    #E3EEE3 20%, #F7FBF3, transparent 50%
+  );
+}
