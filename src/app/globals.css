@@ -65,6 +65,7 @@
   animation: bounceUp 1.8s ease-in-out infinite;
 }
 
+/* will the the fallback */
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
