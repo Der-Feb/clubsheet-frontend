@@ -13,8 +13,8 @@ import {
   Shirt, 
   Banknote, 
   Stethoscope,
-  LucideIcon 
 } from "lucide-react";
+import Chaos2Clarity from "../components/home/chaos2Clarity";
 
 
 export default function Home() {
@@ -163,7 +163,7 @@ export default function Home() {
           </div>
 
           {/* Main Showcase Image Container */}
-          <div className="w-fit shadow-[10px_20px_50px_rgba(0,0,0,0.67)] rounded-2xl translate-y-5 mt-22">
+          <div className="w-fit shadow-[10px_20px_50px_rgba(0,0,0,0.67)] rounded-2xl translate-y-5 mt-22 hover:scale-125 transition-transform duration-300">
             <Image 
               src="/hero-image.jpeg" 
               alt="Hero Image" 
@@ -194,6 +194,11 @@ export default function Home() {
         <div className="h-12"/>
         <InfiniteMarquee items={features} />
         <div className="h-12"/>
+      </section>
+
+      {/* Chaos-to-Clarity scroll */}
+      <section>
+        <Chaos2Clarity />
       </section>
 
       <footer className="bg-gray-900 text-gray-400 py-12 px-6 hidden">
