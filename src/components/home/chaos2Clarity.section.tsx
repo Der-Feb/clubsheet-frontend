@@ -15,23 +15,24 @@ const Z = { base: 10, hover: 500, drag: 1000 } as const;
 // ---------------------------------------------------------------------------
 // Visual story
 //
-//  0%  – 15%   Chaos:        cards float freely, drag enabled
-//  15% – 65%   The Pull:     pane shell appears (empty); cards fly to exact
-//                            slot positions using ABSOLUTE x/y targets
-//  65% – 85%   Land & Merge: card scales down INTO slot while slot content
-//                            fades IN underneath — card BECOMES the panel
-//  85% – 100%  Clarity:      headline cross-fades to "Together."
+//  0%  – 15%   Chaos:      cards float, drag enabled
+//  15% – 40%   Converge:   cards fly toward their slot positions, un-rotate.
+//                          The window chrome fades in gently around them —
+//                          the frame appears AROUND the moving cards.
+//  40% – 70%   Land:       each card arrives at its slot and resizes to fill
+//                          it exactly (width/height morph). The card content
+//                          crossfades into the dashboard panel version.
+//  70% – 100%  Clarity:    headline swaps. Dashboard is fully assembled.
 //
-// Key fix: we store each card's initial GSAP transform at buildTimeline time,
-// then tween to (initX + deltaX) as an absolute value so scrubbing backward
-// works correctly — no "+=" accumulation bugs.
+// No pre-existing empty grid. No hard swap. Cards ARE the panels.
 // ---------------------------------------------------------------------------
 
 export function Chaos2ClaritySection() {
   const scrollWrapRef = useRef<HTMLDivElement>(null);
   const stickyRef     = useRef<HTMLDivElement>(null);
   const cardFieldRef  = useRef<HTMLDivElement>(null);
-  const clarityRef    = useRef<HTMLDivElement>(null);
+  const containerRef  = useRef<HTMLDivElement>(null);  // outer centering layer
+  const chromeRef     = useRef<HTMLDivElement>(null);  // window frame + nav
   const headline1Ref  = useRef<HTMLHeadingElement>(null);
   const headline2Ref  = useRef<HTMLHeadingElement>(null);
   const subtitleRef   = useRef<HTMLParagraphElement>(null);
@@ -47,19 +48,21 @@ export function Chaos2ClaritySection() {
     const floatTweens: (gsap.core.Tween | undefined)[] = [];
     const draggableInstances: Draggable[] = [];
 
-    // ── Set initial states immediately — before any scroll ──────────────
-    // Clarity pane must be invisible on load; panels must be invisible too
-    gsap.set(clarityRef.current, { opacity: 0, scale: 0.97 });
+    // Set all initial states immediately so nothing is visible until scroll
+    gsap.set(containerRef.current, { opacity: 0 });
+    gsap.set(chromeRef.current,    { opacity: 0 });
     gsap.set(headline2Ref.current, { opacity: 0, y: '0.875rem' });
     gsap.set(subtitle2Ref.current, { opacity: 0, y: '0.5rem' });
-    if (clarityRef.current) {
-      const panels = clarityRef.current.querySelectorAll<HTMLElement>('[data-slot-panel]');
-      gsap.set(Array.from(panels), { opacity: 0 });
-    }
+    // All slot panels start invisible
+    const getPanels = () =>
+      containerRef.current
+        ? Array.from(containerRef.current.querySelectorAll<HTMLElement>('[data-slot-panel]'))
+        : [];
+    gsap.set(getPanels(), { opacity: 0 });
 
     const ctx = gsap.context(() => {
 
-      // ── 1. Float animations ──────────────────────────────────────────
+      // ── 1. Float animations ────────────────────────────────────────────
       cardEls.forEach((el) => {
         floatTweens.push(gsap.to(el, {
           x: `+=${gsap.utils.random(-28, 28)}`,
@@ -73,9 +76,9 @@ export function Chaos2ClaritySection() {
         }));
       });
 
-      // ── 2. Draggable + hover ─────────────────────────────────────────
+      // ── 2. Draggable + hover ───────────────────────────────────────────
       cardEls.forEach((el, i) => {
-        let isHovered = false;
+        let isHovered  = false;
         let isDragging = false;
 
         const restartFloat = () => {
@@ -119,115 +122,124 @@ export function Chaos2ClaritySection() {
           gsap.to(el, { scale: 1.25, rotation: 0, zIndex: Z.hover, duration: 0.2, ease: 'power2.out' });
         });
         el.addEventListener('mouseleave', () => {
-          isHovered = false;
+          isHovered  = false;
           if (isDragging) return;
           gsap.to(el, { scale: 1, zIndex: Z.base, duration: 0.2, ease: 'power2.out' });
           floatTweens[i]?.resume();
         });
       });
 
-      // ── 3. Master timeline ───────────────────────────────────────────
+      // ── 3. Master scroll timeline ──────────────────────────────────────
       let masterTl: gsap.core.Timeline | null = null;
 
       const buildTimeline = () => {
         if (masterTl) { masterTl.kill(); masterTl = null; }
-        floatTweens.forEach((t) => t?.pause());
+        floatTweens.forEach((t)  => t?.pause());
         draggableInstances.forEach((d) => d.disable());
+
+        // Re-hide panels in case of rebuild
+        gsap.set(getPanels(), { opacity: 0 });
 
         masterTl = gsap.timeline({ paused: true });
 
-        // Stagger by layer so bg cards start slightly before fg
-        const layerStart: Record<string, number> = { bg: 0.15, mid: 0.18, fg: 0.21 };
+        // Make the outer container visible (it's just a centering wrapper)
+        // so that the slot elements have correct DOMRect values.
+        // The chrome itself stays opacity:0 — we animate it separately.
+        gsap.set(containerRef.current, { opacity: 1 });
 
-        // Phase A: pane shell appears empty at 15%
+        // Layer stagger: bg cards start first, fg last
+        const layerStart: Record<string, number> = { bg: 0.15, mid: 0.19, fg: 0.23 };
+
+        // ── Phase: window chrome fades in while cards are converging ──────
+        // This makes the frame appear AROUND the cards as they arrive,
+        // not before them. Starts at 20%, fully visible by 45%.
         masterTl.fromTo(
-          clarityRef.current,
-          { opacity: 0, scale: 0.97 },
-          { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.10 },
-          0.15,
+          chromeRef.current,
+          { opacity: 0 },
+          { opacity: 1, ease: 'power1.inOut', duration: 0.25 },
+          0.20,
         );
 
-        // Hide all slot panel contents — will reveal as each card arrives
-        const allPanels = clarityRef.current
-          ? Array.from(clarityRef.current.querySelectorAll<HTMLElement>('[data-slot-panel]'))
-          : [];
-        gsap.set(allPanels, { opacity: 0 });
-
         cardEls.forEach((el, i) => {
-          const card = chaosCards[i];
+          const card   = chaosCards[i];
           if (!card) return;
 
           const slotEl = document.getElementById(`slot-${card.id}`);
           if (!slotEl) return;
 
-          // ── Capture current GSAP x/y so we can use ABSOLUTE targets ──
-          // This is the critical fix: gsap.getProperty returns the live
-          // GSAP transform, not the CSS position. We add the delta to get
-          // an absolute destination — safe to scrub in both directions.
+          // Capture live GSAP transform so targets are absolute (not cumulative)
           const currentX = gsap.getProperty(el, 'x') as number;
           const currentY = gsap.getProperty(el, 'y') as number;
 
           const cardRect = el.getBoundingClientRect();
           const slotRect = slotEl.getBoundingClientRect();
 
-          const deltaX = slotRect.left + slotRect.width  / 2 - cardRect.left - cardRect.width  / 2;
-          const deltaY = slotRect.top  + slotRect.height / 2 - cardRect.top  - cardRect.height / 2;
-
-          // Absolute target = where the card is now + how far it needs to go
+          const deltaX  = slotRect.left + slotRect.width  / 2 - cardRect.left - cardRect.width  / 2;
+          const deltaY  = slotRect.top  + slotRect.height / 2 - cardRect.top  - cardRect.height / 2;
           const targetX = currentX + deltaX;
           const targetY = currentY + deltaY;
 
           const start = layerStart[card.layer] ?? 0.15;
 
-          // Phase B (15%–65%): card flies to exact slot, rotates to 0
+          // ── Phase 1 (15%–55%): card flies to slot center, rotation → 0 ─
           masterTl!.to(el, {
             x: targetX,
             y: targetY,
             rotation: 0,
-            scale: 1,
             ease: 'power2.inOut',
-            duration: 0.50,
-            zIndex: Z.base,
+            duration: 0.40,
           }, start);
 
-          // Phase C (65%–85%): card is now ON TOP of its slot.
-          // Scale it down to zero (it "merges" into the slot).
-          // Simultaneously, the slot panel content fades in beneath it.
-          // The overlap means user sees card BECOME the panel — no hard cut.
-          const mergeStart = 0.65;
+          // ── Phase 2 (55%–75%): card resizes to fill its slot exactly ────
+          // The card morphs: it scales from card dimensions to slot dimensions.
+          // We compute the ratio between the slot size and the card size.
+          const scaleX = slotRect.width  / cardRect.width;
+          const scaleY = slotRect.height / cardRect.height;
+          // Use the larger of the two to fill without letter-boxing,
+          // then clip with overflow:hidden on the card wrapper.
+          const fillScale = Math.max(scaleX, scaleY);
 
           masterTl!.to(el, {
-            scale: 0,
+            scale: fillScale,
+            ease: 'power2.inOut',
+            duration: 0.18,
+            zIndex: Z.base,
+          }, 0.55);
+
+          // ── Phase 3 (72%–82%): card content fades out, slot panel fades in
+          // The card wrapper is still at slot position+size. We fade the
+          // chaos card's inner content out, and the slot panel (which is
+          // rendered in the same position by the grid) fades in.
+          masterTl!.to(el, {
             opacity: 0,
             ease: 'power2.in',
-            duration: 0.18,
-          }, mergeStart);
+            duration: 0.10,
+          }, 0.72);
 
-          const slotPanel = slotEl.querySelector<HTMLElement>('[data-slot-panel]') ?? slotEl;
-          masterTl!.to(slotPanel, {
-            opacity: 1,
-            ease: 'power1.out',
-            duration: 0.20,
-          }, mergeStart + 0.02); // starts just after card begins shrinking
+          const slotPanel = slotEl.querySelector<HTMLElement>('[data-slot-panel]');
+          if (slotPanel) {
+            masterTl!.to(slotPanel, {
+              opacity: 1,
+              ease: 'power2.out',
+              duration: 0.12,
+            }, 0.74);
+          }
         });
 
-        // Phase D: headline crossfade — h1 and h2 overlap at the same point
-        // h1 fades out exactly as h2 fades in — no blank gap
+        // ── Phase 4: headline crossfade (70%–84%) ──────────────────────────
         masterTl.to(headline1Ref.current,
-          { opacity: 0, y: '-0.875rem', ease: 'power2.inOut', duration: 0.12 },
-          0.72,
+          { opacity: 0, y: '-0.875rem', ease: 'power2.in', duration: 0.08 },
+          0.70,
         );
         masterTl.to(subtitleRef.current,
-          { opacity: 0, ease: 'power2.in', duration: 0.08 },
-          0.72,
+          { opacity: 0, ease: 'power2.in', duration: 0.06 },
+          0.70,
         );
-        // h2 starts fading in while h1 is still fading out — crossfade
         masterTl.fromTo(headline2Ref.current,
           { opacity: 0, y: '0.875rem' },
-          { opacity: 1, y: '0rem', ease: 'power2.inOut', duration: 0.12 },
-          0.76, // 0.04 overlap with h1 fadeout
+          { opacity: 1, y: '0rem', ease: 'power2.out', duration: 0.10 },
+          0.76,
         );
-        // subtitle2 fades in alongside headline2
         masterTl.fromTo(subtitle2Ref.current,
           { opacity: 0, y: '0.5rem' },
           { opacity: 1, y: '0rem', ease: 'power2.out', duration: 0.10 },
@@ -237,7 +249,7 @@ export function Chaos2ClaritySection() {
         return masterTl;
       };
 
-      // ── Pin + scrub ──────────────────────────────────────────────────
+      // ── Pin + scrub ────────────────────────────────────────────────────
       ScrollTrigger.create({
         trigger: scrollWrap,
         start: 'top top',
@@ -256,6 +268,7 @@ export function Chaos2ClaritySection() {
           masterTl?.kill();
           masterTl = null;
 
+          // Reset cards
           cardEls.forEach((el) => {
             gsap.to(el, {
               x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
@@ -263,13 +276,18 @@ export function Chaos2ClaritySection() {
             });
           });
 
-          gsap.set(clarityRef.current, { opacity: 0, scale: 0.97 });
-          gsap.set(allPanels(), { opacity: 0 });
+          // Reset chrome and container
+          gsap.set(containerRef.current, { opacity: 0 });
+          gsap.set(chromeRef.current,    { opacity: 0 });
+          gsap.set(getPanels(),          { opacity: 0 });
+
+          // Reset headlines
           gsap.set(headline1Ref.current, { opacity: 1, y: '0rem' });
           gsap.set(headline2Ref.current, { opacity: 0, y: '0.875rem' });
           gsap.set(subtitleRef.current,  { opacity: 1 });
           gsap.set(subtitle2Ref.current, { opacity: 0, y: '0.5rem' });
 
+          // Re-enable chaos
           draggableInstances.forEach((d) => d.enable());
           cardEls.forEach((el, i) => {
             floatTweens[i]?.kill();
@@ -290,13 +308,6 @@ export function Chaos2ClaritySection() {
         },
       });
 
-      // Helper to get all slot panels (used in onLeaveBack closure)
-      function allPanels() {
-        return clarityRef.current
-          ? Array.from(clarityRef.current.querySelectorAll<HTMLElement>('[data-slot-panel]'))
-          : [];
-      }
-
     }, scrollWrap);
 
     const handleResize = () => ScrollTrigger.refresh();
@@ -313,25 +324,16 @@ export function Chaos2ClaritySection() {
         ref={stickyRef}
         className="sticky top-0 h-screen w-full overflow-hidden select-none bg-quaternary"
       >
-        {/* Headline strip — 9rem tall, sits at the top */}
+        {/* Headline strip */}
         <div className="absolute inset-x-0 top-0 h-36 z-50 pointer-events-none flex flex-col items-center justify-center text-center px-4 gap-2">
-          {/* Both headlines share the same space via absolute overlay */}
           <div className="relative flex justify-center w-full">
-            <h2
-              ref={headline1Ref}
-              className="font-bold text-4xl text-zinc-900 tracking-tight leading-tight"
-            >
+            <h2 ref={headline1Ref} className="font-bold text-4xl text-zinc-900 tracking-tight leading-tight">
               Running a club shouldn&apos;t feel this scattered.
             </h2>
-            <h2
-              ref={headline2Ref}
-              className="absolute inset-0 flex items-center justify-center font-bold text-4xl text-zinc-900 tracking-tight leading-tight opacity-0"
-            >
+            <h2 ref={headline2Ref} className="absolute inset-0 flex items-center justify-center font-bold text-4xl text-zinc-900 tracking-tight leading-tight opacity-0">
               Everything your club needs. Together.
             </h2>
           </div>
-
-          {/* Subtitle area — subtitle1 fades out, subtitle2 fades in over the same space */}
           <div className="relative h-5 w-full flex justify-center">
             <p ref={subtitleRef} className="absolute text-zinc-500 text-sm max-w-md font-sans">
               Spreadsheets, group chats, and disconnected schedules — all in one place.
@@ -342,17 +344,14 @@ export function Chaos2ClaritySection() {
           </div>
         </div>
 
-        {/* Chaos card field — occupies the space below the headline */}
-        <div
-          ref={cardFieldRef}
-          className="absolute inset-x-0 bottom-0 top-36 pointer-events-auto"
-        >
+        {/* Chaos cards — fill space below headline */}
+        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-36 pointer-events-auto">
           {chaosCards.map((card) => (
             <div
               key={card.id}
               data-chaos-card={card.id}
               data-layer={card.layer}
-              className={`absolute h-34 w-auto cursor-grab active:cursor-grabbing shadow-md hover:shadow-xl rounded-lg ${card.positionClass}`}
+              className={`absolute h-34 w-auto cursor-grab active:cursor-grabbing shadow-md rounded-lg overflow-hidden ${card.positionClass}`}
               style={{ zIndex: Z.base }}
             >
               {card.component}
@@ -360,9 +359,9 @@ export function Chaos2ClaritySection() {
           ))}
         </div>
 
-        {/* Clarity pane — also below the headline, starts invisible */}
-        <div className="absolute inset-x-0 bottom-0 top-36 z-40">
-          <ClarityState containerRef={clarityRef} />
+        {/* Dashboard — same region, z below cards during chaos, above during clarity */}
+        <div className="absolute inset-x-0 bottom-0 top-36 z-20 pointer-events-none">
+          <ClarityState containerRef={containerRef} chromeRef={chromeRef} />
         </div>
       </div>
     </div>
