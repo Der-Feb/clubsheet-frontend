@@ -14,7 +14,7 @@ import {
   Banknote, 
   Stethoscope,
 } from "lucide-react";
-import Chaos2Clarity from "../components/home/chaos2Clarity";
+import Chaos2ClaritySection from "../components/home/chaos2Clarity.section";
 
 
 export default function Home() {
@@ -198,7 +198,7 @@ export default function Home() {
 
       {/* Chaos-to-Clarity scroll */}
       <section>
-        <Chaos2Clarity />
+        <Chaos2ClaritySection />
       </section>
 
       <footer className="bg-gray-900 text-gray-400 py-12 px-6 hidden">

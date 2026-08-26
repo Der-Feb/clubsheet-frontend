@@ -85,3 +85,8 @@
     #E3EEE3 20%, #F7FBF3, transparent 50%
   );
 }
+
+/* Chaos→Clarity: slot panels start hidden; GSAP reveals them during scroll */
+[data-slot-panel] {
+  opacity: 0;
+}
