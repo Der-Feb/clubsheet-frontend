@@ -2,6 +2,8 @@
 
 - [ ] We will make an animation of chaos stuff which goes to organized, a good dashboard appears, and we give a natural narrative - Players, Teams ,Coaches ,Training ,Memberships ,People ,Roles & Permissions
 - [ ] Adding a slider which shows
+- [ ] The lint command for validating html [Read here](https://www.google.com/search?q=as+we+have+npm+run+build%2C+is+there+a+another+script+for+testing+where+the+html+in+nest%2Freact+will+fail%2C+where+we+nested+elements+like+buttons&ie=UTF-8&udm=50&aep=10&ntc=1&sxsrf=APpeQns1neR-HcRS9TBnFUgptLy_HWYWzw%3A1787826226055&mstk=AUtExfAbqsk5Aj5IryPJnJsAz-B5wAc6CRfp5eZPeNBuq_pgKl3yA3_MWlAc-f2JbV4IZpWHS0NfT1lyXzFtawppp4cb03hhF3SnWvSkLYzJfBCsHysSaTL5jy4KTD0AhVeJGR4LLy2Eu22Yau8Zwf-kz8Hr_z6tQJ1BUZkL4KTbK-O-3xjm3fTIGH_2DX3GsKXnhQArhbacNnz_A2R_5RsLcAqMgCq8qSvBa_mfIXK2tcbxbAA3ROtCAUl5oRMxFKAh7gBFtOKdkZ6u0WW1zYjsN39R3qLMJD3qzfud-zHwsRJ-LUzkNrdwXBECNdcFayjVNfJlPBC5ZGurKg&aioh=3&csuir=1&cs=1&atvm=2&mtid=ZBGQauvNB-XU7M8P5LyGsAQ)
+- [ ]
 
 <style>
 @-webkit-keyframes honeycomb {

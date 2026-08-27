@@ -13,6 +13,12 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      "react/void-dom-elements-no-children" : 'error',
+      "react/no-danger-with-children": 'error'
+    }
+  }
 ]);
 
 export default eslintConfig;
