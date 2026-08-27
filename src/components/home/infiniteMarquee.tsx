@@ -3,17 +3,29 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { LucideIcon } from 'lucide-react';
+import {
+  Users, Shield, Dumbbell, Trophy, GraduationCap,
+  Shirt, Banknote, Stethoscope,
+} from "lucide-react";
 
 export type FeatureItem = {
   label: string;
   icon: LucideIcon;
 };
 
-type TInfiniteMarqueeProps = {
-  items: FeatureItem[];
-};
 
-export default function InfiniteMarquee({ items }: TInfiniteMarqueeProps) {
+const marqueeFeatures: FeatureItem[] = [
+  { label: "PLAYERS",  icon: Users },
+  { label: "TEAMS",    icon: Shield },
+  { label: "TRAINING", icon: Dumbbell },
+  { label: "MATCHES",  icon: Trophy },
+  { label: "ACADEMY",  icon: GraduationCap },
+  { label: "KITS",     icon: Shirt },
+  { label: "FINANCE",  icon: Banknote },
+  { label: "MEDICAL",  icon: Stethoscope },
+];
+
+export default function InfiniteMarquee() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,7 +52,7 @@ export default function InfiniteMarquee({ items }: TInfiniteMarqueeProps) {
           ref={containerRef} 
           className="flex w-max shrink-0 items-center gap-8"
         >
-          {[...items, ...items].map((item, ndx) => {
+          {[...marqueeFeatures, ...marqueeFeatures].map((item, ndx) => {
             const IconComponent = item.icon;
 
             return (

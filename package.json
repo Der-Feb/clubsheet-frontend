@@ -6,7 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:strict": "eslint src --max-warnings 0"
   },
   "dependencies": {
     "gsap": "^3.15.0",
@@ -22,6 +23,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
+    "eslint-plugin-validate-jsx-nesting": "^0.1.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
