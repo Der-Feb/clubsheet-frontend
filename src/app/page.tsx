@@ -5,9 +5,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import InfiniteMarquee from "../components/home/infiniteMarquee";
-import Chaos2ClaritySection from "../components/home/chaos2Clarity.section";
-import { FaqSection, WhoSection } from "../components/home/home.section";
+import InfiniteMarquee from "@/components/home/infiniteMarquee";
+import Chaos2ClaritySection from "@/components/home/chaos2Clarity.section";
+import { FaqSection, WhoSection } from "@/components/home/home.section";
 
 // Static data
 const avatarLinks = [
