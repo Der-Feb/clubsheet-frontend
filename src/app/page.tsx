@@ -187,7 +187,7 @@ export default function Home() {
       <section id="modules" className="w-full bg-quaternary py-24 px-6">
         <div className="max-w-5xl mx-auto flex flex-col items-center gap-14">
           <div className="text-center flex flex-col gap-3">
-            <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">Build the Club You Need</h2>
+            <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">Build the Club, You Need</h2>
             <p className="text-zinc-500 text-base max-w-sm mx-auto">Plug in powerful modules as your club grows.</p>
           </div>
           <div className="grid grid-cols-1 gap-5 w-full sm:grid-cols-3">

@@ -181,69 +181,58 @@ export function Chaos2ClaritySection() {
 
           const start = layerStart[card.layer] ?? 0.15;
 
-          // ── Phase 1 (15%–55%): card flies to slot center, rotation → 0 ─
+          // Phase 1: card flies to its slot center, straightens out
           masterTl!.to(el, {
             x: targetX,
             y: targetY,
             rotation: 0,
+            scale: 1,
             ease: 'power2.inOut',
-            duration: 0.40,
+            duration: 0.42,
           }, start);
 
-          // ── Phase 2 (55%–75%): card resizes to fill its slot exactly ────
-          // The card morphs: it scales from card dimensions to slot dimensions.
-          // We compute the ratio between the slot size and the card size.
-          const scaleX = slotRect.width  / cardRect.width;
-          const scaleY = slotRect.height / cardRect.height;
-          // Use the larger of the two to fill without letter-boxing,
-          // then clip with overflow:hidden on the card wrapper.
-          const fillScale = Math.max(scaleX, scaleY);
+          // Phase 2: once landed, card crossfades INTO its slot panel.
+          // Both happen at the same screen position so it looks like the
+          // card transforms in place — not a disappear/appear swap.
+          const landTime = start + 0.42;
 
-          masterTl!.to(el, {
-            scale: fillScale,
-            ease: 'power2.inOut',
-            duration: 0.18,
-            zIndex: Z.base,
-          }, 0.55);
-
-          // ── Phase 3 (72%–82%): card content fades out, slot panel fades in
-          // The card wrapper is still at slot position+size. We fade the
-          // chaos card's inner content out, and the slot panel (which is
-          // rendered in the same position by the grid) fades in.
+          // Card fades out over 0.15s
           masterTl!.to(el, {
             opacity: 0,
             ease: 'power2.in',
-            duration: 0.10,
-          }, 0.72);
+            duration: 0.15,
+          }, landTime);
 
+          // Slot panel fades in starting 0.04s after card begins fading —
+          // overlap creates a crossfade, not a cut
           const slotPanel = slotEl.querySelector<HTMLElement>('[data-slot-panel]');
           if (slotPanel) {
-            masterTl!.to(slotPanel, {
-              opacity: 1,
-              ease: 'power2.out',
-              duration: 0.12,
-            }, 0.74);
+            masterTl!.fromTo(slotPanel,
+              { opacity: 0 },
+              { opacity: 1, ease: 'power2.out', duration: 0.15 },
+              landTime + 0.04,
+            );
           }
         });
 
-        // ── Phase 4: headline crossfade (70%–84%) ──────────────────────────
+        // Phase 4: headline crossfade — after all cards have landed
         masterTl.to(headline1Ref.current,
           { opacity: 0, y: '-0.875rem', ease: 'power2.in', duration: 0.08 },
-          0.70,
+          0.74,
         );
         masterTl.to(subtitleRef.current,
           { opacity: 0, ease: 'power2.in', duration: 0.06 },
-          0.70,
+          0.74,
         );
         masterTl.fromTo(headline2Ref.current,
           { opacity: 0, y: '0.875rem' },
           { opacity: 1, y: '0rem', ease: 'power2.out', duration: 0.10 },
-          0.76,
+          0.82,
         );
         masterTl.fromTo(subtitle2Ref.current,
           { opacity: 0, y: '0.5rem' },
           { opacity: 1, y: '0rem', ease: 'power2.out', duration: 0.10 },
-          0.80,
+          0.86,
         );
 
         return masterTl;
@@ -324,8 +313,8 @@ export function Chaos2ClaritySection() {
         ref={stickyRef}
         className="sticky top-0 h-screen w-full overflow-hidden select-none bg-quaternary"
       >
-        {/* Headline strip */}
-        <div className="absolute inset-x-0 top-0 h-36 z-50 pointer-events-none flex flex-col items-center justify-center text-center px-4 gap-2">
+        {/* Headline strip — sits below the sticky navbar (navbar ~4rem tall) */}
+        <div className="absolute inset-x-0 top-16 h-28 z-50 pointer-events-none flex flex-col items-center justify-center text-center px-4 gap-2">
           <div className="relative flex justify-center w-full">
             <h2 ref={headline1Ref} className="font-bold text-4xl text-zinc-900 tracking-tight leading-tight">
               Running a club shouldn&apos;t feel this scattered.
@@ -344,8 +333,8 @@ export function Chaos2ClaritySection() {
           </div>
         </div>
 
-        {/* Chaos cards — fill space below headline */}
-        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-36 pointer-events-auto">
+        {/* Chaos cards — below headline strip (top-16 navbar + h-28 headline = top-44) */}
+        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-44 pointer-events-auto">
           {chaosCards.map((card) => (
             <div
               key={card.id}
@@ -359,8 +348,8 @@ export function Chaos2ClaritySection() {
           ))}
         </div>
 
-        {/* Dashboard — same region, z below cards during chaos, above during clarity */}
-        <div className="absolute inset-x-0 bottom-0 top-36 z-20 pointer-events-none">
+        {/* Dashboard — same region as card field */}
+        <div className="absolute inset-x-0 bottom-0 top-44 z-20 pointer-events-none">
           <ClarityState containerRef={containerRef} chromeRef={chromeRef} />
         </div>
       </div>
