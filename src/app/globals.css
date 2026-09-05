@@ -92,5 +92,7 @@
 }
 
 .register-branding-panel {
-  background-image: url('');
+  background-image: url('/images/registration-hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
 }
