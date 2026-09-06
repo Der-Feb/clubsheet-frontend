@@ -15,7 +15,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ClubSheet - Club Management Platform",
   description: "A modern management platform designed specifically for football clubs and academies",
-  icons: { icon: [ { url: "/favicon-light.ico" } ] },
+  icons: {
+    icon: [
+      { url: "/favicon/favicon-light.ico", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon/favicon-dark.ico",  media: "(prefers-color-scheme: dark)"  },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

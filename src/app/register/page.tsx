@@ -20,7 +20,7 @@ const RegisterPage = () => {
 
         <div>
           <h2 className="text-3xl font-semibold">Join the Elite</h2>
-          <p className="">The world's top clubs use ClubSheet to manage their rosters, staff, and finances with surgical precision. Start building your legacy today.</p>
+          <p className="">The world&apos;s top clubs use ClubSheet to manage their rosters, staff, and finances with surgical precision. Start building your legacy today.</p>
         </div>
       </div>
 

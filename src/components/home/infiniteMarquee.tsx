@@ -52,7 +52,7 @@ export default function InfiniteMarquee() {
           ref={containerRef} 
           className="flex w-max shrink-0 items-center gap-8"
         >
-          {[...marqueeFeatures, ...marqueeFeatures].map((item, ndx) => {
+          {[...marqueeFeatures, ...marqueeFeatures, ...marqueeFeatures].map((item, ndx) => {
             const IconComponent = item.icon;
 
             return (

@@ -44,7 +44,7 @@ export function Chaos2ClaritySection() {
     const cardField  = cardFieldRef.current;
     if (!scrollWrap || !sticky || !cardField) return;
 
-    const cardEls = gsap.utils.toArray<HTMLElement>('[data-chaos-card]');
+    const cardEls = gsap.utils.toArray<HTMLElement>('[data-chaos-card]', cardField);
     const floatTweens: (gsap.core.Tween | undefined)[] = [];
     const draggableInstances: Draggable[] = [];
 
@@ -314,27 +314,27 @@ export function Chaos2ClaritySection() {
         className="sticky top-0 h-screen w-full overflow-hidden select-none bg-quaternary"
       >
         {/* Headline strip — sits below the sticky navbar (navbar ~4rem tall) */}
-        <div className="absolute inset-x-0 top-16 h-28 z-50 pointer-events-none flex flex-col items-center justify-center text-center px-4 gap-2">
+        <div className="absolute inset-x-0 top-16 h-24 z-50 pointer-events-none flex flex-col items-center justify-center text-center px-4 gap-1.5">
           <div className="relative flex justify-center w-full">
-            <h2 ref={headline1Ref} className="font-bold text-4xl text-zinc-900 tracking-tight leading-tight">
+            <h2 ref={headline1Ref} className="font-bold text-2xl text-zinc-900 tracking-tight leading-tight">
               Running a club shouldn&apos;t feel this scattered.
             </h2>
-            <h2 ref={headline2Ref} className="absolute inset-0 flex items-center justify-center font-bold text-4xl text-zinc-900 tracking-tight leading-tight opacity-0">
+            <h2 ref={headline2Ref} className="absolute inset-0 flex items-center justify-center font-bold text-2xl text-zinc-900 tracking-tight leading-tight opacity-0">
               Everything your club needs. Together.
             </h2>
           </div>
-          <div className="relative h-5 w-full flex justify-center">
-            <p ref={subtitleRef} className="absolute text-zinc-500 text-sm max-w-md font-sans">
+          <div className="relative h-4 w-full flex justify-center">
+            <p ref={subtitleRef} className="absolute text-zinc-500 text-xs max-w-md font-sans">
               Spreadsheets, group chats, and disconnected schedules — all in one place.
             </p>
-            <p ref={subtitle2Ref} className="absolute text-zinc-500 text-sm max-w-md font-sans opacity-0">
+            <p ref={subtitle2Ref} className="absolute text-zinc-500 text-xs max-w-md font-sans opacity-0">
               One workspace. Every part of your club, organised.
             </p>
           </div>
         </div>
 
-        {/* Chaos cards — below headline strip (top-16 navbar + h-28 headline = top-44) */}
-        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-44 pointer-events-auto">
+        {/* Chaos cards — below headline strip (top-16 + h-24 = top-40) */}
+        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-40 pointer-events-auto">
           {chaosCards.map((card) => (
             <div
               key={card.id}
@@ -349,7 +349,7 @@ export function Chaos2ClaritySection() {
         </div>
 
         {/* Dashboard — same region as card field */}
-        <div className="absolute inset-x-0 bottom-0 top-44 z-20 pointer-events-none">
+        <div className="absolute inset-x-0 bottom-0 top-40 z-20 pointer-events-none">
           <ClarityState containerRef={containerRef} chromeRef={chromeRef} />
         </div>
       </div>
