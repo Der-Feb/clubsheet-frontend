@@ -60,6 +60,12 @@ export function Chaos2ClaritySection() {
         : [];
     gsap.set(getPanels(), { opacity: 0 });
 
+    // Apply initial rotations via gsap.set so GSAP owns the full transform
+    // from the start — no CSS transform conflict with Draggable
+    cardEls.forEach((el, i) => {
+      gsap.set(el, { rotation: chaosCards[i]?.initialRotation ?? 0 });
+    });
+
     const ctx = gsap.context(() => {
 
       // ── 1. Float animations ────────────────────────────────────────────
@@ -94,13 +100,21 @@ export function Chaos2ClaritySection() {
           });
         };
 
+        // Kill any existing Draggable on this element before creating a new one
+        // (prevents issues with React StrictMode double-invoking effects)
+        Draggable.get(el)?.kill();
+
         const [instance] = Draggable.create(el, {
           bounds: cardField,
           edgeResistance: 0.85,
           type: 'x,y',
+          // Allow Draggable to work alongside GSAP transforms
+          allowContextMenu: true,
           onPress() {
             isDragging = true;
-            floatTweens[i]?.pause();
+            // Kill the float tween completely so it stops fighting drag
+            floatTweens[i]?.kill();
+            floatTweens[i] = undefined;
             gsap.to(el, { scale: 1.3, rotation: 0, zIndex: Z.drag, duration: 0.2, ease: 'power2.out' });
           },
           onRelease() {
@@ -302,6 +316,7 @@ export function Chaos2ClaritySection() {
     const handleResize = () => ScrollTrigger.refresh();
     window.addEventListener('resize', handleResize);
     return () => {
+      draggableInstances.forEach((d) => d.kill());
       ctx.revert();
       window.removeEventListener('resize', handleResize);
     };
@@ -334,13 +349,14 @@ export function Chaos2ClaritySection() {
         </div>
 
         {/* Chaos cards — below headline strip (top-16 + h-24 = top-40) */}
-        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-40 pointer-events-auto">
+        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-40 pointer-events-auto **:select-none **:[-webkit-user-drag:none]">
           {chaosCards.map((card) => (
             <div
               key={card.id}
               data-chaos-card={card.id}
               data-layer={card.layer}
-              className={`absolute h-34 w-auto cursor-grab active:cursor-grabbing shadow-md rounded-lg overflow-hidden ${card.positionClass}`}
+              className={`absolute h-34 w-auto cursor-grab active:cursor-grabbing shadow-md rounded-lg select-none ${card.positionClass}`}
+              draggable="false"
               style={{ zIndex: Z.base }}
             >
               {card.component}

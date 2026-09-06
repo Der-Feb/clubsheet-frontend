@@ -13,18 +13,12 @@ import Calendar, { GroupChat, PlayerCard, SpreadSheet } from './cards/core&train
 export type CardLayer = 'bg' | 'mid' | 'fg';
 
 export interface ChaosCard {
-  /** Unique id — must match the corresponding slot id in clarity.state.tsx */
   id: string;
-  /** The React card component to render */
   component: React.ReactElement;
-  /**
-   * Absolute positioning + initial rotation Tailwind classes.
-   * GSAP will drive x/y/rotation during the scroll sequence so we
-   * only use these for the starting layout — never fight them with
-   * inline GSAP transforms after init.
-   */
+  /** Absolute positioning Tailwind classes only — NO rotation classes */
   positionClass: string;
-  /** Depth layer — used to calculate differential parallax speeds */
+  /** Initial rotation in degrees — applied via gsap.set so GSAP owns the transform */
+  initialRotation: number;
   layer: CardLayer;
 }
 
@@ -52,25 +46,29 @@ export const chaosCards: ChaosCard[] = [
   {
     id: 'spreadsheet',
     component: <SpreadSheet height="100%" />,
-    positionClass: 'top-[5%] left-[8%] -rotate-6',
+    positionClass: 'top-[5%] left-[8%]',
+    initialRotation: -6,
     layer: 'bg',
   },
   {
     id: 'documents',
     component: <DocumentsCard height="100%" />,
-    positionClass: 'top-[58%] left-[10%] rotate-3',
+    positionClass: 'top-[58%] left-[10%]',
+    initialRotation: 3,
     layer: 'bg',
   },
   {
     id: 'financial',
     component: <FinancialCard height="100%" />,
-    positionClass: 'top-[62%] right-[10%] rotate-5',
+    positionClass: 'top-[62%] right-[10%]',
+    initialRotation: 5,
     layer: 'bg',
   },
   {
     id: 'medical',
     component: <MedicalRecordCard height="100%" />,
-    positionClass: 'top-[4%] right-[8%] rotate-4',
+    positionClass: 'top-[4%] right-[8%]',
+    initialRotation: 4,
     layer: 'bg',
   },
 
@@ -78,31 +76,36 @@ export const chaosCards: ChaosCard[] = [
   {
     id: 'calendar',
     component: <Calendar height="100%" />,
-    positionClass: 'top-[25%] right-[14%] rotate-3',
+    positionClass: 'top-[25%] right-[14%]',
+    initialRotation: 3,
     layer: 'mid',
   },
   {
     id: 'trainingCard',
     component: <TrainingCard height="100%" />,
-    positionClass: 'top-[28%] left-[14%] rotate-6',
+    positionClass: 'top-[28%] left-[14%]',
+    initialRotation: 6,
     layer: 'mid',
   },
   {
     id: 'coachCard',
     component: <CoachCard height="100%" />,
-    positionClass: 'top-[18%] right-[30%] -rotate-4',
+    positionClass: 'top-[18%] right-[30%]',
+    initialRotation: -4,
     layer: 'mid',
   },
   {
     id: 'permission',
     component: <PermissionCard height="100%" />,
-    positionClass: 'top-[45%] left-[28%] -rotate-3',
+    positionClass: 'top-[45%] left-[28%]',
+    initialRotation: -3,
     layer: 'mid',
   },
   {
     id: 'kitEquipment',
     component: <KitEquipmentCard height="100%" />,
-    positionClass: 'top-[70%] right-[24%] -rotate-5',
+    positionClass: 'top-[70%] right-[24%]',
+    initialRotation: -5,
     layer: 'mid',
   },
 
@@ -110,25 +113,29 @@ export const chaosCards: ChaosCard[] = [
   {
     id: 'groupChat',
     component: <GroupChat height="100%" />,
-    positionClass: 'top-[10%] left-[26%] rotate-8',
+    positionClass: 'top-[10%] left-[26%]',
+    initialRotation: 8,
     layer: 'fg',
   },
   {
     id: 'playerCard',
     component: <PlayerCard height="100%" />,
-    positionClass: 'top-[8%] right-[26%] -rotate-8',
+    positionClass: 'top-[8%] right-[26%]',
+    initialRotation: -8,
     layer: 'fg',
   },
   {
     id: 'notification',
     component: <NotificationCard height="100%" />,
-    positionClass: 'top-[40%] left-[6%] -rotate-5',
+    positionClass: 'top-[40%] left-[6%]',
+    initialRotation: -5,
     layer: 'fg',
   },
   {
     id: 'actionTasks',
     component: <ActionTasksCard height="100%" />,
-    positionClass: 'top-[78%] left-[32%] rotate-2',
+    positionClass: 'top-[78%] left-[32%]',
+    initialRotation: 2,
     layer: 'fg',
   },
 ];

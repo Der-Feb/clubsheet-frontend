@@ -317,7 +317,7 @@ export default function Home() {
                 <Image src="/logo-dark-clip.jpeg" alt="ClubSheet" width={20} height={15} className="rounded-sm opacity-90" />
                 <span className="text-white font-bold text-xs tracking-tight">ClubSheet</span>
               </div>
-              <p className="text-[0.65rem] leading-relaxed max-w-[17rem]">
+              <p className="text-[0.65rem] leading-relaxed max-w-68">
                 The modern management platform for football clubs and academies. Players, coaches, training, finances — all in one place.
               </p>
               <div className="flex gap-2.5">
