@@ -11,6 +11,10 @@
   --color-tertiary: #01562D;
   --color-quaternary: #F7FBF3;
   --color-quinary: #EEF5ED;
+
+  --color-border: #DFE3DA;
+  --color-input: #DFE3DA;
+  --color-ring: #005F31;
 }
 
 /* Utility Wrapper Classes */
