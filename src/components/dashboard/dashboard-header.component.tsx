@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Menu, Search } from "lucide-react";
 import { NotificationsDropdown } from "./notifications-dropdown.component";
+import { ThemeToggle } from "@/components/theme-toggle.component";
 
 interface DashboardHeaderProps {
   onMobileMenuOpen: () => void;
@@ -45,35 +46,35 @@ export function DashboardHeader({
   const resolvedTitle = pageTitle ?? currentRoute.title;
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-zinc-200 bg-white px-4">
+    <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border bg-card px-4 text-card-foreground">
       {/* Left: Mobile menu trigger & Breadcrumb/Title */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           type="button"
           onClick={onMobileMenuOpen}
           aria-label="Open navigation"
-          className="rounded-md p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 transition-colors lg:hidden shrink-0"
+          className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors lg:hidden shrink-0"
         >
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
 
         <div className="flex items-center gap-2 text-sm min-w-0">
-          <span className="hidden sm:inline-block text-zinc-400 font-normal">
+          <span className="hidden sm:inline-block text-muted-foreground font-normal">
             {currentRoute.section}
           </span>
-          <span className="hidden sm:inline-block text-zinc-300">/</span>
-          <h1 className="truncate font-semibold text-zinc-800">
+          <span className="hidden sm:inline-block text-muted-foreground/60">/</span>
+          <h1 className="truncate font-semibold text-foreground">
             {resolvedTitle}
           </h1>
         </div>
       </div>
 
-      {/* Center/Right: Global search placeholder & Notifications */}
-      <div className="flex items-center gap-2">
+      {/* Center/Right: Global search placeholder, Theme toggle & Notifications */}
+      <div className="flex items-center gap-2.5">
         {/* Global Search trigger */}
         <div className="relative hidden md:flex items-center">
           <Search
-            className="absolute left-2.5 h-3.5 w-3.5 text-zinc-400 pointer-events-none"
+            className="absolute left-2.5 h-3.5 w-3.5 text-muted-foreground pointer-events-none"
             aria-hidden="true"
           />
           <input
@@ -81,9 +82,12 @@ export function DashboardHeader({
             readOnly
             placeholder="Search ClubSheet... (⌘K)"
             aria-label="Search ClubSheet"
-            className="h-8 w-48 lg:w-64 rounded-lg border border-zinc-200 bg-zinc-50 pl-8 pr-3 text-xs text-zinc-600 placeholder:text-zinc-400 focus:outline-none cursor-pointer hover:border-zinc-300 transition-colors"
+            className="h-8 w-48 lg:w-64 rounded-lg border border-border bg-muted/50 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none cursor-pointer hover:border-primary/50 transition-colors"
           />
         </div>
+
+        {/* Quick Theme Switcher */}
+        <ThemeToggle variant="icon-button" />
 
         {/* Notifications Dropdown */}
         <NotificationsDropdown />

@@ -21,7 +21,7 @@ export function MobileSidebarDrawer({ open, onClose }: MobileSidebarDrawerProps)
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs"
         aria-hidden="true"
         onClick={onClose}
       />
@@ -29,10 +29,10 @@ export function MobileSidebarDrawer({ open, onClose }: MobileSidebarDrawerProps)
       {/* Drawer */}
       <aside
         aria-label="Mobile navigation"
-        className="fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-white shadow-xl"
+        className="fixed inset-y-0 left-0 z-50 flex w-72 flex-col bg-card border-r border-border text-card-foreground shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-100 px-3 py-3">
+        <div className="flex items-center justify-between border-b border-border px-3 py-3">
           <div className="flex-1 min-w-0">
             <ClubSwitcher
               activeClub={activeClub}
@@ -49,7 +49,7 @@ export function MobileSidebarDrawer({ open, onClose }: MobileSidebarDrawerProps)
             type="button"
             onClick={onClose}
             aria-label="Close navigation"
-            className="ml-2 shrink-0 rounded-md p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 transition-colors"
+            className="ml-2 shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -61,7 +61,7 @@ export function MobileSidebarDrawer({ open, onClose }: MobileSidebarDrawerProps)
         </div>
 
         {/* User */}
-        <div className="border-t border-zinc-100 px-2 py-3">
+        <div className="border-t border-border px-2 py-3">
           <UserMenu user={MOCK_USER} isCollapsed={false} />
         </div>
       </aside>

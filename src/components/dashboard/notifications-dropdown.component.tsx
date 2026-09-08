@@ -26,28 +26,28 @@ const CATEGORY_ICONS: Record<
 > = {
   training: {
     icon: Dumbbell,
-    bg: "bg-emerald-50",
-    text: "text-[#005F31]",
+    bg: "bg-primary-subtle border border-primary/20",
+    text: "text-primary",
   },
   attendance: {
     icon: ClipboardCheck,
-    bg: "bg-amber-50",
-    text: "text-amber-600",
+    bg: "bg-warning/10 border border-warning/20",
+    text: "text-warning",
   },
   document: {
     icon: FileText,
-    bg: "bg-blue-50",
-    text: "text-blue-600",
+    bg: "bg-info/10 border border-info/20",
+    text: "text-info",
   },
   match: {
     icon: Trophy,
-    bg: "bg-purple-50",
-    text: "text-purple-600",
+    bg: "bg-tertiary/20 border border-tertiary/30",
+    text: "text-tertiary",
   },
   member: {
     icon: UserCheck,
-    bg: "bg-teal-50",
-    text: "text-teal-600",
+    bg: "bg-success/10 border border-success/20",
+    text: "text-success",
   },
 };
 
@@ -118,15 +118,15 @@ export function NotificationsDropdown() {
         }
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          "relative rounded-lg p-2 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800",
-          open && "bg-zinc-100 text-zinc-900"
+          "relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer",
+          open && "bg-muted text-foreground"
         )}
       >
         <Bell className="h-5 w-5" aria-hidden="true" />
 
         {unreadCount > 0 && (
           <span
-            className="absolute top-1.5 right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#005F31] px-1 text-[10px] font-bold text-white ring-2 ring-white"
+            className="absolute top-1.5 right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground ring-2 ring-card"
             aria-hidden="true"
           >
             {unreadCount}
@@ -139,16 +139,16 @@ export function NotificationsDropdown() {
         <div
           role="dialog"
           aria-label="Notifications panel"
-          className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl border border-zinc-200 bg-white shadow-xl z-50 overflow-hidden"
+          className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl border border-border bg-card shadow-xl z-50 overflow-hidden text-card-foreground"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-zinc-100 px-4 py-3 bg-zinc-50/50">
+          <div className="flex items-center justify-between border-b border-border px-4 py-3 bg-muted/30">
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-zinc-900">
+              <h2 className="text-sm font-semibold text-foreground">
                 Notifications
               </h2>
               {unreadCount > 0 && (
-                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-[#005F31]">
+                <span className="rounded-full bg-primary-subtle px-2 py-0.5 text-[11px] font-semibold text-primary border border-primary/20">
                   {unreadCount} new
                 </span>
               )}
@@ -158,7 +158,7 @@ export function NotificationsDropdown() {
               <button
                 type="button"
                 onClick={markAllAsRead}
-                className="flex items-center gap-1 text-xs font-medium text-[#005F31] hover:text-[#01562D] transition-colors"
+                className="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary-hover transition-colors cursor-pointer"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
                 Mark all read
@@ -167,15 +167,15 @@ export function NotificationsDropdown() {
           </div>
 
           {/* Filter tabs */}
-          <div className="flex border-b border-zinc-100 px-4 pt-2 gap-4 text-xs font-medium">
+          <div className="flex border-b border-border px-4 pt-2 gap-4 text-xs font-medium">
             <button
               type="button"
               onClick={() => setFilter("all")}
               className={cn(
-                "pb-2 border-b-2 transition-colors",
+                "pb-2 border-b-2 transition-colors cursor-pointer",
                 filter === "all"
-                  ? "border-[#005F31] text-[#005F31] font-semibold"
-                  : "border-transparent text-zinc-500 hover:text-zinc-800"
+                  ? "border-primary text-primary font-semibold"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               )}
             >
               All ({notifications.length})
@@ -184,10 +184,10 @@ export function NotificationsDropdown() {
               type="button"
               onClick={() => setFilter("unread")}
               className={cn(
-                "pb-2 border-b-2 transition-colors",
+                "pb-2 border-b-2 transition-colors cursor-pointer",
                 filter === "unread"
-                  ? "border-[#005F31] text-[#005F31] font-semibold"
-                  : "border-transparent text-zinc-500 hover:text-zinc-800"
+                  ? "border-primary text-primary font-semibold"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               )}
             >
               Unread ({unreadCount})
@@ -195,15 +195,15 @@ export function NotificationsDropdown() {
           </div>
 
           {/* Notifications List */}
-          <div className="max-h-[360px] overflow-y-auto divide-y divide-zinc-100">
+          <div className="max-h-[360px] overflow-y-auto divide-y divide-border">
             {filteredNotifications.length === 0 ? (
               <div className="py-10 text-center px-4">
-                <p className="text-sm font-medium text-zinc-700">
+                <p className="text-sm font-medium text-foreground">
                   {filter === "unread"
                     ? "No unread notifications"
                     : "No notifications"}
                 </p>
-                <p className="mt-1 text-xs text-zinc-400">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {filter === "unread"
                     ? "You are all caught up with your club updates!"
                     : "Important club updates will show up here."}
@@ -219,14 +219,14 @@ export function NotificationsDropdown() {
                   <div
                     key={notif.id}
                     className={cn(
-                      "group relative flex items-start gap-3 p-3.5 transition-colors hover:bg-zinc-50",
-                      !notif.isRead && "bg-emerald-50/20"
+                      "group relative flex items-start gap-3 p-3.5 transition-colors hover:bg-muted/40",
+                      !notif.isRead && "bg-primary-subtle/30"
                     )}
                   >
                     {/* Category Icon */}
                     <div
                       className={cn(
-                        "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
+                        "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl",
                         config.bg,
                         config.text
                       )}
@@ -246,10 +246,10 @@ export function NotificationsDropdown() {
                             setOpen(false);
                           }}
                           className={cn(
-                            "text-xs leading-snug hover:text-[#005F31] transition-colors",
+                            "text-xs leading-snug hover:text-primary transition-colors",
                             notif.isRead
-                              ? "font-medium text-zinc-700"
-                              : "font-semibold text-zinc-900"
+                              ? "font-medium text-foreground/80"
+                              : "font-semibold text-foreground"
                           )}
                         >
                           {notif.title}
@@ -257,25 +257,25 @@ export function NotificationsDropdown() {
 
                         {!notif.isRead && (
                           <span
-                            className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#005F31]"
+                            className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"
                             title="Unread"
                           />
                         )}
                       </div>
 
-                      <p className="mt-0.5 text-[11px] text-zinc-500 line-clamp-2">
+                      <p className="mt-0.5 text-[11px] text-muted-foreground line-clamp-2">
                         {notif.description}
                       </p>
 
                       <div className="mt-1.5 flex items-center justify-between">
-                        <span className="text-[10px] text-zinc-400">
+                        <span className="text-[10px] text-muted-foreground">
                           {notif.timestamp}
                         </span>
 
                         <button
                           type="button"
                           onClick={() => toggleNotificationRead(notif.id)}
-                          className="text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 hover:text-zinc-700 transition-opacity"
+                          className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 hover:text-foreground transition-opacity cursor-pointer"
                         >
                           {notif.isRead ? "Mark unread" : "Mark read"}
                         </button>
@@ -288,11 +288,11 @@ export function NotificationsDropdown() {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-zinc-100 bg-zinc-50/50 p-2.5 text-center">
+          <div className="border-t border-border bg-muted/30 p-2.5 text-center">
             <Link
               href="/dashboard/communication"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-[#005F31] hover:text-[#01562D] transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors"
             >
               <span>View communication hub</span>
               <ChevronRight className="h-3 w-3" />

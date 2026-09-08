@@ -14,7 +14,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-zinc-50">
+    <div className="flex h-screen overflow-hidden bg-background text-foreground">
       {/* Desktop sidebar — hidden on mobile */}
       <div className="hidden lg:flex lg:flex-col lg:shrink-0">
         <DashboardSidebar

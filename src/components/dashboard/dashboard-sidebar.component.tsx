@@ -23,14 +23,14 @@ export function DashboardSidebar({
     <aside
       aria-label="Sidebar"
       className={cn(
-        "flex flex-col h-full border-r border-zinc-200 bg-white transition-[width] duration-200 ease-in-out overflow-hidden",
+        "flex flex-col h-full border-r border-border bg-card text-card-foreground transition-[width] duration-200 ease-in-out overflow-hidden",
         isCollapsed ? "w-16" : "w-60"
       )}
     >
       {/* Top: club switcher + collapse toggle */}
       <div
         className={cn(
-          "border-b border-zinc-100 transition-all",
+          "border-b border-border transition-all",
           isCollapsed
             ? "flex flex-col items-center gap-2 px-2 py-3"
             : "flex items-center gap-1 px-2 py-3"
@@ -54,7 +54,7 @@ export function DashboardSidebar({
           onClick={onCollapseToggle}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className="shrink-0 rounded-md p-1.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 transition-colors"
+          className="shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
         >
           {isCollapsed ? (
             <PanelLeftOpen className="h-4 w-4" aria-hidden="true" />
@@ -70,7 +70,7 @@ export function DashboardSidebar({
       </div>
 
       {/* Bottom: user menu */}
-      <div className="border-t border-zinc-100 px-2 py-3">
+      <div className="border-t border-border px-2 py-3">
         <UserMenu user={MOCK_USER} isCollapsed={isCollapsed} />
       </div>
     </aside>
