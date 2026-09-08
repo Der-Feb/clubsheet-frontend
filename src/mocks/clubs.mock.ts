@@ -1,4 +1,4 @@
-import type { KitColors } from "@/types/theme.types";
+import type { ClubBrand } from "@/types/theme.types";
 
 export interface Club {
   id: string;
@@ -7,10 +7,10 @@ export interface Club {
   abbr: string;
   logo?: string;
   /**
-   * Optional kit colour palette used to skin the app when this club is active.
-   * If omitted, the app falls back to the default ClubSheet brand colours.
+   * Optional club branding / kit colours.
+   * If omitted, falls back to the default ClubSheet brand palette.
    */
-  kitColors?: KitColors;
+  brand?: ClubBrand;
 }
 
 export const MOCK_CLUBS: Club[] = [
@@ -18,19 +18,19 @@ export const MOCK_CLUBS: Club[] = [
     id: "club-1",
     name: "Kigali FC",
     abbr: "KFC",
-    kitColors: { primary: "#005F31", secondary: "#DFE3DA", tertiary: "#F7FBF3" },
+    brand: { primary: "#005F31", secondary: "#DFE3DA", tertiary: "#01562D" },
   },
   {
     id: "club-2",
-    name: "Gasabo United",
+    name: "Gasabo United (Chelsea Blue)",
     abbr: "GU",
-    kitColors: { primary: "#1A3A8F", secondary: "#FFFFFF", tertiary: "#C8A951" },
+    brand: { primary: "#034694", secondary: "#FFFFFF", tertiary: "#DBA111" },
   },
   {
     id: "club-3",
-    name: "Rwanda Academy",
+    name: "Rwanda Academy (Arsenal Red)",
     abbr: "RA",
-    kitColors: { primary: "#8B0000", secondary: "#FFD700" },
+    brand: { primary: "#EF0107", secondary: "#FFFFFF", tertiary: "#063672" },
   },
 ];
 
