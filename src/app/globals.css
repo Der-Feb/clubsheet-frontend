@@ -4,32 +4,158 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* colors */
-  /* --color-primary: ; */
-  --color-primary: #005F31;
-  --color-secondary: #DFE3DA;
-  --color-tertiary: #01562D;
-  --color-quaternary: #F7FBF3;
-  --color-quinary: #EEF5ED;
+  /* Semantic Brand Tokens */
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-active: var(--color-primary-active);
+  --color-primary-subtle: var(--color-primary-subtle);
+  --color-primary-muted: var(--color-primary-muted);
+  --color-primary-foreground: var(--color-primary-foreground);
 
-  --color-border: #DFE3DA;
-  --color-input: #DFE3DA;
+  --color-secondary: var(--color-secondary);
+  --color-secondary-hover: var(--color-secondary-hover);
+  --color-secondary-foreground: var(--color-secondary-foreground);
+
+  --color-tertiary: var(--color-tertiary);
+  --color-tertiary-hover: var(--color-tertiary-hover);
+  --color-tertiary-foreground: var(--color-tertiary-foreground);
+
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+
+  /* Legacy & utility aliases */
+  --color-quaternary: var(--color-quaternary);
+  --color-quinary: var(--color-quinary);
+
+  /* Surface & Base UI Tokens */
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-card: var(--color-card);
+  --color-card-foreground: var(--color-card-foreground);
+  --color-popover: var(--color-popover);
+  --color-popover-foreground: var(--color-popover-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-border: var(--color-border);
+  --color-input: var(--color-input);
+  --color-ring: var(--color-ring);
+
+  /* Semantic Status Tokens */
+  --color-success: var(--color-success);
+  --color-success-foreground: var(--color-success-foreground);
+  --color-warning: var(--color-warning);
+  --color-warning-foreground: var(--color-warning-foreground);
+  --color-danger: var(--color-danger);
+  --color-danger-foreground: var(--color-danger-foreground);
+  --color-info: var(--color-info);
+  --color-info-foreground: var(--color-info-foreground);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Default Light Mode CSS variable fallbacks */
+  --color-primary: #005F31;
+  --color-primary-hover: #004d27;
+  --color-primary-active: #003b1e;
+  --color-primary-subtle: #f7fbf3;
+  --color-primary-muted: #eef5ed;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #DFE3DA;
+  --color-secondary-hover: #cfd5c8;
+  --color-secondary-foreground: #09090b;
+
+  --color-tertiary: #01562D;
+  --color-tertiary-hover: #014323;
+  --color-tertiary-foreground: #ffffff;
+
+  --color-accent: #01562D;
+  --color-accent-foreground: #ffffff;
+
+  --color-quaternary: #f7fbf3;
+  --color-quinary: #eef5ed;
+
+  --color-background: #ffffff;
+  --color-foreground: #09090b;
+  --color-card: #ffffff;
+  --color-card-foreground: #09090b;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #09090b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+  --color-border: #dfe3da;
+  --color-input: #dfe3da;
   --color-ring: #005F31;
+
+  --color-success: #16a34a;
+  --color-success-foreground: #ffffff;
+  --color-warning: #d97706;
+  --color-warning-foreground: #ffffff;
+  --color-danger: #dc2626;
+  --color-danger-foreground: #ffffff;
+  --color-info: #0284c7;
+  --color-info-foreground: #ffffff;
+}
+
+[data-theme="dark"],
+.dark {
+  color-scheme: dark;
+
+  --color-background: #09090b;
+  --color-foreground: #f4f4f5;
+  --color-card: #141417;
+  --color-card-foreground: #f4f4f5;
+  --color-popover: #141417;
+  --color-popover-foreground: #f4f4f5;
+  --color-muted: #27272a;
+  --color-muted-foreground: #a1a1aa;
+  --color-border: #27272a;
+  --color-input: #27272a;
+
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #38bdf8;
+}
+
+/* Custom theme scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
 }
 
 /* Utility Wrapper Classes */
 
 /* Button Styles */
 .btn-primary {
-  @apply px-8 py-3 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-semibold;
+  @apply px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary-hover transition-colors font-semibold;
 }
 
 .btn-secondary {
-  @apply px-8 py-3 border-2 border-gray-400 text-gray-700 rounded-lg hover:border-green-700 hover:text-green-700 transition-colors font-semibold;
+  @apply px-8 py-3 border-2 border-border text-foreground rounded-lg hover:border-primary hover:text-primary transition-colors font-semibold;
 }
 
 .btn-sm {
-  @apply px-6 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors font-medium;
+  @apply px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary-hover transition-colors font-medium;
 }
 
 /* Flex Utilities */
@@ -39,7 +165,7 @@
 
 /* Link Hover Effects */
 .nav-link {
-  @apply text-gray-700 hover:text-green-700 transition-colors;
+  @apply text-muted-foreground hover:text-primary transition-colors;
 }
 
 /* animations */
@@ -62,31 +188,29 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px); /* Moves up 8px */
+    transform: translateY(-8px);
   }
 }
 .animate-wave {
   animation: bounceUp 1.8s ease-in-out infinite;
 }
 
-/* will the the fallback */
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
 }
 
-
 .right-home-hero-section {
   background: radial-gradient(
     circle at top right, 
-    #E3EEE3, #F7FBF3, #F7FBF3
+    var(--color-quinary), var(--color-quaternary), var(--color-quaternary)
   );
 }
 
 .left-home-hero-section {
   background: radial-gradient(
     circle at left, 
-    #E3EEE3 20%, #F7FBF3, transparent 50%
+    var(--color-quinary) 20%, var(--color-quaternary), transparent 50%
   );
 }
 
