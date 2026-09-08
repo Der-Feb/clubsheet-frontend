@@ -85,15 +85,15 @@ export default function TeamsPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Teams</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Teams</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             Overview of club squads, age categories, technical staff, and rosters.
           </p>
         </div>
 
         <button
           type="button"
-          className="inline-flex items-center gap-2 rounded-lg bg-[#005F31] px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-[#01562D] transition-colors"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary-hover transition-colors cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
           Create Team
@@ -102,20 +102,20 @@ export default function TeamsPage() {
 
       {/* Overview Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Active Squads</p>
-          <p className="mt-1 text-2xl font-bold text-zinc-900">5 Divisions</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Junior, Youth, and Senior</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Active Squads</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">5 Divisions</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Junior, Youth, and Senior</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Rostered Players</p>
-          <p className="mt-1 text-2xl font-bold text-[#005F31]">115 Players</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Across all competitive squads</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Rostered Players</p>
+          <p className="mt-1 text-2xl font-bold text-primary">115 Players</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Across all competitive squads</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Coaching Staff</p>
-          <p className="mt-1 text-2xl font-bold text-zinc-900">10 Coaches</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Licensed technical directors</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Coaching Staff</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">10 Coaches</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Licensed technical directors</p>
         </div>
       </div>
 
@@ -124,66 +124,66 @@ export default function TeamsPage() {
         {TEAMS.map((team) => (
           <div
             key={team.id}
-            className="flex flex-col justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-xs hover:border-zinc-300 transition-all"
+            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all text-card-foreground"
           >
             <div>
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="inline-flex items-center rounded-md bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold text-zinc-700">
+                  <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold text-foreground border border-border">
                     {team.category}
                   </span>
-                  <h3 className="mt-2 text-base font-bold text-zinc-900">
+                  <h3 className="mt-2 text-base font-bold text-foreground">
                     {team.name}
                   </h3>
-                  <p className="text-xs text-zinc-400">{team.league}</p>
+                  <p className="text-xs text-muted-foreground">{team.league}</p>
                 </div>
 
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-[#005F31]">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-subtle text-primary border border-primary/20">
                   <Shield className="h-5 w-5" />
                 </div>
               </div>
 
-              <div className="mt-5 space-y-3 pt-4 border-t border-zinc-100 text-xs">
-                <div className="flex items-center justify-between text-zinc-600">
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+              <div className="mt-5 space-y-3 pt-4 border-t border-border text-xs">
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
                     <UserCheck className="h-3.5 w-3.5" /> Head Coach
                   </span>
-                  <span className="font-semibold text-zinc-800">{team.headCoach}</span>
+                  <span className="font-semibold text-foreground">{team.headCoach}</span>
                 </div>
 
-                <div className="flex items-center justify-between text-zinc-600">
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
                     <Users className="h-3.5 w-3.5" /> Squad Size
                   </span>
-                  <span className="font-semibold text-zinc-800">
+                  <span className="font-semibold text-foreground">
                     {team.playerCount} Players
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between text-zinc-600">
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
                     <Clock className="h-3.5 w-3.5" /> Next Session
                   </span>
-                  <span className="font-medium text-zinc-700 text-right truncate max-w-[170px]">
+                  <span className="font-medium text-foreground text-right truncate max-w-[170px]">
                     {team.nextSession}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between text-zinc-600">
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
                     <Trophy className="h-3.5 w-3.5" /> Next Match
                   </span>
-                  <span className="font-medium text-[#005F31] text-right truncate max-w-[170px]">
+                  <span className="font-medium text-primary text-right truncate max-w-[170px]">
                     {team.nextMatch}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 pt-3 border-t border-zinc-100">
+            <div className="mt-6 pt-3 border-t border-border">
               <Link
                 href={`/dashboard/teams/${team.id}`}
-                className="flex items-center justify-between text-xs font-semibold text-[#005F31] hover:text-[#01562D]"
+                className="flex items-center justify-between text-xs font-semibold text-primary hover:text-primary-hover transition-colors"
               >
                 <span>View squad & roster</span>
                 <ChevronRight className="h-3.5 w-3.5" />

@@ -19,7 +19,7 @@ export default async function MatchDetailPage({ params }: MatchDetailProps) {
       <div>
         <Link
           href="/dashboard/matches"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-800 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Back to Matches
@@ -27,52 +27,52 @@ export default async function MatchDetailPage({ params }: MatchDetailProps) {
       </div>
 
       {/* Matchday Banner */}
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs text-center space-y-4">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-[#005F31]">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-xs text-center space-y-4 text-card-foreground">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-primary-subtle px-3 py-1 text-xs font-semibold text-primary border border-primary/20">
           <Trophy className="h-3.5 w-3.5" />
           Rwanda Premier League • Matchday 14
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 py-4">
           <div className="flex flex-col items-center gap-2">
-            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#005F31] text-lg font-bold text-white shadow-sm">
+            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-primary-foreground shadow-sm">
               KFC
             </span>
-            <span className="text-lg font-bold text-zinc-900">Kigali FC</span>
-            <span className="text-xs text-zinc-400">Home</span>
+            <span className="text-lg font-bold text-foreground">Kigali FC</span>
+            <span className="text-xs text-muted-foreground">Home</span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-2xl font-black text-zinc-300">VS</span>
-            <p className="text-xs font-semibold text-[#005F31]">Saturday, 15:00</p>
-            <p className="text-[11px] text-zinc-400 font-mono">ID: {matchId}</p>
+            <span className="text-2xl font-black text-muted-foreground/40">VS</span>
+            <p className="text-xs font-semibold text-primary">Saturday, 15:00</p>
+            <p className="text-[11px] text-muted-foreground font-mono">ID: {matchId}</p>
           </div>
 
           <div className="flex flex-col items-center gap-2">
-            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-200 text-lg font-bold text-zinc-800 shadow-sm">
+            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted border border-border text-lg font-bold text-foreground shadow-sm">
               APR
             </span>
-            <span className="text-lg font-bold text-zinc-900">APR FC</span>
-            <span className="text-xs text-zinc-400">Away</span>
+            <span className="text-lg font-bold text-foreground">APR FC</span>
+            <span className="text-xs text-muted-foreground">Away</span>
           </div>
         </div>
 
-        <div className="pt-4 border-t border-zinc-100 flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-600">
+        <div className="pt-4 border-t border-border flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5 text-zinc-400" />
+            <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
             Amahoro National Stadium, Remera
           </span>
           <span className="flex items-center gap-1.5">
-            <Users className="h-3.5 w-3.5 text-zinc-400" />
+            <Users className="h-3.5 w-3.5 text-muted-foreground" />
             Capacity: 45,000
           </span>
         </div>
       </div>
 
       {/* Provisional Starting Lineup */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs space-y-4">
-        <h2 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-          <Shield className="h-4 w-4 text-[#005F31]" />
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-xs space-y-4 text-card-foreground">
+        <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+          <Shield className="h-4 w-4 text-primary" />
           Confirmed Matchday Squad (4-3-3)
         </h2>
 
@@ -92,14 +92,14 @@ export default async function MatchDetailPage({ params }: MatchDetailProps) {
           ].map((player) => (
             <div
               key={player.num}
-              className="flex items-center gap-3 p-2.5 rounded-lg border border-zinc-100 bg-zinc-50/50"
+              className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-muted/40"
             >
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white font-mono text-xs font-bold text-zinc-700 shadow-2xs border border-zinc-200">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-card font-mono text-xs font-bold text-foreground shadow-2xs border border-border">
                 {player.num}
               </span>
               <div>
-                <p className="text-xs font-semibold text-zinc-800">{player.name}</p>
-                <p className="text-[10px] text-zinc-400">{player.role}</p>
+                <p className="text-xs font-semibold text-foreground">{player.name}</p>
+                <p className="text-[10px] text-muted-foreground">{player.role}</p>
               </div>
             </div>
           ))}

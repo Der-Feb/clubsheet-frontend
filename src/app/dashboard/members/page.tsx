@@ -85,17 +85,17 @@ export default function MembersPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Members
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Manage club executives, coaches, medical staff, and club officials.
           </p>
         </div>
 
         <button
           type="button"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-[#005F31] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#01562D] shadow-xs"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
           Invite Staff Member
@@ -104,56 +104,56 @@ export default function MembersPage() {
 
       {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Total Staff</p>
-          <p className="mt-1 text-2xl font-bold text-zinc-900">28</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Across 4 departments</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Total Staff</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">28</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Across 4 departments</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Technical Staff</p>
-          <p className="mt-1 text-2xl font-bold text-[#005F31]">14</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Coaches & trainers</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Technical Staff</p>
+          <p className="mt-1 text-2xl font-bold text-primary">14</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Coaches & trainers</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Medical Staff</p>
-          <p className="mt-1 text-2xl font-bold text-zinc-900">5</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Doctors & physios</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Medical Staff</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">5</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Doctors & physios</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Pending Invitations</p>
-          <p className="mt-1 text-2xl font-bold text-amber-600">2</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Awaiting acceptance</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Pending Invitations</p>
+          <p className="mt-1 text-2xl font-bold text-warning">2</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Awaiting acceptance</p>
         </div>
       </div>
 
       {/* Search & Filter Toolbar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-zinc-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-card p-3 rounded-2xl border border-border shadow-xs text-card-foreground">
         <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search by name, role, email..."
-            className="h-9 w-full rounded-lg border border-zinc-200 bg-zinc-50 pl-9 pr-3 text-xs text-zinc-800 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#005F31]"
+            className="h-9 w-full rounded-xl border border-border bg-muted/40 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:bg-card focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
 
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
           >
-            <Filter className="h-3.5 w-3.5 text-zinc-500" />
+            <Filter className="h-3.5 w-3.5 text-muted-foreground" />
             <span>Department: All</span>
           </button>
         </div>
       </div>
 
       {/* Members Table */}
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs text-card-foreground">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-zinc-100 bg-zinc-50/75 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+              <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                 <th className="py-3 px-4">Member</th>
                 <th className="py-3 px-4">Role</th>
                 <th className="py-3 px-4">Department</th>
@@ -162,12 +162,12 @@ export default function MembersPage() {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100 text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {MEMBERS.map((member) => (
-                <tr key={member.id} className="hover:bg-zinc-50/80 transition-colors">
+                <tr key={member.id} className="hover:bg-muted/30 transition-colors">
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs font-bold text-zinc-700">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted border border-border text-xs font-bold text-foreground">
                         {member.name
                           .split(" ")
                           .map((n) => n[0])
@@ -175,25 +175,25 @@ export default function MembersPage() {
                           .join("")}
                       </div>
                       <div>
-                        <p className="font-semibold text-zinc-900">{member.name}</p>
-                        <p className="text-[11px] text-zinc-400">Joined {member.joinedDate}</p>
+                        <p className="font-semibold text-foreground">{member.name}</p>
+                        <p className="text-[11px] text-muted-foreground">Joined {member.joinedDate}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-4 font-medium text-zinc-800">
+                  <td className="py-3 px-4 font-medium text-foreground">
                     {member.role}
                   </td>
-                  <td className="py-3 px-4 text-zinc-600">{member.department}</td>
-                  <td className="py-3 px-4 text-zinc-500 space-y-0.5">
+                  <td className="py-3 px-4 text-muted-foreground">{member.department}</td>
+                  <td className="py-3 px-4 text-muted-foreground space-y-0.5">
                     <p>{member.email}</p>
-                    <p className="text-[11px] text-zinc-400">{member.phone}</p>
+                    <p className="text-[11px] text-muted-foreground/80">{member.phone}</p>
                   </td>
                   <td className="py-3 px-4">
                     <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
                         member.status === "Active"
-                          ? "bg-emerald-50 text-[#005F31]"
-                          : "bg-amber-50 text-amber-700"
+                          ? "bg-primary-subtle text-primary border border-primary/20"
+                          : "bg-warning/10 text-warning border border-warning/20"
                       }`}
                     >
                       {member.status}
@@ -202,7 +202,8 @@ export default function MembersPage() {
                   <td className="py-3 px-4 text-right">
                     <button
                       type="button"
-                      className="rounded p-1 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100"
+                      aria-label={`Actions for ${member.name}`}
+                      className="rounded-lg p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
                     >
                       <MoreVertical className="h-4 w-4" />
                     </button>

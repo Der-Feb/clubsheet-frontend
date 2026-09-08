@@ -84,10 +84,10 @@ export default function AttendancePage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Attendance
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Monitor squad session compliance, absence records, and player training frequency.
           </p>
         </div>
@@ -95,14 +95,14 @@ export default function AttendancePage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors cursor-pointer"
           >
-            <Calendar className="h-3.5 w-3.5 text-zinc-500" />
+            <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
             Last 30 Days
           </button>
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[#005F31] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#01562D] shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
             <ClipboardCheck className="h-3.5 w-3.5" />
             Take Session Attendance
@@ -112,55 +112,55 @@ export default function AttendancePage() {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
-          <p className="text-xs font-semibold text-zinc-400 uppercase">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs text-card-foreground">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Overall Club Attendance
           </p>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-[#005F31]">87.4%</span>
-            <span className="text-xs font-medium text-emerald-600 flex items-center gap-0.5">
+            <span className="text-3xl font-bold text-primary">87.4%</span>
+            <span className="text-xs font-medium text-success flex items-center gap-0.5">
               <TrendingUp className="h-3 w-3" /> +2.1%
             </span>
           </div>
-          <p className="mt-1 text-xs text-zinc-500">Target benchmark: 85%</p>
+          <p className="mt-1 text-xs text-muted-foreground">Target benchmark: 85%</p>
         </div>
 
-        <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
-          <p className="text-xs font-semibold text-zinc-400 uppercase">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs text-card-foreground">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Senior Team Rate
           </p>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-zinc-900">92.0%</span>
-            <span className="text-xs font-medium text-zinc-400">16 sessions</span>
+            <span className="text-3xl font-bold text-foreground">92.0%</span>
+            <span className="text-xs font-medium text-muted-foreground">16 sessions</span>
           </div>
-          <p className="mt-1 text-xs text-zinc-500">Highest compliance squad</p>
+          <p className="mt-1 text-xs text-muted-foreground">Highest compliance squad</p>
         </div>
 
-        <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
-          <p className="text-xs font-semibold text-zinc-400 uppercase">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs text-card-foreground">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Active Absences / Medical
           </p>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-amber-600">4 Players</span>
-            <span className="text-xs font-medium text-amber-700">Excused</span>
+            <span className="text-3xl font-bold text-warning">4 Players</span>
+            <span className="text-xs font-medium text-warning">Excused</span>
           </div>
-          <p className="mt-1 text-xs text-zinc-500">Under certified recovery</p>
+          <p className="mt-1 text-xs text-muted-foreground">Under certified recovery</p>
         </div>
       </div>
 
       {/* Attendance Table */}
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs">
-        <div className="p-4 border-b border-zinc-100 flex items-center justify-between">
-          <h2 className="text-sm font-bold text-zinc-900">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs text-card-foreground">
+        <div className="p-4 border-b border-border flex items-center justify-between">
+          <h2 className="text-sm font-bold text-foreground">
             Player Attendance Performance
           </h2>
-          <span className="text-xs text-zinc-400">September 2026</span>
+          <span className="text-xs text-muted-foreground">September 2026</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-zinc-100 bg-zinc-50/75 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+              <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                 <th className="py-3 px-4">Player</th>
                 <th className="py-3 px-4">Team</th>
                 <th className="py-3 px-4">Completed / Total</th>
@@ -169,44 +169,44 @@ export default function AttendancePage() {
                 <th className="py-3 px-4 text-right">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100 text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {ATTENDANCE_RECORDS.map((record) => (
-                <tr key={record.id} className="hover:bg-zinc-50/80 transition-colors">
-                  <td className="py-3 px-4 font-semibold text-zinc-900">
+                <tr key={record.id} className="hover:bg-muted/30 transition-colors">
+                  <td className="py-3 px-4 font-semibold text-foreground">
                     {record.playerName}
                   </td>
-                  <td className="py-3 px-4 text-zinc-600">{record.team}</td>
-                  <td className="py-3 px-4 font-mono text-zinc-600">
+                  <td className="py-3 px-4 text-muted-foreground">{record.team}</td>
+                  <td className="py-3 px-4 font-mono text-muted-foreground">
                     {record.sessionsAttended} / {record.totalSessions}
                   </td>
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-20 bg-zinc-100 h-2 rounded-full overflow-hidden">
+                      <div className="w-20 bg-muted h-2 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full ${
                             record.percentage >= 90
-                              ? "bg-[#005F31]"
+                              ? "bg-primary"
                               : record.percentage >= 80
-                              ? "bg-amber-500"
-                              : "bg-red-500"
+                              ? "bg-warning"
+                              : "bg-danger"
                           }`}
                           style={{ width: `${record.percentage}%` }}
                         />
                       </div>
-                      <span className="font-semibold text-zinc-800">
+                      <span className="font-semibold text-foreground">
                         {record.percentage}%
                       </span>
                     </div>
                   </td>
-                  <td className="py-3 px-4 text-zinc-500">{record.lastSession}</td>
+                  <td className="py-3 px-4 text-muted-foreground">{record.lastSession}</td>
                   <td className="py-3 px-4 text-right">
                     <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
                         record.status === "Excellent"
-                          ? "bg-emerald-50 text-[#005F31]"
+                          ? "bg-primary-subtle text-primary border border-primary/20"
                           : record.status === "Good"
-                          ? "bg-blue-50 text-blue-700"
-                          : "bg-amber-50 text-amber-700"
+                          ? "bg-info/10 text-info border border-info/20"
+                          : "bg-warning/10 text-warning border border-warning/20"
                       }`}
                     >
                       {record.status}

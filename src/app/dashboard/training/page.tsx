@@ -79,10 +79,10 @@ export default function TrainingPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Training
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Schedule practice sessions, design drill plans, and track squad
             attendance.
           </p>
@@ -91,14 +91,14 @@ export default function TrainingPage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors cursor-pointer"
           >
-            <Calendar className="h-3.5 w-3.5 text-zinc-500" />
+            <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
             Calendar View
           </button>
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[#005F31] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#01562D] shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
             Schedule Session
@@ -107,24 +107,24 @@ export default function TrainingPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3 rounded-xl border border-zinc-200 shadow-xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-card p-3 rounded-2xl border border-border shadow-xs text-card-foreground">
         <div className="flex items-center gap-2 text-xs font-medium">
-          <span className="text-zinc-400">Filter by squad:</span>
+          <span className="text-muted-foreground">Filter by squad:</span>
           <button
             type="button"
-            className="rounded-lg bg-emerald-50 px-2.5 py-1 text-[#005F31] font-semibold"
+            className="rounded-lg bg-primary-subtle px-2.5 py-1 text-primary font-semibold border border-primary/20 cursor-pointer"
           >
             All Squads
           </button>
           <button
             type="button"
-            className="rounded-lg px-2.5 py-1 text-zinc-600 hover:bg-zinc-100"
+            className="rounded-lg px-2.5 py-1 text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
           >
             Senior Team
           </button>
           <button
             type="button"
-            className="rounded-lg px-2.5 py-1 text-zinc-600 hover:bg-zinc-100"
+            className="rounded-lg px-2.5 py-1 text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
           >
             U17 Academy
           </button>
@@ -133,7 +133,7 @@ export default function TrainingPage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs text-zinc-600 hover:bg-zinc-50"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
           >
             <Filter className="h-3 w-3" />
             This Week (Sep 7 - 13)
@@ -143,7 +143,7 @@ export default function TrainingPage() {
 
       {/* Session Cards Grid */}
       <div className="space-y-4">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
           Upcoming Practice Sessions
         </h2>
 
@@ -151,45 +151,45 @@ export default function TrainingPage() {
           {SESSIONS.map((session) => (
             <div
               key={session.id}
-              className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs hover:border-zinc-300 transition-all space-y-4 flex flex-col justify-between"
+              className="rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all space-y-4 flex flex-col justify-between text-card-foreground"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-[#005F31]">
+                  <span className="rounded-md bg-primary-subtle px-2.5 py-0.5 text-[10px] font-semibold text-primary border border-primary/20">
                     {session.type}
                   </span>
-                  <span className="text-xs font-medium text-zinc-500">
+                  <span className="text-xs font-medium text-muted-foreground">
                     {session.team}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-base font-bold text-zinc-900">
+                  <h3 className="text-base font-bold text-foreground">
                     {session.title}
                   </h3>
-                  <p className="mt-1 text-xs text-zinc-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Led by {session.coach}
                   </p>
                 </div>
 
-                <div className="space-y-1.5 pt-2 border-t border-zinc-100 text-xs text-zinc-600">
+                <div className="space-y-1.5 pt-2 border-t border-border text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-3.5 w-3.5 text-zinc-400" />
-                    <span className="font-medium text-zinc-800">
+                    <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="font-medium text-foreground">
                       {session.date}
                     </span>
-                    <span className="text-zinc-400">•</span>
-                    <Clock className="h-3.5 w-3.5 text-zinc-400" />
+                    <span className="text-muted-foreground/60">•</span>
+                    <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                     <span>{session.time}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <MapPin className="h-3.5 w-3.5 text-zinc-400" />
+                    <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
                     <span>{session.pitch}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Users className="h-3.5 w-3.5 text-zinc-400" />
+                    <Users className="h-3.5 w-3.5 text-muted-foreground" />
                     <span>
                       {session.confirmedPlayers}/{session.totalPlayers} Confirmed
                     </span>
@@ -197,13 +197,13 @@ export default function TrainingPage() {
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-zinc-100 flex items-center justify-between">
-                <span className="text-[11px] font-medium text-emerald-600">
+              <div className="pt-3 border-t border-border flex items-center justify-between">
+                <span className="text-[11px] font-medium text-success">
                   Attendance sheet open
                 </span>
                 <Link
                   href={`/dashboard/training/${session.id}`}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#005F31] hover:underline"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
                 >
                   View Details <ChevronRight className="h-3 w-3" />
                 </Link>

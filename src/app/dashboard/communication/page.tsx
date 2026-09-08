@@ -54,17 +54,17 @@ export default function CommunicationPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Communication
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Broadcast club announcements, squad notices, and team messages.
           </p>
         </div>
 
         <button
           type="button"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-[#005F31] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#01562D] shadow-xs"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
           New Announcement
@@ -76,42 +76,42 @@ export default function CommunicationPage() {
         {/* Left 2 Cols: Official Announcements */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
-              <Megaphone className="h-3.5 w-3.5 text-[#005F31]" />
+            <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <Megaphone className="h-3.5 w-3.5 text-primary" />
               Club Announcements
             </h2>
-            <span className="text-xs text-zinc-400">3 active broadcasts</span>
+            <span className="text-xs text-muted-foreground">3 active broadcasts</span>
           </div>
 
           <div className="space-y-3">
             {ANNOUNCEMENTS.map((ann) => (
               <div
                 key={ann.id}
-                className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs hover:border-zinc-300 transition-all space-y-3"
+                className="rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all space-y-3 text-card-foreground"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     {ann.pinned && (
-                      <span className="inline-block rounded-md bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800 mb-1">
+                      <span className="inline-block rounded-md bg-warning/10 border border-warning/20 px-2 py-0.5 text-[10px] font-bold text-warning mb-1">
                         PINNED ANNOUNCEMENT
                       </span>
                     )}
-                    <h3 className="text-base font-bold text-zinc-900">
+                    <h3 className="text-base font-bold text-foreground">
                       {ann.title}
                     </h3>
                   </div>
-                  <span className="text-xs text-zinc-400 shrink-0">
+                  <span className="text-xs text-muted-foreground shrink-0">
                     {ann.date}
                   </span>
                 </div>
 
-                <p className="text-xs text-zinc-600 leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {ann.preview}
                 </p>
 
-                <div className="pt-3 border-t border-zinc-100 flex items-center justify-between text-[11px] text-zinc-500">
+                <div className="pt-3 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground">
                   <span>From: {ann.author}</span>
-                  <span className="rounded bg-zinc-100 px-2 py-0.5 font-medium text-zinc-700">
+                  <span className="rounded bg-muted px-2 py-0.5 font-medium text-foreground border border-border">
                     To: {ann.target}
                   </span>
                 </div>
@@ -120,41 +120,41 @@ export default function CommunicationPage() {
           </div>
         </div>
 
-        {/* Right Col: Team Chat / Direct Messaging Placeholder */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs space-y-4 flex flex-col justify-between">
+        {/* Right Col: Team Chat / Direct Messaging */}
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-xs space-y-4 flex flex-col justify-between text-card-foreground">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
-              <h2 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-                <MessageSquare className="h-4 w-4 text-[#005F31]" />
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-primary" />
                 Staff Direct Channels
               </h2>
-              <span className="h-2 w-2 rounded-full bg-[#005F31]" />
+              <span className="h-2 w-2 rounded-full bg-primary" />
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center gap-3 p-2.5 rounded-lg bg-emerald-50/50 border border-emerald-100/60">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#005F31] text-[10px] font-bold text-white">
+              <div className="flex items-center gap-3 p-2.5 rounded-xl bg-primary-subtle/50 border border-primary/20">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-[10px] font-bold text-primary-foreground">
                   TC
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-zinc-800">
+                  <p className="text-xs font-semibold text-foreground">
                     Technical Coaches Group
                   </p>
-                  <p className="text-[11px] text-zinc-500 truncate">
+                  <p className="text-[11px] text-muted-foreground truncate">
                     Coach Emmanuel: Updated lineup ready for review.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-zinc-50 border border-transparent transition-colors">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-[10px] font-bold text-blue-800">
+              <div className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-muted border border-transparent transition-colors">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-info/10 text-[10px] font-bold text-info border border-info/20">
                   MD
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-zinc-800">
+                  <p className="text-xs font-semibold text-foreground">
                     Medical & Physio Desk
                   </p>
-                  <p className="text-[11px] text-zinc-400 truncate">
+                  <p className="text-[11px] text-muted-foreground truncate">
                     Dr. Patrick: Kwizera ultrasound came back clear.
                   </p>
                 </div>
@@ -162,16 +162,17 @@ export default function CommunicationPage() {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-zinc-100">
+          <div className="pt-4 border-t border-border">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Send quick staff notice..."
-                className="w-full h-9 rounded-lg border border-zinc-200 bg-zinc-50 pl-3 pr-9 text-xs text-zinc-800 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#005F31]"
+                className="w-full h-9 rounded-xl border border-border bg-muted/40 pl-3 pr-9 text-xs text-foreground placeholder:text-muted-foreground focus:bg-card focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <button
                 type="button"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#005F31] hover:text-[#01562D]"
+                aria-label="Send staff notice"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:text-primary-hover cursor-pointer"
               >
                 <Send className="h-4 w-4" />
               </button>

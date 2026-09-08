@@ -62,10 +62,10 @@ export default function ReportsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Reports
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Export official analytics, compliance sheets, and squad performance summaries.
           </p>
         </div>
@@ -73,9 +73,9 @@ export default function ReportsPage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors cursor-pointer"
           >
-            <Calendar className="h-3.5 w-3.5 text-zinc-500" />
+            <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
             Select Custom Range
           </button>
         </div>
@@ -88,48 +88,48 @@ export default function ReportsPage() {
           return (
             <div
               key={report.title}
-              className="flex flex-col justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-xs hover:border-zinc-300 transition-all space-y-4"
+              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all space-y-4 text-card-foreground"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="rounded-md bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold text-zinc-600">
+                  <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold text-foreground border border-border">
                     {report.category}
                   </span>
-                  <span className="text-xs text-zinc-400">{report.period}</span>
+                  <span className="text-xs text-muted-foreground">{report.period}</span>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-[#005F31]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-subtle text-primary border border-primary/20">
                     <Icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-zinc-900">
+                    <h3 className="text-sm font-bold text-foreground">
                       {report.title}
                     </h3>
-                    <p className="mt-1 text-xs text-zinc-500 leading-relaxed">
+                    <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                       {report.description}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-zinc-100 flex items-center justify-between">
-                <span className="text-[11px] font-medium text-emerald-700 flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+              <div className="pt-3 border-t border-border flex items-center justify-between">
+                <span className="text-[11px] font-medium text-success flex items-center gap-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-success" />
                   {report.status}
                 </span>
 
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-md border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 transition-colors"
+                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted transition-colors cursor-pointer"
                   >
-                    <Download className="h-3 w-3 text-zinc-400" />
+                    <Download className="h-3 w-3 text-muted-foreground" />
                     CSV
                   </button>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-md bg-[#005F31] px-2.5 py-1 text-xs font-medium text-white hover:bg-[#01562D] transition-colors"
+                    className="inline-flex items-center gap-1 rounded-lg bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground hover:bg-primary-hover transition-colors cursor-pointer"
                   >
                     <Download className="h-3 w-3" />
                     PDF

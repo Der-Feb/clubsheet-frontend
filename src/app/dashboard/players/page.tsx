@@ -107,10 +107,10 @@ export default function PlayersPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Players
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Manage player rosters, positions, registrations, and club profiles.
           </p>
         </div>
@@ -118,14 +118,14 @@ export default function PlayersPage() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 shadow-xs hover:bg-zinc-50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground shadow-xs hover:bg-muted transition-colors cursor-pointer"
           >
-            <SlidersHorizontal className="h-3.5 w-3.5 text-zinc-500" />
+            <SlidersHorizontal className="h-3.5 w-3.5 text-muted-foreground" />
             Export Roster
           </button>
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-lg bg-[#005F31] px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-[#01562D] transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary-hover transition-colors cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
             Add Player
@@ -135,50 +135,50 @@ export default function PlayersPage() {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Total Players</p>
-          <p className="mt-1 text-2xl font-bold text-zinc-900">248</p>
-          <p className="mt-0.5 text-xs text-[#005F31] font-medium">+12 this month</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Total Players</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">248</p>
+          <p className="mt-0.5 text-xs text-primary font-medium">+12 this month</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Active Squad</p>
-          <p className="mt-1 text-2xl font-bold text-zinc-900">226</p>
-          <p className="mt-0.5 text-xs text-zinc-500">Eligible for selection</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Active Squad</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">226</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Eligible for selection</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Injured / Out</p>
-          <p className="mt-1 text-2xl font-bold text-amber-600">8</p>
-          <p className="mt-0.5 text-xs text-zinc-500">In medical recovery</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Injured / Out</p>
+          <p className="mt-1 text-2xl font-bold text-warning">8</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">In medical recovery</p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
-          <p className="text-xs font-medium text-zinc-400 uppercase">Academy Youth</p>
-          <p className="mt-1 text-2xl font-bold text-zinc-900">114</p>
-          <p className="mt-0.5 text-xs text-zinc-500">U15 & U17 pathways</p>
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
+          <p className="text-xs font-medium text-muted-foreground uppercase">Academy Youth</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">114</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">U15 & U17 pathways</p>
         </div>
       </div>
 
       {/* Search & Filter Toolbar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-zinc-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-card p-3 rounded-2xl border border-border shadow-xs text-card-foreground">
         <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search players by name, number..."
-            className="h-9 w-full rounded-lg border border-zinc-200 bg-zinc-50 pl-9 pr-3 text-xs text-zinc-800 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#005F31]"
+            className="h-9 w-full rounded-xl border border-border bg-muted/40 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:bg-card focus:outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
           >
-            <Filter className="h-3.5 w-3.5 text-zinc-500" />
+            <Filter className="h-3.5 w-3.5 text-muted-foreground" />
             <span>All Teams</span>
           </button>
           <button
             type="button"
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
           >
             <span>Status: All</span>
           </button>
@@ -186,11 +186,11 @@ export default function PlayersPage() {
       </div>
 
       {/* Players Table */}
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs text-card-foreground">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-zinc-100 bg-zinc-50/75 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+              <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                 <th className="py-3 px-4">Player</th>
                 <th className="py-3 px-4">Team</th>
                 <th className="py-3 px-4">Position</th>
@@ -199,45 +199,45 @@ export default function PlayersPage() {
                 <th className="py-3 px-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100 text-xs">
+            <tbody className="divide-y divide-border text-xs">
               {PLAYERS.map((player) => (
                 <tr
                   key={player.id}
-                  className="hover:bg-zinc-50/80 transition-colors group"
+                  className="hover:bg-muted/30 transition-colors group"
                 >
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-[#005F31]">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-subtle text-xs font-bold text-primary border border-primary/20">
                         {player.avatar}
                       </div>
                       <div>
                         <Link
                           href={`/dashboard/players/${player.id}`}
-                          className="font-semibold text-zinc-900 group-hover:text-[#005F31] transition-colors"
+                          className="font-semibold text-foreground group-hover:text-primary transition-colors"
                         >
                           {player.name}
                         </Link>
-                        <p className="text-[11px] text-zinc-400">Joined {player.joined}</p>
+                        <p className="text-[11px] text-muted-foreground">Joined {player.joined}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-4 font-medium text-zinc-700">
+                  <td className="py-3 px-4 font-medium text-foreground">
                     {player.team}
                   </td>
-                  <td className="py-3 px-4 text-zinc-600">{player.position}</td>
+                  <td className="py-3 px-4 text-muted-foreground">{player.position}</td>
                   <td className="py-3 px-4">
-                    <span className="inline-flex items-center justify-center font-mono font-semibold text-zinc-700 bg-zinc-100 rounded-md px-1.5 py-0.5">
+                    <span className="inline-flex items-center justify-center font-mono font-semibold text-foreground bg-muted rounded-md px-1.5 py-0.5 border border-border">
                       #{player.number}
                     </span>
                   </td>
                   <td className="py-3 px-4">
                     <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
                         player.status === "Active"
-                          ? "bg-emerald-50 text-[#005F31]"
+                          ? "bg-primary-subtle text-primary border border-primary/20"
                           : player.status === "Injured"
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-zinc-100 text-zinc-600"
+                          ? "bg-warning/10 text-warning border border-warning/20"
+                          : "bg-muted text-muted-foreground border border-border"
                       }`}
                     >
                       {player.status}
@@ -246,7 +246,7 @@ export default function PlayersPage() {
                   <td className="py-3 px-4 text-right">
                     <Link
                       href={`/dashboard/players/${player.id}`}
-                      className="inline-flex items-center gap-1 font-semibold text-[#005F31] hover:underline"
+                      className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
                     >
                       Profile <ChevronRight className="h-3 w-3" />
                     </Link>
@@ -258,19 +258,19 @@ export default function PlayersPage() {
         </div>
 
         {/* Table Pagination */}
-        <div className="flex items-center justify-between border-t border-zinc-100 px-4 py-3 bg-zinc-50/50 text-xs text-zinc-500">
+        <div className="flex items-center justify-between border-t border-border px-4 py-3 bg-muted/30 text-xs text-muted-foreground">
           <span>Showing 8 of 248 players</span>
           <div className="flex items-center gap-1">
             <button
               type="button"
               disabled
-              className="rounded-md border border-zinc-200 bg-white px-2.5 py-1 text-xs text-zinc-400 cursor-not-allowed"
+              className="rounded-lg border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground/50 cursor-not-allowed"
             >
               Previous
             </button>
             <button
               type="button"
-              className="rounded-md border border-zinc-200 bg-white px-2.5 py-1 text-xs text-zinc-700 hover:bg-zinc-50"
+              className="rounded-lg border border-border bg-card px-2.5 py-1 text-xs text-foreground hover:bg-muted cursor-pointer"
             >
               Next
             </button>

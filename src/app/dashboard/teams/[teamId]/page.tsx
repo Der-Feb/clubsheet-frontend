@@ -17,7 +17,7 @@ export default async function TeamDetailPage({ params }: TeamDetailProps) {
       <div>
         <Link
           href="/dashboard/teams"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-800 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Back to Teams
@@ -25,22 +25,22 @@ export default async function TeamDetailPage({ params }: TeamDetailProps) {
       </div>
 
       {/* Team Header */}
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-xs text-card-foreground">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#005F31] text-white shadow-sm">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
               <Shield className="h-7 w-7" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-zinc-900">
+                <h1 className="text-xl font-bold text-foreground">
                   Senior First Team
                 </h1>
-                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-[#005F31]">
+                <span className="rounded-full bg-primary-subtle px-2.5 py-0.5 text-xs font-semibold text-primary border border-primary/20">
                   Rwanda Premier League
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Head Coach: Emmanuel Mugisha • Team Code: {teamId}
               </p>
             </div>
@@ -48,40 +48,40 @@ export default async function TeamDetailPage({ params }: TeamDetailProps) {
 
           <button
             type="button"
-            className="rounded-lg bg-[#005F31] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#01562D]"
+            className="rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
             Manage Squad
           </button>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-zinc-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+        <div className="mt-6 pt-6 border-t border-border grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
           <div>
-            <span className="text-zinc-400 block">Active Squad</span>
-            <span className="font-semibold text-zinc-800">26 Players</span>
+            <span className="text-muted-foreground block">Active Squad</span>
+            <span className="font-semibold text-foreground">26 Players</span>
           </div>
           <div>
-            <span className="text-zinc-400 block">Average Age</span>
-            <span className="font-semibold text-zinc-800">23.8 Years</span>
+            <span className="text-muted-foreground block">Average Age</span>
+            <span className="font-semibold text-foreground">23.8 Years</span>
           </div>
           <div>
-            <span className="text-zinc-400 block">Training Pitch</span>
-            <span className="font-semibold text-zinc-800">Pitch A (Main Stadium)</span>
+            <span className="text-muted-foreground block">Training Pitch</span>
+            <span className="font-semibold text-foreground">Pitch A (Main Stadium)</span>
           </div>
           <div>
-            <span className="text-zinc-400 block">Season Form</span>
-            <span className="font-semibold text-[#005F31]">W - W - D - W - L</span>
+            <span className="text-muted-foreground block">Season Form</span>
+            <span className="font-semibold text-primary">W - W - D - W - L</span>
           </div>
         </div>
       </div>
 
       {/* Squad List Preview */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs space-y-4">
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-xs space-y-4 text-card-foreground">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-            <Users className="h-4 w-4 text-[#005F31]" />
+          <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+            <Users className="h-4 w-4 text-primary" />
             Squad Roster Preview
           </h2>
-          <span className="text-xs text-zinc-400">26 registered</span>
+          <span className="text-xs text-muted-foreground">26 registered</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -95,18 +95,18 @@ export default async function TeamDetailPage({ params }: TeamDetailProps) {
           ].map((p, i) => (
             <div
               key={i}
-              className="flex items-center justify-between p-3 rounded-lg border border-zinc-100 bg-zinc-50/60"
+              className="flex items-center justify-between p-3 rounded-xl border border-border bg-muted/40"
             >
               <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-zinc-400">
+                <span className="font-mono text-xs font-bold text-muted-foreground">
                   #{p.num}
                 </span>
                 <div>
-                  <p className="text-xs font-semibold text-zinc-800">{p.name}</p>
-                  <p className="text-[11px] text-zinc-400">{p.pos}</p>
+                  <p className="text-xs font-semibold text-foreground">{p.name}</p>
+                  <p className="text-[11px] text-muted-foreground">{p.pos}</p>
                 </div>
               </div>
-              <span className="text-[10px] font-semibold text-zinc-500 bg-white px-1.5 py-0.5 rounded border border-zinc-200">
+              <span className="text-[10px] font-semibold text-muted-foreground bg-card px-1.5 py-0.5 rounded-md border border-border">
                 {p.status}
               </span>
             </div>
