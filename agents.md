@@ -105,6 +105,7 @@ src/
 ├── components/
 │   ├── ui/
 │   └── shared/
+├── config/
 ├── features/
 │   ├── iam/
 │   ├── clubs/
@@ -121,6 +122,7 @@ src/
 │   └── ...
 ├── hooks/
 ├── lib/
+├── mocks/
 ├── services/
 ├── types/
 └── styles/
@@ -1168,11 +1170,27 @@ Common examples:
 .utils.ts
 .test.ts
 .spec.ts
+.mock.ts
+.config.ts
 ```
 
 Use the suffix that most accurately describes the file.
 
 Do not create arbitrary suffixes simply to satisfy the naming convention.
+
+---
+
+## 42.1 Directory Placement by File Suffix
+
+Files saved with specific naming suffixes must be placed in their corresponding directories:
+
+* `*.mock.ts` (e.g. `clubs.mock.ts`, `user.mock.ts`) **must** go in a `mocks/` directory (e.g. `src/mocks/` or a feature's `mocks/` subfolder). Never scatter mock data files randomly in other directories.
+* `*.hook.ts` (e.g. `use-current-club.hook.ts`) **must** go in a `hooks/` directory (e.g. `src/hooks/` or `src/features/<feature>/hooks/`).
+* `*.service.ts` **must** go in `services/`.
+* `*.config.ts` **must** go in `config/`.
+* `*.types.ts` **must** go in `types/`.
+* `*.utils.ts` **must** go in `lib/` or `utils/`.
+* Component files (`*.component.tsx`, `*.sidebar.tsx`, `*.header.tsx`, `*.card.tsx`, `*.modal.tsx`, etc.) **must** go in `components/` or feature-specific component directories.
 
 ---
 
@@ -1248,6 +1266,32 @@ temp/
 ```
 
 Feature folders should use the project's established casing convention consistently.
+
+---
+
+## 44.1 Non-Routable Folders in Next.js App Router
+
+Inside the Next.js `app/` directory, every regular folder is treated as a route segment by default. If a folder is **not routable** (i.e. not intended to be exposed as a public URL route), you must use either **Route Groups** or **Private Folders** based on what the files do:
+
+### 1. Route Groups `(groupName)`
+* **Format**: A folder name wrapped in parentheses, e.g. `src/app/(dashboard)/...`, `src/app/(auth)/...`.
+* **Purpose**: Organizational grouping and layout sharing.
+* **Behavior**: Next.js omits the folder name from the URL path. For example, `app/(dashboard)/players/page.tsx` maps cleanly to `/players` (or `/dashboard/players` if nested under `/dashboard`).
+* **When to use**:
+  - To organize routes by domain, workflow, or team without changing the URL.
+  - To apply different layouts, templates, or error boundaries to different sets of routes.
+
+### 2. Private Folders `_folderName`
+* **Format**: A folder name prefixed with an underscore, e.g. `src/app/_components/...`, `src/app/dashboard/_components/...`, `src/app/_lib/...`.
+* **Purpose**: Co-locating private, non-routable code within the App Router.
+* **Behavior**: Next.js completely opts the folder and all its subfolders out of routing. Even if a `page.tsx` exists inside, it cannot be requested as a public route.
+* **When to use**:
+  - To co-locate components, helpers, or utilities that are exclusively used by routes in that directory.
+  - To separate UI implementation details from the routing structure.
+
+### 3. General Placement Rule
+* Prefer placing shared UI components in `src/components/`, domain features in `src/features/`, mock data in `src/mocks/`, and global utilities in `src/lib/`.
+* If components or utilities must be co-located inside `src/app/`, **always** use private folders (e.g. `_components`) or place them alongside routes within route groups `(name)` so they are never mistakenly treated as URL routes.
 
 ---
 
@@ -1451,6 +1495,8 @@ If validation could not be run because of an environment issue, say so explicitl
 Before completing any frontend task:
 
 * [ ] Files follow the `(name).(action).(extension)` convention where framework rules allow it.
+* [ ] Files are placed in directories matching their suffix convention (e.g. `*.mock.ts` in `mocks/`, `*.hook.ts` in `hooks/`).
+* [ ] Non-routable folders inside `app/` use Route Groups `(group)` or Private Folders `_folder` based on purpose.
 * [ ] Component names correspond to their filenames.
 * [ ] Components use PascalCase.
 * [ ] Existing components and patterns were searched for and reused where appropriate.
