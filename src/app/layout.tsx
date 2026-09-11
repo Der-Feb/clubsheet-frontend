@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme-provider.component";
 import type { ThemeMode } from "@/types/theme.types";
 import "./globals.css";
+import Providers from "./provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,9 +67,11 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: antiFlashScript }} />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
-        <ThemeProvider initialMode={initialMode}>
-          {children}
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider initialMode={initialMode}>
+            {children}
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
