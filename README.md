@@ -7,7 +7,7 @@
 
         ← INFINITE MARQUEE →
 
- PLAYERS · TEAMS · TRAINING · MATCHES
+ ATHLETES · TEAMS · TRAINING · MATCHES
  ACADEMY · KITS · FINANCE · MEDICAL
 
 
@@ -21,7 +21,7 @@
         EVERYTHING YOU NEED
              FROM DAY ONE
 
-       ✓ Players     ✓ Teams
+       ✓ Athletes     ✓ Teams
        ✓ Coaches     ✓ Training
        ✓ People      ✓ Memberships
        ✓ Roles       ✓ Activity
@@ -60,7 +60,7 @@
         ONE CLUB.
       MANY PERSPECTIVES.
 
-    ADMIN | COACH | PLAYER | STAFF
+    ADMIN | COACH | ATHLETE | STAFF
 
 
         A BETTER CLUB DAY
@@ -111,18 +111,18 @@ I’d use around **12–16 objects**.
 
 A small floating window:
 
-> `players_2026.xlsx`
+> `athletes_2026.xlsx`
 
 Inside:
 
 ```text
-Player       Team       Status
+Athlete       Team       Status
 Alex         U18        Active
 Daniel       U18        Active
 Michael      U16        ?
 ```
 
-This represents scattered player information.
+This represents scattered athlete information.
 
 **Movement:** starts upper-left, slightly rotated, drifts diagonally toward the center.
 
@@ -132,7 +132,7 @@ This represents scattered player information.
 
 > `membership_list.xlsx`
 
-This should be visually different from the player spreadsheet.
+This should be visually different from the athlete spreadsheet.
 
 **Movement:** starts bottom-left and slides upward toward the center.
 
@@ -175,7 +175,7 @@ Senior Training
 
 ---
 
-### 5. Player profile card
+### 5. Athlete profile card
 
 ```text
 ┌─────────────────┐
@@ -196,7 +196,7 @@ This one should eventually become part of the final ClubSheet UI.
 
 ```text
 U18
-24 Players
+24 Athletes
 Coach: David
 ```
 
@@ -235,7 +235,7 @@ U18
 
 A tiny notification:
 
-> 🔔 New player added
+> 🔔 New athlete added
 
 **Movement:** starts somewhere near the edge and rapidly moves inward.
 
@@ -246,7 +246,7 @@ A tiny notification:
 A generic document:
 
 ```text
-PLAYER REGISTRATION
+ATHLETE REGISTRATION
 
 Name: Alex Johnson
 Team: U18
@@ -264,7 +264,7 @@ ACCESS
 
 Coach
 ✓ Teams
-✓ Players
+✓ Athletes
 ✓ Training
 ```
 
@@ -314,7 +314,7 @@ Don't make this prominent in the first version; it's just another piece of club 
 Something subtle:
 
 ```text
-PLAYER RECORD
+ATHLETE RECORD
 
 Medical
 Updated
@@ -386,7 +386,7 @@ At the beginning:
       MESSAGE
                            ↗
 
-                 PLAYER
+                 ATHLETE
 ```
 
 Everything is slightly:
@@ -433,7 +433,7 @@ More objects start converging.
 ```text
 Message ───────────→
 Calendar ────────→
-Player ───────→
+Athlete ───────→
 
           [CENTER]
 ```
@@ -467,7 +467,7 @@ Instead, they **snap into a system**.
 For example:
 
 ```text
-PLAYER CARD
+ATHLETE CARD
       ↓
 TEAM CARD
       ↓
@@ -485,7 +485,7 @@ The objects move closer together and begin becoming components of the dashboard.
 
 You can literally have:
 
-**Player card → becomes a player row**
+**Athlete card → becomes a athlete row**
 
 **Training card → becomes dashboard widget**
 
@@ -511,7 +511,7 @@ Something like:
 │                                              │
 │  ┌───────────┐  ┌───────────┐               │
 │  │ 24        │  │ 4         │               │
-│  │ Players   │  │ Teams     │               │
+│  │ Athletes   │  │ Teams     │               │
 │  └───────────┘  └───────────┘               │
 │                                              │
 │  Upcoming Training                           │
@@ -623,7 +623,7 @@ Normal movement.
 
 ### Foreground
 
-* player card
+* athlete card
 * notification
 * chat bubble
 * key UI elements
@@ -641,7 +641,7 @@ This could make the transformation **really special**.
 As the objects start moving toward ClubSheet, thin lines appear between them:
 
 ```text
-PLAYER ───────── TEAM
+ATHLETE ───────── TEAM
    │                │
    │                │
 TRAINING ─────── COACH
@@ -671,7 +671,7 @@ I'd establish a hierarchy:
 
 These are the things users immediately recognize:
 
-**Players · Teams · Training · Coaches · Messages · Spreadsheets**
+**Athletes · Teams · Training · Coaches · Messages · Spreadsheets**
 
 ### Secondary objects
 
@@ -698,7 +698,7 @@ I'd literally make the visitor experience:
 > spreadsheets
 > messages
 > calendars
-> player cards
+> athlete cards
 > documents
 > schedules
 

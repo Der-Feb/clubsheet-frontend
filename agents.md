@@ -111,7 +111,7 @@ src/
 │   ├── clubs/
 │   ├── memberships/
 │   ├── teams/
-│   ├── players/
+│   ├── athletes/
 │   ├── coaches/
 │   ├── training/
 │   ├── matches/
@@ -460,7 +460,7 @@ and other domain entities such as:
 
 * clubs
 * teams
-* players
+* athletes
 * coaches
 * staff
 * training
@@ -897,7 +897,7 @@ Examples:
 * permissions
 * club ownership
 * team assignments
-* player status
+* athlete status
 * financial calculations
 * medical information
 * academy relationships
@@ -1043,7 +1043,7 @@ Examples:
 ```text
 hero.section.tsx
 navbar.component.tsx
-player.card.tsx
+athlete.card.tsx
 club.form.tsx
 membership.table.tsx
 match.details.tsx
@@ -1091,13 +1091,13 @@ HeroSection
 Likewise:
 
 ```text
-player.card.tsx
+athlete.card.tsx
 ```
 
 must contain:
 
 ```tsx
-PlayerCard
+AthleteCard
 ```
 
 and:
@@ -1116,7 +1116,7 @@ The naming transformation is:
 
 ```text
 hero.section.tsx      → HeroSection
-player.card.tsx       → PlayerCard
+athlete.card.tsx       → AthleteCard
 club.form.tsx         → ClubForm
 match.details.tsx     → MatchDetails
 dashboard.page.tsx    → DashboardPage
@@ -1133,7 +1133,7 @@ hero.section.tsx → Hero
 or:
 
 ```text
-player.card.tsx → PlayerComponent
+athlete.card.tsx → AthleteComponent
 ```
 
 The file name and exported component name must clearly correspond.
@@ -1247,7 +1247,7 @@ Prefer:
 ```text
 features/
 ├── memberships/
-├── players/
+├── athletes/
 ├── coaches/
 ├── training/
 ├── matches/
@@ -1276,7 +1276,7 @@ Inside the Next.js `app/` directory, every regular folder is treated as a route 
 ### 1. Route Groups `(groupName)`
 * **Format**: A folder name wrapped in parentheses, e.g. `src/app/(dashboard)/...`, `src/app/(auth)/...`.
 * **Purpose**: Organizational grouping and layout sharing.
-* **Behavior**: Next.js omits the folder name from the URL path. For example, `app/(dashboard)/players/page.tsx` maps cleanly to `/players` (or `/dashboard/players` if nested under `/dashboard`).
+* **Behavior**: Next.js omits the folder name from the URL path. For example, `app/(dashboard)/athletes/page.tsx` maps cleanly to `/athletes` (or `/dashboard/athletes` if nested under `/dashboard`).
 * **When to use**:
   - To organize routes by domain, workflow, or team without changing the URL.
   - To apply different layouts, templates, or error boundaries to different sets of routes.
@@ -1303,7 +1303,7 @@ Prefer:
 
 ```text
 hero.section.tsx
-player.card.tsx
+athlete.card.tsx
 club.header.tsx
 ```
 
@@ -1311,7 +1311,7 @@ over:
 
 ```text
 hero/index.tsx
-player/index.tsx
+athlete/index.tsx
 club/header/index.tsx
 ```
 
