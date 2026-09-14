@@ -12,7 +12,7 @@ interface DashboardHeaderProps {
 
 const ROUTE_TITLES: Record<string, { title: string; section?: string }> = {
   "/dashboard": { title: "Overview", section: "ClubSheet" },
-  "/dashboard/players": { title: "Players", section: "Club" },
+  "/dashboard/athletes": { title: "Athletes", section: "Club" },
   "/dashboard/teams": { title: "Teams", section: "Club" },
   "/dashboard/training": { title: "Training", section: "Sport" },
   "/dashboard/matches": { title: "Matches", section: "Sport" },
@@ -33,8 +33,8 @@ export function DashboardHeader({
   // Determine current page info
   const currentRoute =
     ROUTE_TITLES[pathname] ??
-    (pathname.startsWith("/dashboard/players/")
-      ? { title: "Player Details", section: "Players" }
+    (pathname.startsWith("/dashboard/athletes/")
+      ? { title: "Athlete Details", section: "Athletes" }
       : pathname.startsWith("/dashboard/teams/")
       ? { title: "Team Details", section: "Teams" }
       : pathname.startsWith("/dashboard/training/")

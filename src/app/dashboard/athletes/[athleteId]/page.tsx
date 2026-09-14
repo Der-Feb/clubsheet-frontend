@@ -9,23 +9,23 @@ import {
   Mail,
 } from "lucide-react";
 
-interface PlayerProfileProps {
-  params: Promise<{ playerId: string }>;
+interface AthleteProfileProps {
+  params: Promise<{ athleteId: string }>;
 }
 
-export default async function PlayerProfilePage({ params }: PlayerProfileProps) {
-  const { playerId } = await params;
+export default async function AthleteProfilePage({ params }: AthleteProfileProps) {
+  const { athleteId } = await params;
 
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-5xl mx-auto">
       {/* Back button */}
       <div>
         <Link
-          href="/dashboard/players"
+          href="/dashboard/athletes"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back to Players
+          Back to Athletes
         </Link>
       </div>
 
@@ -46,7 +46,7 @@ export default async function PlayerProfilePage({ params }: PlayerProfileProps) 
               <p className="text-xs text-muted-foreground mt-0.5">
                 Forward • Jersey #9 • Senior Team
               </p>
-              <p className="text-xs text-muted-foreground mt-1 font-mono">ID: {playerId}</p>
+              <p className="text-xs text-muted-foreground mt-1 font-mono">ID: {athleteId}</p>
             </div>
           </div>
 

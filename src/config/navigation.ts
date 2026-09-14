@@ -47,8 +47,8 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
     title: "CLUB",
     items: [
       {
-        label: "Players",
-        href: "/dashboard/players",
+        label: "Athletes",
+        href: "/dashboard/athletes",
         icon: Users,
         badge: "248",
       },

@@ -38,12 +38,12 @@ export default function DashboardPage() {
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link
-          href="/dashboard/players"
+          href="/dashboard/athletes"
           className="group rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/50 hover:shadow-md transition-all text-card-foreground"
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Players
+              Athletes
             </span>
             <span className="rounded-xl bg-primary-subtle p-2 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors border border-primary/10">
               <Users className="h-4 w-4" />
@@ -194,12 +194,12 @@ export default function DashboardPage() {
             <h2 className="text-sm font-bold text-foreground">Quick Actions</h2>
             <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
               <Link
-                href="/dashboard/players"
+                href="/dashboard/athletes"
                 className="flex flex-col items-center justify-center p-3.5 rounded-xl border border-dashed border-border hover:border-primary hover:bg-primary-subtle transition-colors text-center group"
               >
                 <Plus className="h-4 w-4 text-muted-foreground group-hover:text-primary mb-1" />
                 <span className="text-xs font-medium text-foreground group-hover:text-primary">
-                  Add Player
+                  Add Athlete
                 </span>
               </Link>
               <Link
@@ -253,7 +253,7 @@ export default function DashboardPage() {
               <div className="mt-1 h-2 w-2 rounded-full bg-primary shrink-0" />
               <div className="text-xs">
                 <p className="font-medium text-foreground">
-                  New player registered: Eric Kwizera
+                  New athlete registered: Eric Kwizera
                 </p>
                 <p className="text-muted-foreground mt-0.5">Senior Team • 25m ago</p>
               </div>
