@@ -272,7 +272,7 @@ export function KitCustomizer({ className, onSave }: KitCustomizerProps) {
                 type="button"
                 className="rounded-lg bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs"
               >
-                Save Player
+                Save Athlete
               </button>
               <button
                 type="button"

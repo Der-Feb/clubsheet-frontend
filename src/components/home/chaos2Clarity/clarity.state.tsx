@@ -10,7 +10,7 @@ import React from 'react';
 //
 // Grid: 12 columns × 6 rows
 //
-//  Row 1:    playerCard(3)  coachCard(3)   trainingCard(3) calendar(3)
+//  Row 1:    athleteCard(3)  coachCard(3)   trainingCard(3) calendar(3)
 //  Row 2-4:  spreadsheet(7×3)  groupChat(5×2)  permission(5×1)
 //  Row 5:    notification(3)  documents(3)  financial(3)  medical(3)
 //  Row 6:    actionTasks(6)  kitEquipment(6)
@@ -87,7 +87,7 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
           </div>
           <nav className="flex items-center gap-5 text-[0.6875rem] text-zinc-500 font-medium">
             <span className="text-primary font-semibold border-b border-primary pb-0.5">Overview</span>
-            <span>Players</span>
+            <span>Athletes</span>
             <span>Training</span>
             <span>Matches</span>
           </nav>
@@ -99,7 +99,7 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
 
           {/* ── Row 1: stat tiles ──────────────────────────────────────── */}
 
-          <Slot id="slot-playerCard" className="col-span-3 row-span-1">
+          <Slot id="slot-athleteCard" className="col-span-3 row-span-1">
             <Panel className="flex items-center gap-3 px-3">
               <div className="h-8 w-8 rounded-lg bg-quinary flex-center shrink-0">
                 <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,7 +107,7 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
                 </svg>
               </div>
               <div>
-                <p className="text-[0.5625rem] text-zinc-400 font-mono uppercase tracking-wider">Players</p>
+                <p className="text-[0.5625rem] text-zinc-400 font-mono uppercase tracking-wider">Athletes</p>
                 <p className="text-xl font-bold text-zinc-900 leading-none">24</p>
               </div>
             </Panel>
@@ -157,11 +157,11 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
 
           {/* ── Rows 2–4 ───────────────────────────────────────────────── */}
 
-          {/* spreadsheet → Player Roster table */}
+          {/* spreadsheet → Athlete Roster table */}
           <Slot id="slot-spreadsheet" className="col-span-7 row-span-3">
             <Panel className="flex flex-col">
               <div className="flex items-center justify-between px-4 py-2 border-b border-secondary/40 shrink-0">
-                <h3 className="text-xs font-semibold text-zinc-800">Player Roster</h3>
+                <h3 className="text-xs font-semibold text-zinc-800">Athlete Roster</h3>
                 <span className="text-[0.5625rem] bg-quinary text-primary font-mono font-bold px-2 py-0.5 rounded">U18 · 24</span>
               </div>
               <div className="flex-1 min-h-0 overflow-hidden">
@@ -296,7 +296,7 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
             </Panel>
           </Slot>
 
-          {/* medical → Player Health */}
+          {/* medical → Athlete Health */}
           <Slot id="slot-medical" className="col-span-3 row-span-1">
             <Panel className="flex items-center gap-2 px-3 bg-quinary border-secondary/60">
               <div className="h-7 w-7 rounded-lg bg-secondary flex-center shrink-0">
@@ -306,7 +306,7 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
               </div>
               <div>
                 <p className="text-[0.5625rem] text-zinc-400 font-mono uppercase">Medical</p>
-                <p className="text-[0.625rem] font-bold text-zinc-800">1 player out</p>
+                <p className="text-[0.625rem] font-bold text-zinc-800">1 athlete out</p>
               </div>
             </Panel>
           </Slot>

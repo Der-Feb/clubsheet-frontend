@@ -7,7 +7,7 @@ interface CardProps {
   className?: string;
 }
 
-// ─── Player health ─────────────────────────────────────────────────────────
+// ─── Athlete health ─────────────────────────────────────────────────────────
 
 export const MedicalRecordCard: React.FC<CardProps> = ({ height = '8.5rem', className = '' }) => (
   <div
@@ -19,7 +19,7 @@ export const MedicalRecordCard: React.FC<CardProps> = ({ height = '8.5rem', clas
         <svg className="w-3.5 h-3.5 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
-        <span className="font-semibold text-primary truncate">Player Health</span>
+        <span className="font-semibold text-primary truncate">Athlete Health</span>
       </div>
       <div className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
     </div>

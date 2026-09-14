@@ -122,16 +122,16 @@ export const GroupChat: React.FC<CardProps> = ({ height = '8.5rem', className = 
   </div>
 );
 
-// ─── Player card ───────────────────────────────────────────────────────────
+// ─── Athlete card ───────────────────────────────────────────────────────────
 
-const playerStats = [
+const athleteStats = [
   { label: 'Games', value: 14 },
   { label: 'Goals', value: 9  },
   { label: 'Assists', value: 5  },
   { label: 'Fitness', value: '88%' },
 ];
 
-export const PlayerCard: React.FC<CardProps> = ({ height = '8.5rem', className = '' }) => (
+export const AthleteCard: React.FC<CardProps> = ({ height = '8.5rem', className = '' }) => (
   <div
     style={{ height }}
     className={`w-full max-w-xs font-mono bg-white rounded-lg border border-secondary shadow-sm flex flex-col overflow-hidden shrink-0 ${className}`}
@@ -141,7 +141,7 @@ export const PlayerCard: React.FC<CardProps> = ({ height = '8.5rem', className =
         <svg className="w-3.5 h-3.5 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
-        <span className="font-semibold text-primary truncate">Player Profile</span>
+        <span className="font-semibold text-primary truncate">Athlete Profile</span>
         <span className="rounded bg-quinary border border-secondary px-1 py-0.5 text-[8px] font-bold text-primary shrink-0">Active</span>
       </div>
       <div className="flex gap-1 shrink-0">
@@ -163,7 +163,7 @@ export const PlayerCard: React.FC<CardProps> = ({ height = '8.5rem', className =
         </div>
       </div>
       <div className="grid grid-cols-4 gap-1 pt-1 border-t border-secondary text-center font-mono">
-        {playerStats.map((s) => (
+        {athleteStats.map((s) => (
           <div key={s.label} className="bg-quinary rounded p-1 border border-secondary">
             <div className="text-[7px] text-zinc-400 uppercase">{s.label}</div>
             <div className="font-bold text-zinc-800 text-[10px]">{s.value}</div>
@@ -188,7 +188,7 @@ export const SpreadSheet: React.FC<CardProps> = ({ height = '8.5rem', className 
     className={`max-w-sm w-full rounded-lg border border-secondary bg-white font-mono shadow-sm overflow-hidden flex flex-col ${className}`}
   >
     <div className="flex items-center justify-between border-b border-secondary bg-quinary px-2.5 py-1 shrink-0 text-[9px] text-zinc-600">
-      <span className="font-semibold text-primary truncate">Player List</span>
+      <span className="font-semibold text-primary truncate">Athlete List</span>
       <div className="flex gap-1">
         <div className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
         <div className="h-1.5 w-1.5 rounded-full bg-zinc-300" />

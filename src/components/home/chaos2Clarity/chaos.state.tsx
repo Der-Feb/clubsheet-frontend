@@ -4,7 +4,7 @@ import React from 'react';
 import { CoachCard, NotificationCard, TrainingCard } from './cards/training&coach';
 import { DocumentsCard, FinancialCard, PermissionCard } from './cards/admin&docs';
 import { ActionTasksCard, KitEquipmentCard, MedicalRecordCard } from './cards/operations&tasks';
-import Calendar, { GroupChat, PlayerCard, SpreadSheet } from './cards/core&training';
+import Calendar, { GroupChat, AthleteCard, SpreadSheet } from './cards/core&training';
 
 // ---------------------------------------------------------------------------
 // Card layer types
@@ -118,8 +118,8 @@ export const chaosCards: ChaosCard[] = [
     layer: 'fg',
   },
   {
-    id: 'playerCard',
-    component: <PlayerCard height="100%" />,
+    id: 'athleteCard',
+    component: <AthleteCard height="100%" />,
     positionClass: 'top-[8%] right-[26%]',
     initialRotation: -8,
     layer: 'fg',
