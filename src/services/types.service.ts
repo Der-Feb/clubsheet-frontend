@@ -73,7 +73,7 @@ export enum ENAuditCategory {
   IAM = 'IAM',
   CLUB = 'CLUB',
   TEAM = 'TEAM',
-  PLAYER = 'PLAYER',
+  ATHLETE = 'ATHLETE',
   TRAINING = 'TRAINING',
   MATCH = 'MATCH',
   MEDICAL = 'MEDICAL',
@@ -89,7 +89,7 @@ export enum ENNotificationType {
 }
 
 // profile.prisma
-export enum ENPlayerPosition {
+export enum ENAthletePosition {
   GOALKEEPER = 'GOALKEEPER',
   DEFENDER = 'DEFENDER',
   MIDFIELDER = 'MIDFIELDER',
@@ -114,7 +114,7 @@ export enum ENCoachPosition {
 export enum ENCoachResponsibility {
   TRAINING = 'TRAINING',
   TACTICS = 'TACTICS',
-  PLAYER_DEVELOPMENT = 'PLAYER_DEVELOPMENT',
+  ATHLETE_DEVELOPMENT = 'ATHLETE_DEVELOPMENT',
   MATCH_ANALYSIS = 'MATCH_ANALYSIS',
   FITNESS = 'FITNESS',
   GOALKEEPING = 'GOALKEEPING',
@@ -142,7 +142,7 @@ export enum ENFeature {
   IAM = 'IAM',
   CLUB = 'CLUB',
   TEAM = 'TEAM',
-  PLAYER = 'PLAYER',
+  ATHLETE = 'ATHLETE',
   TRAINING = 'TRAINING',
   MATCH = 'MATCH',
   SIGNING = 'SIGNING',
@@ -248,9 +248,9 @@ export interface IProfile extends IBase {
   sendEmailNotification: boolean,
 }
 
-export interface IPlayerProfile extends IBase {
+export interface IAthleteProfile extends IBase {
   profileId: string,
-  position?: ENPlayerPosition,
+  position?: ENAthletePosition,
   preferredFoot?: ENPreferredFoot,
   heightCm?: number,
   weightKg?: number,
@@ -339,7 +339,7 @@ export interface ITraining extends IBase {
   status: ENTrainingStatus,
 }
 
-export interface IPlayer {
+export interface IAthlete {
   id: string,
   membershipId: string,
   teamId: string,
@@ -399,11 +399,11 @@ export interface INotificationDetail extends INotification {
 
 export interface IProfileDetail extends IProfile {
   person: IPerson,
-  playerProfile?: IPlayerProfile,
+  athleteProfile?: IAthleteProfile,
   coachProfile?: ICoachProfile,
 }
 
-export interface IPlayerProfileDetail extends IPlayerProfile {
+export interface IAthleteProfileDetail extends IAthleteProfile {
   profile: IProfile,
 }
 
@@ -463,11 +463,11 @@ export interface ITrainingDetail extends ITraining {
   team: ITeam,
 }
 
-export interface IPlayerDetail extends IPlayer {
+export interface IAthleteDetail extends IAthlete {
   membership: IMembership & {
     person: IPerson,
     profile?: IProfile & {
-      playerProfile?: IPlayerProfile,
+      athleteProfile?: IAthleteProfile,
     },
   },
   team: ITeam,
@@ -476,7 +476,7 @@ export interface IPlayerDetail extends IPlayer {
 export interface ITeamDetail extends ITeam {
   club: IClub,
   trainings: ITraining[],
-  players: IPlayerDetail[],
+  athletes: IAthleteDetail[],
   coachAssignments: ICoachDetail[],
 }
 
@@ -500,7 +500,7 @@ export interface IMembershipDetail extends IMembership {
   assignedRoles: IMembershipRole[],
   createdClubs: IClub[],
   sentInvitations: IInvitation[],
-  player?: IPlayer,
+  athlete?: IAthlete,
   coachAssignments: ICoachAssignment[],
   enabledFeatures: IClubFeature[],
 }
