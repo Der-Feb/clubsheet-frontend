@@ -27,7 +27,7 @@ export const MOCK_NOTIFICATIONS: MockNotification[] = [
   },
   {
     id: "notif-2",
-    title: "3 players have not confirmed attendance",
+    title: "3 athletes have not confirmed attendance",
     description: "U17 Weekly Training • Session starts in 24h",
     timestamp: "45m ago",
     category: "attendance",
