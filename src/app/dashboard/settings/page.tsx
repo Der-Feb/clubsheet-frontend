@@ -252,7 +252,7 @@ export default function SettingsPage() {
               </label>
               <label className="flex items-center gap-3 text-xs text-foreground cursor-pointer">
                 <input type="checkbox" className="rounded border-border text-primary focus:ring-primary" />
-                <span>Monthly player medical &amp; fitness reports</span>
+                <span>Monthly athlete medical &amp; fitness reports</span>
               </label>
             </div>
           </div>

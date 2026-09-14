@@ -6,7 +6,7 @@ import {
 
 interface AttendanceRecord {
   id: string;
-  playerName: string;
+  athleteName: string;
   team: string;
   sessionsAttended: number;
   totalSessions: number;
@@ -18,7 +18,7 @@ interface AttendanceRecord {
 const ATTENDANCE_RECORDS: AttendanceRecord[] = [
   {
     id: "att-1",
-    playerName: "John Mugabo",
+    athleteName: "John Mugabo",
     team: "Senior First Team",
     sessionsAttended: 16,
     totalSessions: 16,
@@ -28,7 +28,7 @@ const ATTENDANCE_RECORDS: AttendanceRecord[] = [
   },
   {
     id: "att-2",
-    playerName: "Claude Habimana",
+    athleteName: "Claude Habimana",
     team: "Senior First Team",
     sessionsAttended: 15,
     totalSessions: 16,
@@ -38,7 +38,7 @@ const ATTENDANCE_RECORDS: AttendanceRecord[] = [
   },
   {
     id: "att-3",
-    playerName: "Eric Nshimiyimana",
+    athleteName: "Eric Nshimiyimana",
     team: "Senior First Team",
     sessionsAttended: 14,
     totalSessions: 16,
@@ -48,7 +48,7 @@ const ATTENDANCE_RECORDS: AttendanceRecord[] = [
   },
   {
     id: "att-4",
-    playerName: "Patrick Bizimana",
+    athleteName: "Patrick Bizimana",
     team: "Under-17 Academy",
     sessionsAttended: 14,
     totalSessions: 15,
@@ -58,7 +58,7 @@ const ATTENDANCE_RECORDS: AttendanceRecord[] = [
   },
   {
     id: "att-5",
-    playerName: "David Kwizera",
+    athleteName: "David Kwizera",
     team: "Under-17 Academy",
     sessionsAttended: 9,
     totalSessions: 15,
@@ -68,7 +68,7 @@ const ATTENDANCE_RECORDS: AttendanceRecord[] = [
   },
   {
     id: "att-6",
-    playerName: "Innocent Ruhinda",
+    athleteName: "Innocent Ruhinda",
     team: "Under-15 Development",
     sessionsAttended: 12,
     totalSessions: 14,
@@ -88,7 +88,7 @@ export default function AttendancePage() {
             Attendance
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Monitor squad session compliance, absence records, and player training frequency.
+            Monitor squad session compliance, absence records, and athlete training frequency.
           </p>
         </div>
 
@@ -141,7 +141,7 @@ export default function AttendancePage() {
             Active Absences / Medical
           </p>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-warning">4 Players</span>
+            <span className="text-3xl font-bold text-warning">4 Athletes</span>
             <span className="text-xs font-medium text-warning">Excused</span>
           </div>
           <p className="mt-1 text-xs text-muted-foreground">Under certified recovery</p>
@@ -152,7 +152,7 @@ export default function AttendancePage() {
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs text-card-foreground">
         <div className="p-4 border-b border-border flex items-center justify-between">
           <h2 className="text-sm font-bold text-foreground">
-            Player Attendance Performance
+            Athlete Attendance Performance
           </h2>
           <span className="text-xs text-muted-foreground">September 2026</span>
         </div>
@@ -161,7 +161,7 @@ export default function AttendancePage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                <th className="py-3 px-4">Player</th>
+                <th className="py-3 px-4">Athlete</th>
                 <th className="py-3 px-4">Team</th>
                 <th className="py-3 px-4">Completed / Total</th>
                 <th className="py-3 px-4">Attendance %</th>
@@ -173,7 +173,7 @@ export default function AttendancePage() {
               {ATTENDANCE_RECORDS.map((record) => (
                 <tr key={record.id} className="hover:bg-muted/30 transition-colors">
                   <td className="py-3 px-4 font-semibold text-foreground">
-                    {record.playerName}
+                    {record.athleteName}
                   </td>
                   <td className="py-3 px-4 text-muted-foreground">{record.team}</td>
                   <td className="py-3 px-4 font-mono text-muted-foreground">

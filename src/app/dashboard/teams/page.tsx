@@ -15,7 +15,7 @@ interface Team {
   category: string;
   headCoach: string;
   assistantCoach: string;
-  playerCount: number;
+  athleteCount: number;
   nextSession: string;
   nextMatch: string;
   league: string;
@@ -28,7 +28,7 @@ const TEAMS: Team[] = [
     category: "Senior",
     headCoach: "Emmanuel Mugisha",
     assistantCoach: "Jean Claude N.",
-    playerCount: 26,
+    athleteCount: 26,
     nextSession: "Today at 18:00 (Pitch A)",
     nextMatch: "vs APR FC (Sat 15:00)",
     league: "Rwanda Premier League",
@@ -39,7 +39,7 @@ const TEAMS: Team[] = [
     category: "U17",
     headCoach: "Dieudonné Habimana",
     assistantCoach: "Eric Ndahiro",
-    playerCount: 22,
+    athleteCount: 22,
     nextSession: "Tomorrow at 16:30 (Pitch B)",
     nextMatch: "vs Heroes Academy (Sun 10:00)",
     league: "National Youth League",
@@ -50,7 +50,7 @@ const TEAMS: Team[] = [
     category: "U15",
     headCoach: "Moses Karasira",
     assistantCoach: "Alexis Bizimana",
-    playerCount: 24,
+    athleteCount: 24,
     nextSession: "Wed at 16:00 (Pitch C)",
     nextMatch: "vs Gasabo Stars (Sat 09:30)",
     league: "Regional Junior Cup",
@@ -61,7 +61,7 @@ const TEAMS: Team[] = [
     category: "Senior Women",
     headCoach: "Aline Uwase",
     assistantCoach: "Claire Mutoni",
-    playerCount: 23,
+    athleteCount: 23,
     nextSession: "Thu at 17:30 (Pitch A)",
     nextMatch: "vs Inyange FC (Sun 14:00)",
     league: "Women’s National Championship",
@@ -72,7 +72,7 @@ const TEAMS: Team[] = [
     category: "U13",
     headCoach: "Samuel Nkurunziza",
     assistantCoach: "David M.",
-    playerCount: 20,
+    athleteCount: 20,
     nextSession: "Friday at 15:30 (Pitch B)",
     nextMatch: "Friendly Tournament (Sun 08:30)",
     league: "Youth Grassroots League",
@@ -108,8 +108,8 @@ export default function TeamsPage() {
           <p className="mt-0.5 text-xs text-muted-foreground">Junior, Youth, and Senior</p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
-          <p className="text-xs font-medium text-muted-foreground uppercase">Rostered Players</p>
-          <p className="mt-1 text-2xl font-bold text-primary">115 Players</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase">Rostered Athletes</p>
+          <p className="mt-1 text-2xl font-bold text-primary">115 Athletes</p>
           <p className="mt-0.5 text-xs text-muted-foreground">Across all competitive squads</p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
@@ -156,7 +156,7 @@ export default function TeamsPage() {
                     <Users className="h-3.5 w-3.5" /> Squad Size
                   </span>
                   <span className="font-semibold text-foreground">
-                    {team.playerCount} Players
+                    {team.athleteCount} Athletes
                   </span>
                 </div>
 

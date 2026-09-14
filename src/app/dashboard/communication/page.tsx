@@ -23,7 +23,7 @@ const ANNOUNCEMENTS: Announcement[] = [
     target: "All Staff & Senior Squad",
     date: "Sep 7, 2026",
     preview:
-      "Team bus departs the training ground at 12:45 sharp. Players must wear official travel tracksuits. Security passes will be handed out by team manager upon arrival.",
+      "Team bus departs the training ground at 12:45 sharp. Athletes must wear official travel tracksuits. Security passes will be handed out by team manager upon arrival.",
     pinned: true,
   },
   {
@@ -43,7 +43,7 @@ const ANNOUNCEMENTS: Announcement[] = [
     target: "All Technical Staff",
     date: "Sep 2, 2026",
     preview:
-      "Starting this week, ice bath recovery is mandatory for all players completing more than 60 minutes of training on high-intensity days.",
+      "Starting this week, ice bath recovery is mandatory for all athletes completing more than 60 minutes of training on high-intensity days.",
     pinned: false,
   },
 ];

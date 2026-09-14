@@ -17,8 +17,8 @@ interface TrainingSession {
   time: string;
   pitch: string;
   coach: string;
-  confirmedPlayers: number;
-  totalPlayers: number;
+  confirmedAthletes: number;
+  totalAthletes: number;
   type: "Tactical" | "Technical" | "Conditioning" | "Recovery";
 }
 
@@ -31,8 +31,8 @@ const SESSIONS: TrainingSession[] = [
     time: "18:00 - 19:30",
     pitch: "Pitch A (Main Stadium)",
     coach: "Emmanuel Mugisha",
-    confirmedPlayers: 24,
-    totalPlayers: 26,
+    confirmedAthletes: 24,
+    totalAthletes: 26,
     type: "Tactical",
   },
   {
@@ -43,8 +43,8 @@ const SESSIONS: TrainingSession[] = [
     time: "16:30 - 18:00",
     pitch: "Pitch B (Turf)",
     coach: "Dieudonné Habimana",
-    confirmedPlayers: 19,
-    totalPlayers: 22,
+    confirmedAthletes: 19,
+    totalAthletes: 22,
     type: "Technical",
   },
   {
@@ -55,8 +55,8 @@ const SESSIONS: TrainingSession[] = [
     time: "16:00 - 17:30",
     pitch: "Pitch C & Gym",
     coach: "Moses Karasira",
-    confirmedPlayers: 22,
-    totalPlayers: 24,
+    confirmedAthletes: 22,
+    totalAthletes: 24,
     type: "Conditioning",
   },
   {
@@ -67,8 +67,8 @@ const SESSIONS: TrainingSession[] = [
     time: "17:00 - 18:15",
     pitch: "Pitch A (Main Stadium)",
     coach: "Emmanuel Mugisha",
-    confirmedPlayers: 26,
-    totalPlayers: 26,
+    confirmedAthletes: 26,
+    totalAthletes: 26,
     type: "Recovery",
   },
 ];
@@ -191,7 +191,7 @@ export default function TrainingPage() {
                   <div className="flex items-center gap-2">
                     <Users className="h-3.5 w-3.5 text-muted-foreground" />
                     <span>
-                      {session.confirmedPlayers}/{session.totalPlayers} Confirmed
+                      {session.confirmedAthletes}/{session.totalAthletes} Confirmed
                     </span>
                   </div>
                 </div>

@@ -57,7 +57,7 @@ export default async function TeamDetailPage({ params }: TeamDetailProps) {
         <div className="mt-6 pt-6 border-t border-border grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
           <div>
             <span className="text-muted-foreground block">Active Squad</span>
-            <span className="font-semibold text-foreground">26 Players</span>
+            <span className="font-semibold text-foreground">26 Athletes</span>
           </div>
           <div>
             <span className="text-muted-foreground block">Average Age</span>

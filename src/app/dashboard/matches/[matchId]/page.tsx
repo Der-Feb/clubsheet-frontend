@@ -89,17 +89,17 @@ export default async function MatchDetailPage({ params }: MatchDetailProps) {
             { num: 7, name: "Patrick Bizimana", role: "Right Winger" },
             { num: 9, name: "John Mugabo", role: "Striker (Captain)" },
             { num: 11, name: "Dieudonné K.", role: "Left Winger" },
-          ].map((player) => (
+          ].map((athlete) => (
             <div
-              key={player.num}
+              key={athlete.num}
               className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-muted/40"
             >
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-card font-mono text-xs font-bold text-foreground shadow-2xs border border-border">
-                {player.num}
+                {athlete.num}
               </span>
               <div>
-                <p className="text-xs font-semibold text-foreground">{player.name}</p>
-                <p className="text-[10px] text-muted-foreground">{player.role}</p>
+                <p className="text-xs font-semibold text-foreground">{athlete.name}</p>
+                <p className="text-[10px] text-muted-foreground">{athlete.role}</p>
               </div>
             </div>
           ))}

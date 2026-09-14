@@ -19,10 +19,10 @@ interface ReportCard {
 
 const REPORTS: ReportCard[] = [
   {
-    title: "Player Registration & Squad Demographics",
+    title: "Athlete Registration & Squad Demographics",
     category: "Club Roster",
     description:
-      "Comprehensive breakdown of player ages, contract terms, national registrations, and academy transitions.",
+      "Comprehensive breakdown of athlete ages, contract terms, national registrations, and academy transitions.",
     period: "2026/27 Season",
     status: "Ready to export",
     icon: Users,
@@ -49,7 +49,7 @@ const REPORTS: ReportCard[] = [
     title: "Medical & Rehabilitation Progress Report",
     category: "Health & Fitness",
     description:
-      "Player recovery timelines, injury occurrences by pitch type, physio discharge records, and wellness scores.",
+      "Athlete recovery timelines, injury occurrences by pitch type, physio discharge records, and wellness scores.",
     period: "Q3 2026",
     status: "Ready to export",
     icon: Dumbbell,
