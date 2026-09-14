@@ -12,11 +12,11 @@ const perspectives = [
   },
   {
     role: "Coach",
-    desc: "Focus on your squad. Training sessions, player availability, and match prep — all in one place.",
-    points: ["View and manage your squad", "Plan and track training sessions", "Access player performance data", "Communicate with your team"],
+    desc: "Focus on your squad. Training sessions, athlete availability, and match prep — all in one place.",
+    points: ["View and manage your squad", "Plan and track training sessions", "Access athlete performance data", "Communicate with your team"],
   },
   {
-    role: "Player",
+    role: "Athlete",
     desc: "Know your schedule. Upcoming training, your stats, fixtures, and club news — always up to date.",
     points: ["See your upcoming training", "Check your personal stats", "View fixtures and results", "Receive club announcements"],
   },
@@ -36,8 +36,8 @@ const faqs = [
   { q: "Is ClubSheet free to use?",                        a: "The core platform is free to get started. Modules like Finance, Medical, and Academy are add-ons you can plug in as your club grows.", votes: 84 },
   { q: "Do I need technical knowledge to set up my club?", a: "Not at all. ClubSheet is designed for club administrators, not developers. You can have your club running in minutes.",                votes: 61 },
   { q: "Can I manage multiple teams in one club?",         a: "Yes. ClubSheet is built for multi-team organisations. Each team has its own space while everything stays connected at the club level.", votes: 53 },
-  { q: "How does access control work?",                    a: "You assign roles — Admin, Coach, Player, Staff, Guardian — and each role sees only what they need. Fine-grained permissions keep sensitive data safe.", votes: 47 },
-  { q: "Can players and coaches use ClubSheet on mobile?", a: "Yes. ClubSheet is fully responsive and works on any device. No app download required.",                                               votes: 39 },
+  { q: "How does access control work?",                    a: "You assign roles — Admin, Coach, Athlete, Staff, Guardian — and each role sees only what they need. Fine-grained permissions keep sensitive data safe.", votes: 47 },
+  { q: "Can athletes and coaches use ClubSheet on mobile?", a: "Yes. ClubSheet is fully responsive and works on any device. No app download required.",                                               votes: 39 },
   { q: "What happens to my data?",                        a: "Your club data belongs to you. We never sell it or share it with third parties. You can export or delete it at any time.",               votes: 35 },
 ];
 

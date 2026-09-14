@@ -18,7 +18,7 @@ const avatarLinks = [
 ];
 
 const starterItems = [
-  { label: "Players & Squads",    icon: Users },
+  { label: "Athletes & Squads",    icon: Users },
   { label: "Teams",               icon: Shield },
   { label: "Coaches",             icon: Briefcase },
   { label: "Training",            icon: Dumbbell },
@@ -69,7 +69,7 @@ export default function Home() {
             <span className="text-3xl block font-bold text-zinc-900">Run your club with</span>
             <span className="text-3xl block text-primary font-bold pt-3">clarity.</span>
             <span className="text-sm block pt-8 w-2/3 text-zinc-700 leading-relaxed">
-              The modern management platform for football clubs and academies. Organise players, staff, and schedules in one place.
+              The modern management platform for football clubs and academies. Organise athletes, staff, and schedules in one place.
             </span>
           </div>
 
@@ -117,7 +117,7 @@ export default function Home() {
               <line x1="12" y1="12" x2="3.34" y2="17" /><line x1="12" y1="12" x2="3.34" y2="7" />
             </svg>
             <div>
-              <h4 className="text-xs font-bold text-zinc-900">Player stats</h4>
+              <h4 className="text-xs font-bold text-zinc-900">Athlete stats</h4>
               <p className="text-xs text-zinc-500">Goals: 12 · Assists: 5</p>
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 gap-4 w-full sm:grid-cols-3">
             {[
-              { title: "Football",          items: ["Matches", "Player Development"] },
+              { title: "Football",          items: ["Matches", "Athlete Development"] },
               { title: "Academy",           items: ["Academy Management"] },
               { title: "Operations & More", items: ["Kit Management", "Finance Management", "Medical Management", "Events & Activities"] },
             ].map((group) => (
@@ -232,7 +232,7 @@ export default function Home() {
               { title: "Better visibility",        desc: "See what's happening instantly." },
               { title: "Clearer responsibilities", desc: "Everyone knows their role." },
               { title: "Built to grow",            desc: "Scales with your ambition." },
-              { title: "Better club experience",   desc: "Happy staff, happy players." },
+              { title: "Better club experience",   desc: "Happy staff, happy athletes." },
             ].map((b) => (
               <div
                 key={b.title}
@@ -287,7 +287,7 @@ export default function Home() {
             Your club is more<br />than spreadsheets.
           </h2>
           <p className="text-white/65 text-xs max-w-sm leading-relaxed">
-            One platform. Every player, coach, and admin — organised and connected from day one.
+            One platform. Every athlete, coach, and admin — organised and connected from day one.
           </p>
           <div className="flex gap-3 flex-wrap justify-center pt-1">
             <Link
@@ -318,7 +318,7 @@ export default function Home() {
                 <span className="text-white font-bold text-xs tracking-tight">ClubSheet</span>
               </div>
               <p className="text-[0.65rem] leading-relaxed max-w-68">
-                The modern management platform for football clubs and academies. Players, coaches, training, finances — all in one place.
+                The modern management platform for football clubs and academies. Athletes, coaches, training, finances — all in one place.
               </p>
               <div className="flex gap-2.5">
                 <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter" className="h-7 w-7 rounded-lg bg-zinc-800 flex-center hover:bg-zinc-700 transition-colors">

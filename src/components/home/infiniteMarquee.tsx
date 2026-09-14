@@ -15,7 +15,7 @@ export type FeatureItem = {
 
 
 const marqueeFeatures: FeatureItem[] = [
-  { label: "PLAYERS",  icon: Users },
+  { label: "ATHLETES",  icon: Users },
   { label: "TEAMS",    icon: Shield },
   { label: "TRAINING", icon: Dumbbell },
   { label: "MATCHES",  icon: Trophy },
