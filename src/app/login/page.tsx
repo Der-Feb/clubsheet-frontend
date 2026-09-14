@@ -9,8 +9,8 @@ export default function LoginPage() {
         {/* Left Hero Brand Panel - Server Rendered */}
         <div className="relative w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-between text-white z-10 overflow-hidden">
           <Image
-            src="/images/hero-football-player.jpeg"
-            alt="Soccer player background"
+            src="/images/hero-football-athlete.jpeg"
+            alt="Soccer athlete background"
             fill
             className="object-cover absolute inset-0 z-0"
             priority
@@ -34,7 +34,7 @@ export default function LoginPage() {
           <div className="relative z-20 space-y-2 sm:space-y-3 mt-auto">
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">Run with Clarity.</h2>
             <p className="text-gray-300 text-xs sm:text-sm leading-relaxed max-w-md">
-              The modern management platform for football clubs and academies. Sign in to manage your players, coaches, and schedules with surgical precision.
+              The modern management platform for football clubs and academies. Sign in to manage your athletes, coaches, and schedules with surgical precision.
             </p>
           </div>
         </div>

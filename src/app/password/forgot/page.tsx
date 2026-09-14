@@ -9,8 +9,8 @@ export default function ForgotPasswordPage() {
         {/* Left Hero Brand Panel - Server Rendered */}
         <div className="relative w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-between text-white z-10 overflow-hidden">
           <Image
-            src="/images/hero-football-player.jpeg"
-            alt="Soccer player background"
+            src="/images/hero-football-athlete.jpeg"
+            alt="Soccer athlete background"
             fill
             className="object-cover absolute inset-0 z-0"
             priority
