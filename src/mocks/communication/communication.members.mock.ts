@@ -99,7 +99,7 @@ export const MOCK_COMMUNICATION_MEMBERS: CommunicationMember[] = [
     id: 'member-10',
     displayName: 'Celestine Mukamana',
     username: 'celestine.m',
-    initials: 'CK',
+    initials: 'CM',
     role: 'Parent',
     membershipType: 'Parent',
     isOnline: false,

@@ -34,7 +34,7 @@ export const MOCK_COMMUNICATION_GROUPS: Group[] = [
       canEditGroupInfo: 'EVERYONE',
       canUseBroadcastMentions: 'EVERYONE',
     },
-    pinnedMessageIds: ['msg-pin-1'],
+    pinnedMessageIds: ['msg-gen-5'],
     unreadCount: 3,
     isFavorite: false,
     notificationPreference: 'ALL',
@@ -267,5 +267,4 @@ export const MOCK_COMMUNICATION_GROUPS: Group[] = [
     createdAt: daysAgo(28),
   },
 ];
-
 
