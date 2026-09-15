@@ -50,5 +50,7 @@ next-env.d.ts
 todo.md
 
 # documents
-/documents/
-/docs/
+documents/
+docs/
+.codex/
+.kiro/
