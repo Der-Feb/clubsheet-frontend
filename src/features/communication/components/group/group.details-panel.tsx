@@ -38,6 +38,7 @@ export function GroupDetailsPanel({ onOpenInvite }: GroupDetailsPanelProps) {
   }
 
   const groupConv = type === 'group' ? (conversation as Group) : null;
+  const contactMembers = type === 'dm' ? members.filter(member => member.id !== currentUserId) : [];
   const activeMessages = activeConversationId ? messages[activeConversationId] || [] : [];
   const pref = groupConv?.notificationPreference || 'ALL';
 
@@ -127,13 +128,48 @@ export function GroupDetailsPanel({ onOpenInvite }: GroupDetailsPanelProps) {
         </div>
 
         {/* Tab Content */}
-        {activeTab === 'members' && (
+        {activeTab === 'members' && groupConv && (
           <MembersList
-            group={conversation as Group}
+            group={groupConv}
             members={members}
             currentUserId={currentUserId}
             onOpenInvite={onOpenInvite}
           />
+        )}
+        {activeTab === 'members' && !groupConv && (
+          <div className="p-3 space-y-2">
+            {contactMembers.length === 0 ? (
+              <div className="p-4 text-center text-xs text-muted-foreground">
+                No contact details available
+              </div>
+            ) : (
+              contactMembers.map(member => (
+                <div
+                  key={member.id}
+                  className="rounded-xl border border-border bg-card p-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-sm font-bold text-primary">
+                      {member.initials}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-foreground">
+                        {member.displayName}
+                      </p>
+                      <p className="truncate font-mono text-xs text-muted-foreground">
+                        @{member.username}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-3 space-y-1 text-xs text-muted-foreground">
+                    <p>{member.role}</p>
+                    {member.membershipType && <p>{member.membershipType}</p>}
+                    <p>{member.isOnline ? 'Online' : 'Offline'}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         )}
         {activeTab === 'media' && <MediaGallery messages={activeMessages} />}
         {activeTab === 'files' && <FilesSection messages={activeMessages} />}

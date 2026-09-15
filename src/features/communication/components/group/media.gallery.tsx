@@ -8,7 +8,7 @@ export interface MediaGalleryProps {
 }
 
 export function MediaGallery({ messages }: MediaGalleryProps) {
-  const mediaAttachments = messages.flatMap(m =>
+  const mediaAttachments = messages.filter(m => !m.isDeleted).flatMap(m =>
     m.attachments.filter(
       a => a.mimeType.startsWith('image/') || a.mimeType.startsWith('video/')
     )

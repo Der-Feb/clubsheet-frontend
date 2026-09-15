@@ -20,6 +20,7 @@ export function ConversationHeader({ onScrollToMessage }: ConversationHeaderProp
     closeDetailsPanel,
     toggleSearch,
     messages,
+    currentUserId,
   } = useCommunication();
 
   const { conversation, type } = useActiveConversation();
@@ -36,11 +37,15 @@ export function ConversationHeader({ onScrollToMessage }: ConversationHeaderProp
     ? activeMessages.find(m => m.id === pinnedMessageId)
     : undefined;
 
-  const conversationName = groupConv ? groupConv.name : members.map(m => `@${m.username}`).join(', ');
+  const displayMembers = type === 'dm'
+    ? members.filter(m => m.id !== currentUserId)
+    : members;
+
+  const conversationName = groupConv ? groupConv.name : displayMembers.map(m => `@${m.username}`).join(', ');
   const subtitle =
     type === 'group'
       ? `${members.length} member${members.length === 1 ? '' : 's'}`
-      : members.some(m => m.isOnline)
+      : displayMembers.some(m => m.isOnline)
         ? 'Online'
         : 'Offline';
 
@@ -54,7 +59,7 @@ export function ConversationHeader({ onScrollToMessage }: ConversationHeaderProp
           ) : (
             <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-primary/20 text-primary font-bold text-sm shrink-0">
               {conversationName.slice(0, 2).toUpperCase()}
-              {members.some(m => m.isOnline) && (
+              {displayMembers.some(m => m.isOnline) && (
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-success border-2 border-background" />
               )}
             </div>

@@ -8,7 +8,7 @@ export interface FilesSectionProps {
 }
 
 export function FilesSection({ messages }: FilesSectionProps) {
-  const fileAttachments = messages.flatMap(m =>
+  const fileAttachments = messages.filter(m => !m.isDeleted).flatMap(m =>
     m.attachments.filter(
       a => !a.mimeType.startsWith('image/') && !a.mimeType.startsWith('video/')
     )
