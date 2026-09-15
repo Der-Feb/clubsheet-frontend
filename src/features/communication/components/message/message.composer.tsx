@@ -29,9 +29,25 @@ export function MessageComposer({
     members,
   } = useCommunication();
 
-  const [text, setText] = useState('');
+  const [draftsByConversation, setDraftsByConversation] = useState<Record<string, string>>({});
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const text = draftsByConversation[conversationId] ?? '';
+
+  const setText = (nextText: string | ((currentText: string) => string)) => {
+    setDraftsByConversation(prev => {
+      const currentText = prev[conversationId] ?? '';
+      const value = typeof nextText === 'function' ? nextText(currentText) : nextText;
+
+      if (!value) {
+        const remainingDrafts = { ...prev };
+        delete remainingDrafts[conversationId];
+        return remainingDrafts;
+      }
+
+      return { ...prev, [conversationId]: value };
+    });
+  };
 
   // Permission check for sending messages
   const canSend = isGroup && group

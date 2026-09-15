@@ -9,6 +9,27 @@ export interface TextContentProps {
   membersRecord?: Record<string, CommunicationMember>;
 }
 
+const trimTrailingUrlPunctuation = (url: string) => {
+  let href = url;
+  let trailing = '';
+
+  while (href.length > 0) {
+    const lastChar = href[href.length - 1];
+    const openParens = (href.match(/\(/g) || []).length;
+    const closeParens = (href.match(/\)/g) || []).length;
+
+    if (/[.,!?;:]/.test(lastChar) || (lastChar === ')' && closeParens > openParens)) {
+      trailing = lastChar + trailing;
+      href = href.slice(0, -1);
+      continue;
+    }
+
+    break;
+  }
+
+  return { href, trailing };
+};
+
 export function TextContent({ content, membersRecord = {} }: TextContentProps) {
   // Regex to match URLs or @mentions
   const elements = useMemo(() => {
@@ -20,16 +41,20 @@ export function TextContent({ content, membersRecord = {} }: TextContentProps) {
 
     return parts.map((part, idx) => {
       if (part.startsWith('http://') || part.startsWith('https://')) {
+        const { href, trailing } = trimTrailingUrlPunctuation(part);
+
         return (
-          <a
-            key={idx}
-            href={part}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline text-primary hover:text-primary-hover break-all"
-          >
-            {part}
-          </a>
+          <span key={idx}>
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-primary hover:text-primary-hover break-all"
+            >
+              {href}
+            </a>
+            {trailing}
+          </span>
         );
       }
 
