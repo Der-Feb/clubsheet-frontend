@@ -2,6 +2,7 @@
 
 import { BellOff, Star } from 'lucide-react';
 import { format, isToday, isYesterday } from 'date-fns';
+import { useIsHydrated } from '@/hooks/use-is-hydrated.hook';
 
 export interface ConversationListItemProps {
   id: string;
@@ -43,7 +44,8 @@ export function ConversationListItem({
   isOnline,
   onClick,
 }: ConversationListItemProps) {
-  const timestamp = formatRelativeTimestamp(lastMessageAt);
+  const isHydrated = useIsHydrated();
+  const timestamp = isHydrated ? formatRelativeTimestamp(lastMessageAt) : '';
   const hasUnread = unreadCount > 0;
 
   return (

@@ -1,6 +1,7 @@
 'use client';
 
 import { format, isToday, isYesterday } from 'date-fns';
+import { useIsHydrated } from '@/hooks/use-is-hydrated.hook';
 
 export interface DateSeparatorProps {
   dateIso: string;
@@ -20,7 +21,8 @@ function formatDateLabel(dateIso: string): string {
 }
 
 export function DateSeparator({ dateIso }: DateSeparatorProps) {
-  const label = formatDateLabel(dateIso);
+  const isHydrated = useIsHydrated();
+  const label = isHydrated ? formatDateLabel(dateIso) : '';
   if (!label) return null;
 
   return (

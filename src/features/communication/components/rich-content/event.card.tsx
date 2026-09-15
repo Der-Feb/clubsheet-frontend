@@ -2,6 +2,7 @@
 
 import { Calendar, MapPin, Check, HelpCircle, X } from 'lucide-react';
 import { format } from 'date-fns';
+import { useIsHydrated } from '@/hooks/use-is-hydrated.hook';
 import type { EventData, EventResponse } from '../../types/communication.types';
 
 export interface EventCardProps {
@@ -19,8 +20,9 @@ export function EventCard({
   currentUserId,
   onRespond,
 }: EventCardProps) {
+  const isHydrated = useIsHydrated();
   const eventDate = new Date(eventData.date);
-  const formattedDate = isNaN(eventDate.getTime())
+  const formattedDate = !isHydrated || isNaN(eventDate.getTime())
     ? eventData.date
     : format(eventDate, 'EEEE, MMMM d, yyyy • h:mm a');
 

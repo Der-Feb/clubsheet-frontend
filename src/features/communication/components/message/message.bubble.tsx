@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { MoreHorizontal, Reply, Smile } from 'lucide-react';
+import { useIsHydrated } from '@/hooks/use-is-hydrated.hook';
 import type {
   Message,
   CommunicationMember,
@@ -47,13 +48,14 @@ export function MessageBubble({
   onScrollToMessage,
 }: MessageBubbleProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isHydrated = useIsHydrated();
 
   const isOwn = message.senderId === currentUserId;
   const createdAtDate = new Date(message.createdAt);
-  const timeFormatted = isNaN(createdAtDate.getTime())
+  const timeFormatted = !isHydrated || isNaN(createdAtDate.getTime())
     ? ''
     : format(createdAtDate, 'h:mm a');
-  const fullDateTime = isNaN(createdAtDate.getTime())
+  const fullDateTime = !isHydrated || isNaN(createdAtDate.getTime())
     ? ''
     : format(createdAtDate, 'PPP p');
 
