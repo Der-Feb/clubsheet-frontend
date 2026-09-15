@@ -87,8 +87,8 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
     items: [
       { label: "Members", href: "/dashboard/members", icon: UserCheck },
       {
-        label: "Communication",
-        href: "/dashboard/communication",
+        label: "Chat",
+        href: "/chat",
         icon: MessageSquare,
         badge: 3,
         badgeVariant: "warning",

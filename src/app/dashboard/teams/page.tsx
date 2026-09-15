@@ -164,7 +164,7 @@ export default function TeamsPage() {
                   <span className="flex items-center gap-1.5 text-muted-foreground">
                     <Clock className="h-3.5 w-3.5" /> Next Session
                   </span>
-                  <span className="font-medium text-foreground text-right truncate max-w-[170px]">
+                  <span className="font-medium text-foreground text-right truncate max-w-42.5">
                     {team.nextSession}
                   </span>
                 </div>
@@ -173,7 +173,7 @@ export default function TeamsPage() {
                   <span className="flex items-center gap-1.5 text-muted-foreground">
                     <Trophy className="h-3.5 w-3.5" /> Next Match
                   </span>
-                  <span className="font-medium text-primary text-right truncate max-w-[170px]">
+                  <span className="font-medium text-primary text-right truncate max-w-42.5">
                     {team.nextMatch}
                   </span>
                 </div>
