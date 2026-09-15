@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { AtSign, Check, Edit2, X } from 'lucide-react';
 import { useCommunication } from '../../context/communication.context';
 import { parseUsername } from '../../utils/username.utils';
 
 export function UsernameSetupBanner() {
   const { currentUsername, updateUsername } = useCommunication();
+  const usernameErrorId = useId();
   const [isEditing, setIsEditing] = useState(false);
   const [inputVal, setInputVal] = useState(currentUsername);
   const [isDismissed, setIsDismissed] = useState(false);
@@ -38,6 +39,8 @@ export function UsernameSetupBanner() {
               id="chat-username"
               type="text"
               value={inputVal}
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? usernameErrorId : undefined}
               onChange={e => {
                 setInputVal(e.target.value);
                 setError(null);
@@ -61,7 +64,11 @@ export function UsernameSetupBanner() {
         )}
       </div>
 
-      {error && <p className="w-full text-danger text-[11px] font-semibold">{error}</p>}
+      {error && (
+        <p id={usernameErrorId} className="w-full text-danger text-[11px] font-semibold">
+          {error}
+        </p>
+      )}
 
       <div className="flex items-center gap-2">
         {!isEditing && (

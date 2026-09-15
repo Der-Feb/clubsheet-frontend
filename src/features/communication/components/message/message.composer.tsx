@@ -108,6 +108,7 @@ export function MessageComposer({
         <div className="relative flex items-center gap-1 shrink-0 pb-1">
           <button
             type="button"
+            onMouseDown={event => event.stopPropagation()}
             onClick={() => setIsEmojiOpen(!isEmojiOpen)}
             aria-label="Add emoji"
             className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
