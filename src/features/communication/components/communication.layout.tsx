@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CommunicationProvider, useCommunication } from '../context/communication.context';
 import { useActiveConversation } from '../hooks/use-conversation.hook';
 import type { Group } from '../types/communication.types';
@@ -11,7 +11,45 @@ import { UsernameSetupBanner } from './username/username.setup-banner';
 import { CreateGroupDialog } from './dialogs/create-group.dialog';
 import { InviteMembersDialog } from './dialogs/invite-members.dialog';
 
-function InnerCommunicationLayout() {
+type InitialConversationType = 'group' | 'dm';
+
+export interface CommunicationLayoutProps {
+  initialConversationId?: string;
+  initialConversationType?: InitialConversationType;
+}
+
+function InitialConversationSelection({
+  initialConversationId,
+  initialConversationType,
+}: CommunicationLayoutProps) {
+  const {
+    activeConversationId,
+    activeConversationType,
+    selectConversation,
+  } = useCommunication();
+
+  useEffect(() => {
+    if (!initialConversationId || !initialConversationType) return;
+    if (
+      activeConversationId === initialConversationId &&
+      activeConversationType === initialConversationType
+    ) {
+      return;
+    }
+
+    selectConversation(initialConversationId, initialConversationType);
+  }, [
+    activeConversationId,
+    activeConversationType,
+    initialConversationId,
+    initialConversationType,
+    selectConversation,
+  ]);
+
+  return null;
+}
+
+function InnerCommunicationLayout(props: CommunicationLayoutProps) {
   const { mobileView } = useCommunication();
   const { conversation, type } = useActiveConversation();
 
@@ -20,6 +58,8 @@ function InnerCommunicationLayout() {
 
   return (
     <div className="w-full h-full flex flex-col bg-background text-foreground overflow-hidden">
+      <InitialConversationSelection {...props} />
+
       {/* Top Banner */}
       <UsernameSetupBanner />
 
@@ -64,10 +104,10 @@ function InnerCommunicationLayout() {
   );
 }
 
-export function CommunicationLayout() {
+export function CommunicationLayout(props: CommunicationLayoutProps = {}) {
   return (
     <CommunicationProvider>
-      <InnerCommunicationLayout />
+      <InnerCommunicationLayout {...props} />
     </CommunicationProvider>
   );
 }

@@ -31,8 +31,11 @@ export function UsernameSetupBanner() {
         <AtSign className="w-4 h-4 text-primary shrink-0" />
         {isEditing ? (
           <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Your handle: @</span>
+            <label htmlFor="chat-username" className="text-muted-foreground">
+              Your handle: @
+            </label>
             <input
+              id="chat-username"
               type="text"
               value={inputVal}
               onChange={e => {
@@ -44,6 +47,7 @@ export function UsernameSetupBanner() {
             <button
               type="button"
               onClick={handleSave}
+              aria-label="Save username"
               className="p-1 rounded bg-primary text-primary-foreground hover:bg-primary-hover transition-colors"
             >
               <Check className="w-3.5 h-3.5" />
