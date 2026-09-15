@@ -64,10 +64,19 @@ export function ActiveConversation() {
     }
   };
 
+  const handleScrollToMessage = (targetId: string) => {
+    const el = document.getElementById(`msg-${targetId}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('bg-primary/10');
+      setTimeout(() => el.classList.remove('bg-primary/10'), 2000);
+    }
+  };
+
   return (
     <main className="relative flex-1 h-full flex flex-col bg-background overflow-hidden">
       {/* Header */}
-      <ConversationHeader />
+      <ConversationHeader onScrollToMessage={handleScrollToMessage} />
 
       {/* Messages List */}
       <MessageList
@@ -79,6 +88,7 @@ export function ActiveConversation() {
         onToggleReaction={handleToggleReaction}
         onVote={castVote}
         onRespondToEvent={respondToEvent}
+        onScrollToMessage={handleScrollToMessage}
       />
 
       {/* Composer */}
@@ -90,7 +100,7 @@ export function ActiveConversation() {
       />
 
       {/* Search Overlay */}
-      <SearchOverlay />
+      <SearchOverlay onSelectResult={handleScrollToMessage} />
     </main>
   );
 }

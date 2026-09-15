@@ -17,6 +17,7 @@ export interface MessageListProps {
   onToggleReaction: (messageId: string, emoji: string) => void;
   onVote: (conversationId: string, messageId: string, optionId: string) => void;
   onRespondToEvent: (conversationId: string, messageId: string, response: EventResponse) => void;
+  onScrollToMessage?: (messageId: string) => void;
 }
 
 export function MessageList({
@@ -26,6 +27,9 @@ export function MessageList({
   isGroup,
   onReply,
   onToggleReaction,
+  onVote,
+  onRespondToEvent,
+  onScrollToMessage,
 }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,15 +38,6 @@ export function MessageList({
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages.length]);
-
-  const handleScrollToMessage = (targetId: string) => {
-    const el = document.getElementById(`msg-${targetId}`);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      el.classList.add('bg-primary/10');
-      setTimeout(() => el.classList.remove('bg-primary/10'), 2000);
-    }
-  };
 
   if (messages.length === 0) {
     return (
@@ -95,9 +90,12 @@ export function MessageList({
                   replyToMessage={replyToMsg}
                   replyToSender={replyToSender}
                   isGroup={isGroup}
+                  membersRecord={membersRecord}
                   onReply={onReply}
                   onToggleReaction={onToggleReaction}
-                  onScrollToMessage={handleScrollToMessage}
+                  onVote={onVote}
+                  onRespondToEvent={onRespondToEvent}
+                  onScrollToMessage={onScrollToMessage}
                 />
               )}
             </li>

@@ -122,7 +122,7 @@ export function MessageContextMenu({
                 onDelete();
                 onClose();
               }}
-              className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-muted text-left text-danger hover:bg-danger/10 transition-colors cursor-pointer"
+              className="w-full flex items-center gap-2 px-3 py-1.5 text-left text-danger hover:bg-danger/10 transition-colors cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete</span>

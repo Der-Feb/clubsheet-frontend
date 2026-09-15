@@ -218,3 +218,21 @@
 [data-slot-panel] {
   opacity: 0;
 }
+
+/* Coarse-pointer (touch) visibility utilities */
+@media (pointer: coarse) {
+  .touch\:visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    display: inline-flex !important;
+  }
+  .touch\:hidden {
+    display: none !important;
+  }
+}
+@media (pointer: fine) {
+  .fine\:hidden {
+    display: none !important;
+  }
+}

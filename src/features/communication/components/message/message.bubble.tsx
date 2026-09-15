@@ -3,10 +3,15 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { MoreHorizontal, Reply, Smile } from 'lucide-react';
-import type { Message, CommunicationMember } from '../../types/communication.types';
+import type {
+  Message,
+  CommunicationMember,
+  EventResponse,
+} from '../../types/communication.types';
 import { ReplyIndicator } from './reply.indicator';
 import { ReactionBar } from './reaction.bar';
 import { MessageContextMenu } from './message.context-menu';
+import { MessageContent } from './message.content';
 
 export interface MessageBubbleProps {
   message: Message;
@@ -15,8 +20,15 @@ export interface MessageBubbleProps {
   replyToMessage?: Message;
   replyToSender?: CommunicationMember;
   isGroup?: boolean;
+  membersRecord: Record<string, CommunicationMember>;
   onReply: (messageId: string) => void;
   onToggleReaction: (messageId: string, emoji: string) => void;
+  onVote: (conversationId: string, messageId: string, optionId: string) => void;
+  onRespondToEvent: (
+    conversationId: string,
+    messageId: string,
+    response: EventResponse
+  ) => void;
   onScrollToMessage?: (messageId: string) => void;
 }
 
@@ -27,8 +39,11 @@ export function MessageBubble({
   replyToMessage,
   replyToSender,
   isGroup,
+  membersRecord,
   onReply,
   onToggleReaction,
+  onVote,
+  onRespondToEvent,
   onScrollToMessage,
 }: MessageBubbleProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -62,9 +77,9 @@ export function MessageBubble({
 
       {/* Bubble Container */}
       <div className="relative max-w-[85%] sm:max-w-[75%] md:max-w-[65%]">
-        {/* Hover Quick Action Bar */}
+        {/* Focus + Hover Quick Action Bar (fine pointers) */}
         <div
-          className={`absolute top-0 -translate-y-1/2 z-10 hidden group-hover:flex items-center gap-0.5 p-1 rounded-lg bg-popover border border-border shadow-md ${
+          className={`absolute top-0 -translate-y-1/2 z-10 flex items-center gap-0.5 p-1 rounded-lg bg-popover border border-border shadow-md transition-opacity duration-150 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto touch:hidden ${
             isOwn ? 'right-full mr-2' : 'left-full ml-2'
           }`}
         >
@@ -94,6 +109,18 @@ export function MessageBubble({
           </button>
         </div>
 
+        {/* Coarse-pointer (touch) visible trigger */}
+        <button
+          type="button"
+          onClick={() => setIsMenuOpen(true)}
+          aria-label="Message actions"
+          className={`absolute top-0 -translate-y-1/2 z-10 p-1.5 rounded-lg bg-popover border border-border shadow-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer touch:visible fine:hidden ${
+            isOwn ? 'right-full mr-2' : 'left-full ml-2'
+          }`}
+        >
+          <MoreHorizontal className="w-3.5 h-3.5" />
+        </button>
+
         {/* Bubble Content Box */}
         <div
           className={`px-3.5 py-2.5 rounded-2xl shadow-sm ${
@@ -115,9 +142,13 @@ export function MessageBubble({
           {message.isDeleted ? (
             <p className="text-xs italic opacity-75">This message was deleted</p>
           ) : (
-            <div className="text-sm leading-relaxed whitespace-pre-wrap break-words">
-              {message.content}
-            </div>
+            <MessageContent
+              message={message}
+              currentUserId={currentUserId}
+              membersRecord={membersRecord}
+              onVote={onVote}
+              onRespondToEvent={onRespondToEvent}
+            />
           )}
 
           {/* Timestamp */}
