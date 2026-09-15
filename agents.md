@@ -762,7 +762,7 @@ Do not scatter unexplained values throughout the UI.
 Bad:
 
 ```tsx
-<div className="mt-[37px]">
+<div className="mt-9.25">
 ```
 
 when the value has no design reason.

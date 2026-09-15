@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
+import Script from "next/script";
 import { ThemeProvider } from "@/components/theme-provider.component";
 import type { ThemeMode } from "@/types/theme.types";
 import "./globals.css";
@@ -63,10 +64,12 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: antiFlashScript }} />
-      </head>
       <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
+        <Script
+          id="theme-anti-flash"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: antiFlashScript }}
+        />
         <Providers>
           <ThemeProvider initialMode={initialMode}>
             {children}
