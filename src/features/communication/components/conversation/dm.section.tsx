@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { ChevronDown, ChevronRight, MessageSquare } from 'lucide-react';
 import type { DirectMessage, CommunicationMember } from '../../types/communication.types';
 import { ConversationListItem } from './conversation.list-item';
@@ -23,6 +23,7 @@ export function DmSection({
   defaultExpanded = true,
 }: DmSectionProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const contentId = useId();
 
   if (directMessages.length === 0) {
     return null;
@@ -35,6 +36,8 @@ export function DmSection({
       <button
         type="button"
         onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+        aria-controls={contentId}
         className="w-full flex items-center justify-between px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-1.5">
@@ -58,7 +61,7 @@ export function DmSection({
       </button>
 
       {isExpanded && (
-        <div className="space-y-0.5 mt-1">
+        <div id={contentId} className="space-y-0.5 mt-1">
           {directMessages.map(dm => {
             // Other participants in DM
             const otherParticipantIds = dm.participantIds.filter(id => id !== currentUserId);

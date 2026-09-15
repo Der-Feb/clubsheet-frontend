@@ -82,6 +82,7 @@ export interface CommunicationActions {
 
   // Groups
   createGroup(config: CreateGroupConfig): void;
+  inviteMembers(groupId: GroupId, memberIds: MemberId[]): void;
   toggleFavorite(groupId: GroupId): void;
   updateNotificationPreference(groupId: GroupId, pref: NotificationPreference, mutedUntil?: string): void;
 
@@ -125,6 +126,7 @@ export type CommunicationAction =
   | { type: 'REMOVE_REACTION'; payload: { messageId: MessageId; emoji: string } }
   | { type: 'MARK_AS_READ'; payload: { conversationId: string } }
   | { type: 'CREATE_GROUP'; payload: { config: CreateGroupConfig } }
+  | { type: 'INVITE_MEMBERS'; payload: { groupId: GroupId; memberIds: MemberId[] } }
   | { type: 'TOGGLE_FAVORITE'; payload: { groupId: GroupId } }
   | {
       type: 'UPDATE_NOTIFICATION_PREFERENCE';
@@ -371,6 +373,29 @@ export function communicationReducer(
       };
     }
 
+    case 'INVITE_MEMBERS': {
+      const { groupId, memberIds } = action.payload;
+      if (memberIds.length === 0) return state;
+
+      let didUpdate = false;
+      const groups = state.groups.map(group => {
+        if (group.id !== groupId) return group;
+
+        const nextMemberIds = Array.from(new Set([...group.memberIds, ...memberIds]));
+        if (nextMemberIds.length === group.memberIds.length) {
+          return group;
+        }
+
+        didUpdate = true;
+        return {
+          ...group,
+          memberIds: nextMemberIds,
+        };
+      });
+
+      return didUpdate ? { ...state, groups } : state;
+    }
+
     case 'TOGGLE_FAVORITE': {
       const { groupId } = action.payload;
       return {
@@ -546,6 +571,9 @@ export function CommunicationProvider({ children }: { children: React.ReactNode 
       },
       createGroup(config) {
         dispatch({ type: 'CREATE_GROUP', payload: { config } });
+      },
+      inviteMembers(groupId, memberIds) {
+        dispatch({ type: 'INVITE_MEMBERS', payload: { groupId, memberIds } });
       },
       toggleFavorite(groupId) {
         dispatch({ type: 'TOGGLE_FAVORITE', payload: { groupId } });

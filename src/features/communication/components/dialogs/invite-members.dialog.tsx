@@ -13,7 +13,7 @@ export interface InviteMembersDialogProps {
 }
 
 export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDialogProps) {
-  const { members, currentUserId } = useCommunication();
+  const { members, currentUserId, inviteMembers } = useCommunication();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -24,10 +24,12 @@ export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDia
     m => !group.memberIds.includes(m.id) && m.id !== currentUserId
   );
 
+  const normalizedQuery = searchQuery.toLowerCase();
   const filteredMembers = nonGroupMembers.filter(
     m =>
-      m.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.role.toLowerCase().includes(searchQuery.toLowerCase())
+      m.username.toLowerCase().includes(normalizedQuery) ||
+      m.displayName.toLowerCase().includes(normalizedQuery) ||
+      m.role.toLowerCase().includes(normalizedQuery)
   );
 
   const toggleSelect = (id: string) => {
@@ -36,8 +38,7 @@ export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDia
 
   const handleAddMembers = () => {
     if (selectedIds.length === 0) return;
-    // Mutate group memberIds in mock state by dispatching
-    group.memberIds.push(...selectedIds);
+    inviteMembers(group.id, selectedIds);
     setSelectedIds([]);
     onClose();
   };
@@ -58,6 +59,7 @@ export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDia
               </Dialog.Description>
             </div>
             <Dialog.Close
+                aria-label="Close invite members dialog"
               onClick={onClose}
               className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
             >
@@ -90,6 +92,8 @@ export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDia
                   <button
                     key={m.id}
                     type="button"
+                      role="checkbox"
+                      aria-checked={isSelected}
                     onClick={() => toggleSelect(m.id)}
                     className={`w-full flex items-center justify-between p-2 rounded-lg text-xs transition-colors cursor-pointer ${
                       isSelected
@@ -106,12 +110,16 @@ export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDia
                         <p className="text-[10px] text-muted-foreground">{m.role}</p>
                       </div>
                     </div>
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => {}}
-                      className="accent-primary"
-                    />
+                      <span
+                        aria-hidden="true"
+                        className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${
+                          isSelected
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-border'
+                        }`}
+                      >
+                        {isSelected ? '✓' : ''}
+                      </span>
                   </button>
                 );
               })

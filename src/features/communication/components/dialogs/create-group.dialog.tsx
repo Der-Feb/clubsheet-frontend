@@ -191,6 +191,8 @@ export function CreateGroupDialog({ isOpen, onClose }: CreateGroupDialogProps) {
                       <button
                         key={m.id}
                         type="button"
+                          role="checkbox"
+                          aria-checked={isSelected}
                         onClick={() => toggleMemberSelection(m.id)}
                         className={`w-full flex items-center justify-between p-1.5 rounded-lg text-xs transition-colors cursor-pointer ${
                           isSelected ? 'bg-primary/10 text-primary font-semibold' : 'hover:bg-muted text-foreground'
@@ -202,12 +204,16 @@ export function CreateGroupDialog({ isOpen, onClose }: CreateGroupDialogProps) {
                           </div>
                           <span className="font-mono">@{m.username}</span>
                         </div>
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => {}}
-                          className="accent-primary"
-                        />
+                          <span
+                            aria-hidden="true"
+                            className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${
+                              isSelected
+                                ? 'border-primary bg-primary text-primary-foreground'
+                                : 'border-border'
+                            }`}
+                          >
+                            {isSelected ? '✓' : ''}
+                          </span>
                       </button>
                     );
                   })}

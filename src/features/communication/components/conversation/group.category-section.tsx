@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import type { Group } from '../../types/communication.types';
 import { ConversationListItem } from './conversation.list-item';
@@ -21,6 +21,7 @@ export function GroupCategorySection({
   defaultExpanded = true,
 }: GroupCategorySectionProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const contentId = useId();
 
   if (groups.length === 0) {
     return null;
@@ -33,6 +34,8 @@ export function GroupCategorySection({
       <button
         type="button"
         onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+        aria-controls={contentId}
         className="w-full flex items-center justify-between px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-1.5">
@@ -53,7 +56,7 @@ export function GroupCategorySection({
       </button>
 
       {isExpanded && (
-        <div className="space-y-0.5 mt-1">
+        <div id={contentId} className="space-y-0.5 mt-1">
           {groups.map(group => (
             <ConversationListItem
               key={group.id}
