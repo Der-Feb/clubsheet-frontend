@@ -14,6 +14,27 @@ import type {
 let recordsStore: FinancialRecord[] = [...MOCK_FINANCIAL_RECORDS];
 let contractsStore: Contract[] = [...MOCK_CONTRACTS];
 
+// Approximate currency conversion to USD base currency
+const CURRENCY_TO_USD_RATES: Record<string, number> = {
+  USD: 1,
+  EUR: 1.08,
+  RWF: 0.00075,
+};
+
+function convertToUSD(amount: number, currency: string = "USD"): number {
+  const rate = CURRENCY_TO_USD_RATES[currency.toUpperCase()] ?? 1;
+  return amount * rate;
+}
+
+// Active contract predicate checking current date bounds
+function isActiveContract(contract: Contract): boolean {
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  if (contract.startDate && contract.startDate > todayStr) return false;
+  if (contract.endDate && contract.endDate < todayStr) return false;
+  return true;
+}
+
 // Fetchers
 async function fetchFinancialRecords(filters?: {
   type?: FinancialRecordType | "ALL";
@@ -51,16 +72,18 @@ async function fetchFinanceSummary(): Promise<FinanceSummary> {
 
   const totalIncome = recordsStore
     .filter((r) => r.type === "INCOME")
-    .reduce((acc, r) => acc + r.amount, 0);
+    .reduce((acc, r) => acc + convertToUSD(r.amount, r.currency), 0);
 
   const totalExpenses = recordsStore
     .filter((r) => r.type === "EXPENSE")
-    .reduce((acc, r) => acc + r.amount, 0);
+    .reduce((acc, r) => acc + convertToUSD(r.amount, r.currency), 0);
 
   const netPosition = totalIncome - totalExpenses;
 
+  const activeContracts = contractsStore.filter(isActiveContract);
+
   // Monthly salaries computed from active contracts
-  const totalMonthlySalaries = contractsStore.reduce((acc, c) => {
+  const totalMonthlySalaries = activeContracts.reduce((acc, c) => {
     if (c.salaryPeriod === "MONTHLY") {
       return acc + c.salaryAmount;
     }
@@ -68,8 +91,8 @@ async function fetchFinanceSummary(): Promise<FinanceSummary> {
     return acc + c.salaryAmount * 4.33;
   }, 0);
 
-  // Monthly amortization computed from contracts transfer fees
-  const totalMonthlyAmortization = contractsStore.reduce((acc, c) => {
+  // Monthly amortization computed from active contracts transfer fees
+  const totalMonthlyAmortization = activeContracts.reduce((acc, c) => {
     if (c.transferFee && c.amortizationMonths && c.amortizationMonths > 0) {
       return acc + c.transferFee / c.amortizationMonths;
     }
@@ -77,17 +100,17 @@ async function fetchFinanceSummary(): Promise<FinanceSummary> {
   }, 0);
 
   return {
-    totalIncome,
-    totalExpenses,
+    totalIncome: Math.round(totalIncome),
+    totalExpenses: Math.round(totalExpenses),
     totalMonthlySalaries: Math.round(totalMonthlySalaries),
     totalMonthlyAmortization: Math.round(totalMonthlyAmortization),
-    netPosition,
+    netPosition: Math.round(netPosition),
   };
 }
 
 async function fetchContracts(): Promise<Contract[]> {
   await new Promise((resolve) => setTimeout(resolve, 150));
-  return [...contractsStore];
+  return contractsStore.filter(isActiveContract);
 }
 
 // Query Hooks
@@ -149,6 +172,9 @@ export function useCreateFinancialRecord() {
     }) => {
       await new Promise((resolve) => setTimeout(resolve, 200));
 
+      const today = new Date();
+      const defaultDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
       const newRecord: FinancialRecord = {
         id: `fin-${Date.now()}`,
         clubId: "club-1",
@@ -157,7 +183,7 @@ export function useCreateFinancialRecord() {
         amount,
         currency,
         description,
-        recordDate: recordDate || new Date().toISOString().split("T")[0],
+        recordDate: recordDate || defaultDate,
         linkedEntityName: linkedEntityName || undefined,
         createdAt: new Date().toISOString(),
       };
