@@ -128,9 +128,13 @@ export function ProspectDetailDrawer({
                 </p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-primary">
-                    {target.latestRating || 75}
+                    {target.latestRating !== undefined && target.latestRating !== null
+                      ? target.latestRating
+                      : "N/A"}
                   </span>
-                  <span className="text-xs text-muted-foreground">/ 99</span>
+                  {target.latestRating !== undefined && target.latestRating !== null && (
+                    <span className="text-xs text-muted-foreground">/ 99</span>
+                  )}
                 </div>
               </div>
 
@@ -140,9 +144,9 @@ export function ProspectDetailDrawer({
                 </p>
                 <p className="text-lg font-bold text-foreground flex items-center">
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  {latestReport?.estimatedValue
+                  {latestReport !== undefined && latestReport?.estimatedValue !== undefined
                     ? latestReport.estimatedValue.toLocaleString()
-                    : "250,000"}
+                    : "Unvalued"}
                 </p>
               </div>
             </div>

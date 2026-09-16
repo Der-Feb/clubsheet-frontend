@@ -52,7 +52,18 @@ function ScoutingContent() {
 
   // Sync drawer and modals with query params
   useEffect(() => {
-    if (targets.length === 0) return;
+    // Check createTarget regardless of targets list length
+    if (createTargetParam === "active" || createTargetParam === "true") {
+      setIsCreateModalOpen(true);
+    } else {
+      setIsCreateModalOpen(false);
+    }
+
+    if (targets.length === 0) {
+      setIsDrawerOpen(false);
+      setIsAddReportModalOpen(false);
+      return;
+    }
 
     // Check targetId
     if (targetIdParam) {
@@ -74,13 +85,6 @@ function ScoutingContent() {
     } else {
       setIsDrawerOpen(false);
       setIsAddReportModalOpen(false);
-    }
-
-    // Check createTarget
-    if (createTargetParam === "active" || createTargetParam === "true") {
-      setIsCreateModalOpen(true);
-    } else {
-      setIsCreateModalOpen(false);
     }
   }, [targetIdParam, createTargetParam, addReportParam, targets]);
 

@@ -80,13 +80,13 @@ export function AddScoutingReportModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const validEstimatedValue = Math.max(0, estimatedValue || 0);
     onAddReport({
       position,
-      estimatedValue,
+      estimatedValue: validEstimatedValue,
       notes: notes.trim() || "Standard match evaluation report.",
       attributes,
     });
-    onClose();
   };
 
   const attributeLabels: Record<ScoutingAttribute, string> = {
@@ -167,9 +167,10 @@ export function AddScoutingReportModal({
               </label>
               <input
                 type="number"
+                min={0}
                 step={10000}
                 value={estimatedValue}
-                onChange={(e) => setEstimatedValue(Number(e.target.value))}
+                onChange={(e) => setEstimatedValue(Math.max(0, Number(e.target.value)))}
                 className="h-9 w-full rounded-xl border border-border bg-muted/40 px-3 text-xs text-foreground focus:bg-card focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>

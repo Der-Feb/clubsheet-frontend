@@ -57,6 +57,7 @@ export function ScoutingActionsMenu({
   const isShortlisted = target.status === "SHORTLISTED";
   const isWatching = target.status === "WATCHING";
   const isDropped = target.status === "DROPPED";
+  const isTransferOpened = target.status === "TRANSFER_OPENED";
 
   return (
     <div className="relative inline-block text-left" ref={menuRef}>
@@ -96,7 +97,7 @@ export function ScoutingActionsMenu({
             <span>Add Report</span>
           </button>
 
-          {!isShortlisted && (
+          {!isShortlisted && !isTransferOpened && (
             <button
               type="button"
               onClick={() => {
@@ -110,7 +111,7 @@ export function ScoutingActionsMenu({
             </button>
           )}
 
-          {!isWatching && (
+          {!isWatching && !isTransferOpened && (
             <button
               type="button"
               onClick={() => {

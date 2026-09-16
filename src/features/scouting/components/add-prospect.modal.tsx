@@ -60,7 +60,6 @@ export function AddProspectModal({
       currentClub.trim() || "Free Agent / Unknown",
       status
     );
-    onClose();
   };
 
   return (
