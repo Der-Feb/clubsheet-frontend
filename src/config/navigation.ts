@@ -2,6 +2,8 @@ import {
   LayoutDashboard,
   Users,
   Shield,
+  ShieldCheck,
+  KeyRound,
   Dumbbell,
   Trophy,
   ClipboardCheck,
@@ -85,7 +87,10 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
     id: "operations",
     title: "OPERATIONS",
     items: [
+      { label: "Memberships", href: "/dashboard/memberships", icon: UserCheck },
       { label: "Members", href: "/dashboard/members", icon: UserCheck },
+      { label: "Roles", href: "/dashboard/roles", icon: ShieldCheck },
+      { label: "Permissions", href: "/dashboard/permissions", icon: KeyRound },
       {
         label: "Chat",
         href: "/chat",
