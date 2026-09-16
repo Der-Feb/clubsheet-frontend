@@ -75,7 +75,7 @@ export function useCreateScoutingTarget() {
           day: "2-digit",
           year: "numeric",
         }),
-        latestRating: 75,
+        latestRating: undefined,
         reports: [],
       };
 
