@@ -13,6 +13,7 @@ import {
   BarChart3,
   Settings,
   Target,
+  Banknote,
   type LucideIcon,
 } from "lucide-react";
 
@@ -101,6 +102,7 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
       },
       { label: "Documents", href: "/dashboard/documents", icon: FileText },
       { label: "Scouting", href: "/dashboard/scouting", icon: Target },
+      { label: "Finance", href: "/dashboard/finance", icon: Banknote },
     ],
   },
   {
