@@ -12,6 +12,7 @@ import {
   FileText,
   BarChart3,
   Settings,
+  Target,
   type LucideIcon,
 } from "lucide-react";
 
@@ -99,6 +100,7 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
         badgeVariant: "warning",
       },
       { label: "Documents", href: "/dashboard/documents", icon: FileText },
+      { label: "Scouting", href: "/dashboard/scouting", icon: Target },
     ],
   },
   {
