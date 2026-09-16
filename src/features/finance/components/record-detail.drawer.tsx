@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import {
   X,
   DollarSign,
@@ -11,6 +12,7 @@ import {
   Trash2,
   TrendingUp,
   TrendingDown,
+  ExternalLink,
 } from "lucide-react";
 import type { FinancialRecord } from "@/types/finance.types";
 
@@ -173,7 +175,7 @@ export function RecordDetailDrawer({
               <button
                 type="button"
                 onClick={() => onDeleteRecord(record.id)}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-danger/20 bg-danger/10 px-3.5 py-2 text-xs font-semibold text-danger hover:bg-danger/20 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-rose-500/20 bg-rose-500/10 px-3.5 py-2 text-xs font-semibold text-rose-500 hover:bg-rose-500/20 transition-colors cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 Delete Record
@@ -182,13 +184,23 @@ export function RecordDetailDrawer({
               <div />
             )}
 
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-xl border border-border bg-card px-4 py-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors"
-            >
-              Close
-            </button>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/dashboard/finance/${record.id}`}
+                onClick={onClose}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/10 px-3.5 py-2 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                View Full Page
+              </Link>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-xl border border-border bg-card px-4 py-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
   Banknote,
   Plus,
@@ -10,11 +11,11 @@ import {
   TrendingDown,
   Scale,
   Calendar,
-  Filter,
   Trash2,
   Eye,
   FileSpreadsheet,
   X,
+  ExternalLink,
 } from "lucide-react";
 import {
   useFinancialRecords,
@@ -185,23 +186,14 @@ function FinanceContent() {
     }).format(amount);
   };
 
-  const getCategoryBadgeClass = (category: FinancialCategory) => {
-    switch (category) {
-      case "SPONSORSHIP":
-        return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
-      case "TICKET_SALES":
-        return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      case "MERCHANDISE":
-        return "bg-purple-500/10 text-purple-500 border-purple-500/20";
-      case "TRANSFER_FEE":
-        return "bg-amber-500/10 text-amber-500 border-amber-500/20";
-      case "SALARY":
-        return "bg-rose-500/10 text-rose-500 border-rose-500/20";
-      case "FACILITY":
-        return "bg-indigo-500/10 text-indigo-500 border-indigo-500/20";
-      default:
-        return "bg-muted/60 text-muted-foreground border-border";
-    }
+  const CATEGORY_BADGE: Record<FinancialCategory, { badge: string; dot: string }> = {
+    SPONSORSHIP:  { badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30", dot: "bg-emerald-500" },
+    TICKET_SALES: { badge: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30",             dot: "bg-blue-500" },
+    MERCHANDISE:  { badge: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30",     dot: "bg-purple-500" },
+    TRANSFER_FEE: { badge: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30",         dot: "bg-amber-500" },
+    SALARY:       { badge: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30",             dot: "bg-rose-500" },
+    FACILITY:     { badge: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/30",     dot: "bg-indigo-500" },
+    OTHER:        { badge: "bg-muted/60 text-muted-foreground border-border",                                dot: "bg-muted-foreground" },
   };
 
   const totalMonthlyObligations = (summary?.totalMonthlySalaries || 0) + (summary?.totalMonthlyAmortization || 0);
@@ -466,10 +458,15 @@ function FinanceContent() {
                           {/* Category Badge */}
                           <td className="px-4 py-3.5">
                             <span
-                              className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${getCategoryBadgeClass(
-                                rec.category
-                              )}`}
+                              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${
+                                CATEGORY_BADGE[rec.category]?.badge || CATEGORY_BADGE.OTHER.badge
+                              }`}
                             >
+                              <span
+                                className={`h-1.5 w-1.5 rounded-full ${
+                                  CATEGORY_BADGE[rec.category]?.dot || CATEGORY_BADGE.OTHER.dot
+                                }`}
+                              />
                               {CATEGORY_LABELS[rec.category]}
                             </span>
                           </td>
@@ -521,10 +518,17 @@ function FinanceContent() {
                                 type="button"
                                 onClick={() => handleOpenDrawer(rec)}
                                 className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
-                                title="View Record Details"
+                                title="Quick View Drawer"
                               >
                                 <Eye className="h-3.5 w-3.5" />
                               </button>
+                              <Link
+                                href={`/dashboard/finance/${rec.id}`}
+                                className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
+                                title="View Full Details Page"
+                              >
+                                <ExternalLink className="h-3.5 w-3.5" />
+                              </Link>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteRecord(rec.id)}

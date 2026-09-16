@@ -114,6 +114,20 @@ async function fetchContracts(): Promise<Contract[]> {
 }
 
 // Query Hooks
+
+/** Look up a single financial record by id */
+export function useFinancialRecord(recordId: string) {
+  return useQuery<FinancialRecord | null>({
+    queryKey: ["financialRecord", recordId],
+    queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      return recordsStore.find((r) => r.id === recordId) ?? null;
+    },
+    enabled: !!recordId,
+  });
+}
+
+
 export function useFinancialRecords(filters?: {
   type?: FinancialRecordType | "ALL";
   category?: FinancialCategory | "ALL";
