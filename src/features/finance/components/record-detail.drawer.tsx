@@ -187,7 +187,6 @@ export function RecordDetailDrawer({
             <div className="flex items-center gap-2">
               <Link
                 href={`/dashboard/finance/${record.id}`}
-                onClick={onClose}
                 className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/10 px-3.5 py-2 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
