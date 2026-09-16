@@ -42,7 +42,8 @@ export function RecordDetailDrawer({
   const formattedAmount = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: record.currency || "USD",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: record.amount % 1 !== 0 ? 2 : 0,
+    maximumFractionDigits: 2,
   }).format(record.amount);
 
   return (
@@ -56,7 +57,12 @@ export function RecordDetailDrawer({
 
       <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
         {/* Drawer Panel */}
-        <div className="w-screen max-w-md bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Financial Record Details"
+          className="w-screen max-w-md bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col"
+        >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border bg-muted/20">
             <div className="flex items-center gap-3">

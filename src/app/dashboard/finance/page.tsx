@@ -31,6 +31,7 @@ import type {
 import { AddRecordModal } from "@/features/finance/components/add-record.modal";
 import { RecordDetailDrawer } from "@/features/finance/components/record-detail.drawer";
 import { ContractsTable } from "@/features/finance/components/contracts-table.component";
+import { ConfirmDialog } from "@/features/members-roles/components/confirm-dialog";
 
 const CATEGORY_LABELS: Record<FinancialCategory, string> = {
   TRANSFER_FEE: "Transfer Fee",
@@ -77,6 +78,10 @@ function FinanceContent() {
   const [selectedRecordForDrawer, setSelectedRecordForDrawer] = useState<FinancialRecord | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Delete confirmation state
+  const [recordIdToDelete, setRecordIdToDelete] = useState<string | null>(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
   // Sync state with URL params
   useEffect(() => {
@@ -153,9 +158,19 @@ function FinanceContent() {
   };
 
   const handleDeleteRecord = (recordId: string) => {
-    deleteRecordMutation.mutate(recordId, {
+    setRecordIdToDelete(recordId);
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!recordIdToDelete) return;
+    deleteRecordMutation.mutate(recordIdToDelete, {
       onSuccess: () => {
-        handleCloseDrawer();
+        setIsConfirmDeleteOpen(false);
+        setRecordIdToDelete(null);
+        if (selectedRecordForDrawer?.id === recordIdToDelete) {
+          handleCloseDrawer();
+        }
       },
     });
   };
@@ -165,7 +180,8 @@ function FinanceContent() {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: currency,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: amount % 1 !== 0 ? 2 : 0,
+      maximumFractionDigits: 2,
     }).format(amount);
   };
 
@@ -549,6 +565,22 @@ function FinanceContent() {
         onClose={handleCloseAddModal}
         onCreateRecord={handleCreateRecord}
         isLoading={createRecordMutation.isPending}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={isConfirmDeleteOpen}
+        title="Delete Financial Record"
+        description="Are you sure you want to delete this financial record? This action cannot be undone."
+        confirmText="Delete Record"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={deleteRecordMutation.isPending}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          setIsConfirmDeleteOpen(false);
+          setRecordIdToDelete(null);
+        }}
       />
     </div>
   );

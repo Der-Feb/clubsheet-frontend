@@ -36,9 +36,12 @@ export function AddRecordModal({
   const [amount, setAmount] = useState<string>("");
   const [currency, setCurrency] = useState<string>("USD");
   const [description, setDescription] = useState<string>("");
-  const [recordDate, setRecordDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const getTodayLocalDateStr = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  };
+
+  const [recordDate, setRecordDate] = useState<string>(getTodayLocalDateStr());
   const [linkedEntityName, setLinkedEntityName] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -49,7 +52,7 @@ export function AddRecordModal({
       setAmount("");
       setCurrency("USD");
       setDescription("");
-      setRecordDate(new Date().toISOString().split("T")[0]);
+      setRecordDate(getTodayLocalDateStr());
       setLinkedEntityName("");
       setError("");
     }
@@ -86,7 +89,6 @@ export function AddRecordModal({
       recordDate,
       linkedEntityName: linkedEntityName.trim() || undefined,
     });
-    onClose();
   };
 
   const categories: { label: string; value: FinancialCategory }[] = [
