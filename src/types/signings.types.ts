@@ -1,3 +1,7 @@
+// Contract, SalaryPeriod, and OtherFeeItem now live in @/types/contracts.types
+// Re-exported here for backwards compatibility so existing imports don't break.
+export type { SalaryPeriod, OtherFeeItem, Contract } from "@/types/contracts.types";
+
 export type SigningStatus =
   | "DRAFT"
   | "AWAITING_ACCEPTANCE"
@@ -5,27 +9,6 @@ export type SigningStatus =
   | "REGISTERED"
   | "EXPIRED"
   | "TERMINATED";
-
-export type SalaryPeriod = "MONTHLY" | "WEEKLY";
-
-export interface OtherFeeItem {
-  id?: string;
-  name: string;
-  amount: number;
-}
-
-export interface Contract {
-  id: string;
-  signingId: string;
-  lengthMonths: number;
-  salaryAmount: number;
-  salaryPeriod: SalaryPeriod;
-  signingBonus: number;
-  performanceAddOn?: number;
-  sellOnClause?: number;
-  agentFee?: number;
-  otherFees?: OtherFeeItem[];
-}
 
 export interface Signing {
   id: string;
@@ -38,6 +21,7 @@ export interface Signing {
   status: SigningStatus;
   effectiveDate: string;
   createdAt: string;
-  contract: Contract;
+  contractId: string;
+  invitationId?: string;
   registrationWindowOpen?: boolean;
 }

@@ -27,6 +27,7 @@ import {
 import type { Signing, SigningStatus, SalaryPeriod } from "@/types/signings.types";
 import { NewSigningModal } from "@/features/signings/components/new-signing.modal";
 import { SigningDetailDrawer } from "@/features/signings/components/signing-detail.drawer";
+import { getContract } from "@/hooks/use-contracts.hook";
 
 const STATUS_BADGE: Record<SigningStatus, { label: string; style: string; dot: string }> = {
   DRAFT: {
@@ -336,6 +337,7 @@ function SigningsContent() {
               ) : (
                 filteredSignings.map((signing) => {
                   const isKebabOpen = openKebabId === signing.id;
+                  const contract = getContract(signing.contractId);
 
                   return (
                     <tr
@@ -361,23 +363,27 @@ function SigningsContent() {
 
                       {/* Contract Length */}
                       <td className="px-4 py-3.5 font-medium text-foreground">
-                        {signing.contract.lengthMonths} Months
-                        <span className="text-[11px] text-muted-foreground block">
-                          ({(signing.contract.lengthMonths / 12).toFixed(1)} yrs)
-                        </span>
+                        {contract ? `${contract.lengthMonths} Months` : "—"}
+                        {contract && (
+                          <span className="text-[11px] text-muted-foreground block">
+                            ({(contract.lengthMonths / 12).toFixed(1)} yrs)
+                          </span>
+                        )}
                       </td>
 
                       {/* Salary */}
                       <td className="px-4 py-3.5 font-semibold text-foreground">
-                        {formatCurrency(signing.contract.salaryAmount)}
-                        <span className="text-[11px] text-muted-foreground block font-normal capitalize">
-                          {signing.contract.salaryPeriod.toLowerCase()}
-                        </span>
+                        {contract ? formatCurrency(contract.salaryAmount) : "—"}
+                        {contract && (
+                          <span className="text-[11px] text-muted-foreground block font-normal capitalize">
+                            {contract.salaryPeriod.toLowerCase()}
+                          </span>
+                        )}
                       </td>
 
                       {/* Signing Bonus */}
                       <td className="px-4 py-3.5 font-bold text-emerald-500">
-                        {formatCurrency(signing.contract.signingBonus)}
+                        {contract ? formatCurrency(contract.signingBonus) : "—"}
                       </td>
 
                       {/* Status */}

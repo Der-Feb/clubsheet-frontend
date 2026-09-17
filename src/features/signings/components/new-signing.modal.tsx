@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X, FileSignature, DollarSign, Calendar, Plus, Trash2 } from "lucide-react";
-import type { SalaryPeriod, OtherFeeItem } from "@/types/signings.types";
+import type { SalaryPeriod, OtherFeeItem } from "@/types/contracts.types";
 
 interface NewSigningModalProps {
   isOpen: boolean;

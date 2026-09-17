@@ -1,13 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MOCK_SIGNINGS } from "@/mocks/signings.mock";
-import type {
-  Signing,
-  SigningStatus,
-  SalaryPeriod,
-  OtherFeeItem,
-} from "@/types/signings.types";
+import type { Signing, SigningStatus } from "@/types/signings.types";
+import type { SalaryPeriod, OtherFeeItem } from "@/types/contracts.types";
+import { createSigningContract } from "./use-contracts.hook";
 import { useCreateFinancialRecord } from "./use-finance.hook";
-import { useMembers } from "./use-members-roles.hook";
 
 // In-memory store for persistent session mutations
 let signingsStore: Signing[] = [...MOCK_SIGNINGS];
@@ -49,9 +45,9 @@ export function useSigningDetail(id: string) {
 /**
  * POST /clubs/:clubId/signings
  * Creating a Signing:
- * - Creates Signing record (status: AWAITING_ACCEPTANCE) & Contract
+ * - Creates Signing record (status: AWAITING_ACCEPTANCE)
+ * - Calls createSigningContract() to create a shared Contract record
  * - Immediately creates FinancialRecord (EXPENSE, amount: signingBonus)
- * - Immediately creates/updates Membership for the athlete with status "INVITED"
  */
 export function useCreateSigning() {
   const queryClient = useQueryClient();
@@ -76,6 +72,24 @@ export function useCreateSigning() {
       await new Promise((resolve) => setTimeout(resolve, 250));
 
       const signingId = `sng-${Date.now()}`;
+      // membershipId derived from athleteId for now (will be a real FK in backend)
+      const membershipId = `mbr-${Date.now()}`;
+
+      // Create shared contract via the contracts module
+      const contract = createSigningContract(signingId, membershipId, {
+        lengthMonths: data.contractLengthMonths,
+        salaryAmount: data.salaryAmount,
+        salaryPeriod: data.salaryPeriod,
+        signingBonus: data.signingBonus,
+        performanceAddOn: data.performanceAddOn,
+        sellOnClause: data.sellOnClause,
+        otherFees:
+          data.otherFees && data.otherFees.length > 0
+            ? data.otherFees
+            : undefined,
+        startDate: data.effectiveDate,
+      });
+
       const newSigning: Signing = {
         id: signingId,
         athleteId: data.athleteId || `ath-${Date.now()}`,
@@ -86,21 +100,11 @@ export function useCreateSigning() {
         status: "AWAITING_ACCEPTANCE",
         effectiveDate: data.effectiveDate,
         createdAt: new Date().toISOString().split("T")[0],
+        contractId: contract.id,
         registrationWindowOpen:
           data.registrationWindowOpen !== undefined
             ? data.registrationWindowOpen
             : true,
-        contract: {
-          id: `cnt-${Date.now()}`,
-          signingId: signingId,
-          lengthMonths: data.contractLengthMonths,
-          salaryAmount: data.salaryAmount,
-          salaryPeriod: data.salaryPeriod,
-          signingBonus: data.signingBonus,
-          performanceAddOn: data.performanceAddOn,
-          sellOnClause: data.sellOnClause,
-          otherFees: data.otherFees && data.otherFees.length > 0 ? data.otherFees : undefined,
-        },
       };
 
       signingsStore.unshift(newSigning);
@@ -128,6 +132,7 @@ export function useCreateSigning() {
       queryClient.invalidateQueries({ queryKey: ["signings"] });
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["finance"] });
+      queryClient.invalidateQueries({ queryKey: ["contracts"] });
     },
   });
 }
@@ -135,7 +140,6 @@ export function useCreateSigning() {
 /**
  * POST /signings/:id/accept-invitation
  * Completes the signing:
- * - Flips Membership status from INVITED -> ACTIVE
  * - Checks registration window:
  *   - If window open -> REGISTERED
  *   - If window closed -> PENDING_REGISTRATION
