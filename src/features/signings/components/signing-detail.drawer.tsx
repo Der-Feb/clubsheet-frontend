@@ -35,6 +35,7 @@ export function SigningDetailDrawer({
   isAccepting = false,
   isRegistering = false,
 }: SigningDetailDrawerProps) {
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onClose();
@@ -353,6 +354,7 @@ export function SigningDetailDrawer({
 
             <Link
               href={`/dashboard/signings/${signing.id}`}
+              replace
               onClick={onClose}
               className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
             >
