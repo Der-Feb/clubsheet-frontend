@@ -3,6 +3,11 @@ import { MOCK_SIGNINGS } from "@/mocks/signings.mock";
 import type { Signing, SigningStatus } from "@/types/signings.types";
 import type { SalaryPeriod, OtherFeeItem } from "@/types/contracts.types";
 import { createSigningContract } from "./use-contracts.hook";
+import {
+  createInvitation,
+  acceptInvitation,
+  getInvitationBySigningId,
+} from "./use-invitations.hook";
 import { useCreateFinancialRecord } from "./use-finance.hook";
 
 // In-memory store for persistent session mutations
@@ -72,11 +77,20 @@ export function useCreateSigning() {
       await new Promise((resolve) => setTimeout(resolve, 250));
 
       const signingId = `sng-${Date.now()}`;
-      // membershipId derived from athleteId for now (will be a real FK in backend)
-      const membershipId = `mbr-${Date.now()}`;
+      const athleteId = data.athleteId || `ath-${Date.now()}`;
 
-      // Create shared contract via the contracts module
-      const contract = createSigningContract(signingId, membershipId, {
+      // 1. Create shared Invitation & Membership together
+      const { invitation, membership } = createInvitation({
+        membershipId: `mbr-${Date.now()}`,
+        name: data.athleteName,
+        membershipType: "Athlete",
+        role: "Athlete",
+        department: "Technical",
+        signingId,
+      });
+
+      // 2. Create shared contract via the contracts module
+      const contract = createSigningContract(signingId, membership.id, {
         lengthMonths: data.contractLengthMonths,
         salaryAmount: data.salaryAmount,
         salaryPeriod: data.salaryPeriod,
@@ -92,7 +106,7 @@ export function useCreateSigning() {
 
       const newSigning: Signing = {
         id: signingId,
-        athleteId: data.athleteId || `ath-${Date.now()}`,
+        athleteId,
         athleteName: data.athleteName,
         clubId: "club-1",
         transferId: data.transferId || null,
@@ -101,6 +115,7 @@ export function useCreateSigning() {
         effectiveDate: data.effectiveDate,
         createdAt: new Date().toISOString().split("T")[0],
         contractId: contract.id,
+        invitationId: invitation.id,
         registrationWindowOpen:
           data.registrationWindowOpen !== undefined
             ? data.registrationWindowOpen
@@ -133,6 +148,7 @@ export function useCreateSigning() {
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["finance"] });
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
     },
   });
 }
@@ -140,9 +156,10 @@ export function useCreateSigning() {
 /**
  * POST /signings/:id/accept-invitation
  * Completes the signing:
- * - Checks registration window:
- *   - If window open -> REGISTERED
- *   - If window closed -> PENDING_REGISTRATION
+ * 1. Calls shared acceptInvitation() to flip Invitation to ACCEPTED and Membership to ACTIVE
+ * 2. Runs league-transfer-window check on top:
+ *    - If window open -> Signing status REGISTERED
+ *    - If window closed -> Signing status PENDING_REGISTRATION
  */
 export function useAcceptSigningInvitation() {
   const queryClient = useQueryClient();
@@ -154,6 +171,13 @@ export function useAcceptSigningInvitation() {
       const target = signingsStore.find((s) => s.id === signingId);
       if (!target) throw new Error("Signing not found");
 
+      // 1. Shared acceptance
+      const invId = target.invitationId || getInvitationBySigningId(signingId)?.id;
+      if (invId) {
+        acceptInvitation(invId);
+      }
+
+      // 2. League transfer window logic layered on top
       const windowIsOpen = target.registrationWindowOpen !== false;
       const nextStatus: SigningStatus = windowIsOpen
         ? "REGISTERED"
@@ -168,6 +192,7 @@ export function useAcceptSigningInvitation() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["signings"] });
       queryClient.invalidateQueries({ queryKey: ["members"] });
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
     },
   });
 }

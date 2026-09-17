@@ -20,11 +20,31 @@ let rolesStore: Role[] = [...MOCK_ROLES];
 let activityLogsStore: Record<string, ActivityLog[]> = { ...MOCK_ACTIVITY_LOGS };
 
 /** Recalculate memberCount for each role based on membersStore */
-function syncMemberCounts() {
+export function syncMemberCounts() {
   rolesStore = rolesStore.map((role) => {
     const count = membersStore.filter((m) => m.roleId === role.id).length;
     return { ...role, memberCount: count };
   });
+}
+
+export function addMemberToStore(member: Member) {
+  membersStore.unshift(member);
+  syncMemberCounts();
+}
+
+export function setMemberStatusInStore(memberId: string, status: MemberStatus) {
+  membersStore = membersStore.map((m) =>
+    m.id === memberId ? { ...m, status } : m
+  );
+  syncMemberCounts();
+}
+
+export function getMemberFromStore(memberId: string): Member | undefined {
+  return membersStore.find((m) => m.id === memberId);
+}
+
+export function getMembersStore(): Member[] {
+  return [...membersStore];
 }
 
 // Fetchers
