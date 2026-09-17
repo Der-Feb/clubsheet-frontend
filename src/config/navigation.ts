@@ -14,6 +14,7 @@ import {
   Settings,
   Target,
   Banknote,
+  FileSignature,
   type LucideIcon,
 } from "lucide-react";
 
@@ -102,6 +103,7 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
       },
       { label: "Documents", href: "/dashboard/documents", icon: FileText },
       { label: "Scouting", href: "/dashboard/scouting", icon: Target },
+      { label: "Signings", href: "/dashboard/signings", icon: FileSignature },
       { label: "Finance", href: "/dashboard/finance", icon: Banknote },
     ],
   },
