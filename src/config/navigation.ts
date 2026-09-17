@@ -108,6 +108,7 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
       { label: "Transfers", href: "/dashboard/transfers", icon: ArrowRightLeft },
       { label: "Signings", href: "/dashboard/signings", icon: FileSignature },
       { label: "Staff & Coaches", href: "/dashboard/hires", icon: Briefcase },
+      { label: "Contracts", href: "/dashboard/contracts", icon: FileText },
       { label: "Finance", href: "/dashboard/finance", icon: Banknote },
     ],
   },

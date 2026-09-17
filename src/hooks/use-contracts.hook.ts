@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MOCK_CONTRACTS } from "@/mocks/contracts.mock";
 import type { Contract, SalaryPeriod, OtherFeeItem } from "@/types/contracts.types";
 
@@ -112,5 +112,22 @@ export function useContractByMembership(membershipId: string) {
     queryKey: ["contracts", "membership", membershipId],
     queryFn: () => fetchContractByMembership(membershipId),
     enabled: Boolean(membershipId),
+  });
+}
+
+export function useTerminateContract() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (contractId: string) => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      contractsStore = contractsStore.filter((c) => c.id !== contractId);
+      return contractId;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["contracts"] });
+      queryClient.invalidateQueries({ queryKey: ["signings"] });
+      queryClient.invalidateQueries({ queryKey: ["hires"] });
+    },
   });
 }

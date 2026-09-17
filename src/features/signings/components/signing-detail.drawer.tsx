@@ -242,27 +242,27 @@ export function SigningDetailDrawer({
               </div>
             )}
 
-            {/* Contract Terms */}
+            {/* Compact Contract Summary Card */}
             <div className="rounded-2xl border border-border bg-card p-4 space-y-4 shadow-xs">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                <FileSignature className="h-3.5 w-3.5 text-primary" />
-                Contract Financial Terms
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                  <DollarSign className="h-3.5 w-3.5 text-primary" />
+                  Contract Summary
+                </h3>
+                {signing.contractId && (
+                  <Link
+                    href={`/dashboard/contracts/${signing.contractId}`}
+                    replace
+                    onClick={onClose}
+                    className="text-[11px] font-semibold text-primary hover:underline inline-flex items-center gap-1 cursor-pointer"
+                  >
+                    View full contract <ArrowRight className="h-3 w-3" />
+                  </Link>
+                )}
+              </div>
 
               {contract ? (
-                <div className="grid grid-cols-2 gap-4 text-xs">
-                  {/* Contract Length */}
-                  <div className="rounded-xl border border-border bg-muted/30 p-3">
-                    <span className="text-muted-foreground block text-[11px]">Contract Duration</span>
-                    <span className="font-bold text-foreground text-sm">
-                      {contract.lengthMonths} Months
-                    </span>
-                    <span className="text-[11px] text-muted-foreground block mt-0.5">
-                      ({(contract.lengthMonths / 12).toFixed(1)} Years)
-                    </span>
-                  </div>
-
-                  {/* Salary */}
+                <div className="grid grid-cols-2 gap-3 text-xs">
                   <div className="rounded-xl border border-border bg-muted/30 p-3">
                     <span className="text-muted-foreground block text-[11px]">Salary</span>
                     <span className="font-bold text-foreground text-sm">
@@ -273,55 +273,31 @@ export function SigningDetailDrawer({
                     </span>
                   </div>
 
-                  {/* Signing Bonus */}
                   <div className="rounded-xl border border-border bg-muted/30 p-3">
-                    <span className="text-muted-foreground block text-[11px]">Signing Bonus</span>
-                    <span className="font-bold text-emerald-500 text-sm">
-                      {formatCurrency(contract.signingBonus)}
+                    <span className="text-muted-foreground block text-[11px]">Duration</span>
+                    <span className="font-bold text-foreground text-sm">
+                      {contract.lengthMonths} Months
                     </span>
                     <span className="text-[11px] text-muted-foreground block mt-0.5">
-                      Logged as Expense
+                      ({(contract.lengthMonths / 12).toFixed(1)} Yrs)
                     </span>
                   </div>
 
-                  {/* Performance Add-on */}
-                  <div className="rounded-xl border border-border bg-muted/30 p-3">
-                    <span className="text-muted-foreground block text-[11px]">Performance Add-On</span>
-                    <span className="font-semibold text-foreground text-sm">
-                      {formatCurrency(contract.performanceAddOn)}
-                    </span>
-                  </div>
-
-                  {/* Sell-On Clause */}
-                  <div className="col-span-2 rounded-xl border border-border bg-muted/30 p-3">
-                    <span className="text-muted-foreground block text-[11px]">Sell-On Clause Percentage</span>
-                    <span className="font-semibold text-foreground text-sm">
-                      {contract.sellOnClause ? `${contract.sellOnClause}%` : "Not set"}
-                    </span>
-                  </div>
-
-                  {/* Custom Additional Fees */}
-                  {contract.otherFees && contract.otherFees.length > 0 && (
-                    <div className="col-span-2 rounded-xl border border-border bg-muted/30 p-3 space-y-2">
-                      <span className="text-muted-foreground block text-[11px] font-semibold uppercase tracking-wider">
-                        Additional Custom Fees
+                  <div className="col-span-2 rounded-xl border border-border bg-muted/30 p-3 flex justify-between items-center">
+                    <div>
+                      <span className="text-muted-foreground block text-[11px]">Signing Bonus</span>
+                      <span className="font-bold text-emerald-500 text-sm">
+                        {formatCurrency(contract.signingBonus)}
                       </span>
-                      <div className="space-y-1.5">
-                        {contract.otherFees.map((fee, idx) => (
-                          <div key={idx} className="flex justify-between items-center text-xs">
-                            <span className="text-foreground font-medium">{fee.name}</span>
-                            <span className="font-bold text-foreground">
-                              {formatCurrency(fee.amount)}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
                     </div>
-                  )}
+                    <span className="text-[11px] text-muted-foreground">
+                      Start: {contract.startDate || signing.effectiveDate}
+                    </span>
+                  </div>
                 </div>
               ) : (
                 <div className="py-4 text-center text-xs text-muted-foreground">
-                  Loading contract details...
+                  Loading contract summary...
                 </div>
               )}
             </div>
