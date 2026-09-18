@@ -17,16 +17,22 @@ import {
   XCircle,
   AlertCircle,
   Banknote,
+  Stethoscope,
+  ShieldAlert,
 } from "lucide-react";
 import {
   useTransfers,
   useCreateTransfer,
   useCounterTransferOffer,
+  useCounterBasedOnFinding,
   useAcceptTransferOffer,
+  useScheduleMedicalExam,
+  usePassMedicalExam,
+  useRecordMedicalFinding,
   useRejectTransferOffer,
   useWithdrawTransferOffer,
 } from "@/hooks/use-transfers.hook";
-import type { Transfer, TransferStatus } from "@/types/transfers.types";
+import type { Transfer, TransferStatus, FindingSeverity } from "@/types/transfers.types";
 import { OpenTransferModal } from "@/features/transfers/components/open-transfer.modal";
 import { TransferDetailDrawer } from "@/features/transfers/components/transfer-detail.drawer";
 
@@ -41,10 +47,30 @@ const STATUS_BADGE: Record<TransferStatus, { label: string; style: string; dot: 
     style: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30",
     dot: "bg-amber-500",
   },
+  TERMS_AGREED: {
+    label: "Terms Agreed",
+    style: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30",
+    dot: "bg-teal-500",
+  },
+  MEDICAL_SCHEDULED: {
+    label: "Medical Scheduled",
+    style: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30",
+    dot: "bg-sky-500",
+  },
+  MEDICAL_FLAGGED: {
+    label: "Medical Flagged",
+    style: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30",
+    dot: "bg-orange-500",
+  },
   ACCEPTED: {
     label: "Accepted",
     style: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
     dot: "bg-emerald-500",
+  },
+  DISQUALIFIED: {
+    label: "Disqualified",
+    style: "bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
+    dot: "bg-zinc-500",
   },
   REJECTED: {
     label: "Rejected",
@@ -66,17 +92,21 @@ function TransfersContent() {
   const openTransferParam = searchParams.get("openTransfer");
 
   // Filters
-  const [statusFilter, setStatusFilter] = useState<TransferStatus | "ALL">("ALL");
+  const [statusFilter, setStatusFilter] = useState<TransferStatus | "ALL" | "MEDICAL_REVIEW">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
 
   // Kebab menu state
   const [openKebabId, setOpenKebabId] = useState<string | null>(null);
 
   // Queries & Mutations
-  const { data: transfers = [], isLoading } = useTransfers(statusFilter);
+  const { data: transfers = [], isLoading } = useTransfers();
   const createTransferMutation = useCreateTransfer();
   const counterMutation = useCounterTransferOffer();
+  const counterFindingMutation = useCounterBasedOnFinding();
   const acceptMutation = useAcceptTransferOffer();
+  const scheduleMedicalMutation = useScheduleMedicalExam();
+  const passMedicalMutation = usePassMedicalExam();
+  const recordFindingMutation = useRecordMedicalFinding();
   const rejectMutation = useRejectTransferOffer();
   const withdrawMutation = useWithdrawTransferOffer();
 
@@ -106,8 +136,19 @@ function TransfersContent() {
     }
   }, [transferIdParam, openTransferParam, transfers]);
 
-  // Search filtering
+  // Search & tab filtering
   const filteredTransfers = transfers.filter((t) => {
+    if (statusFilter === "MEDICAL_REVIEW") {
+      if (
+        t.status !== "TERMS_AGREED" &&
+        t.status !== "MEDICAL_SCHEDULED" &&
+        t.status !== "MEDICAL_FLAGGED"
+      )
+        return false;
+    } else if (statusFilter !== "ALL" && t.status !== statusFilter) {
+      return false;
+    }
+
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return (
@@ -118,8 +159,13 @@ function TransfersContent() {
   });
 
   // Calculate Stat Cards
-  const openCount = transfers.filter((t) => t.status === "OPEN").length;
-  const counteredCount = transfers.filter((t) => t.status === "COUNTERED").length;
+  const openCount = transfers.filter((t) => t.status === "OPEN" || t.status === "COUNTERED").length;
+  const medicalCount = transfers.filter(
+    (t) =>
+      t.status === "TERMS_AGREED" ||
+      t.status === "MEDICAL_SCHEDULED" ||
+      t.status === "MEDICAL_FLAGGED"
+  ).length;
   const acceptedCount = transfers.filter((t) => t.status === "ACCEPTED").length;
   const totalValue = transfers.reduce((acc, t) => acc + t.currentOfferFee, 0);
 
@@ -179,8 +225,56 @@ function TransfersContent() {
     });
   };
 
+  const handleCounterBasedOnFinding = (data: {
+    transferId: string;
+    findingId: string;
+    findingCondition: string;
+    feeAmount: number;
+    terms?: string;
+    notes?: string;
+  }) => {
+    counterFindingMutation.mutate(data, {
+      onSuccess: () => {
+        setOpenKebabId(null);
+      },
+    });
+  };
+
   const handleAcceptTransfer = (id: string) => {
     acceptMutation.mutate(id, {
+      onSuccess: () => {
+        setOpenKebabId(null);
+      },
+    });
+  };
+
+  const handlePassMedical = (id: string) => {
+    passMedicalMutation.mutate(id, {
+      onSuccess: () => {
+        setOpenKebabId(null);
+      },
+    });
+  };
+
+  const handleScheduleMedical = (id: string) => {
+    scheduleMedicalMutation.mutate(
+      { transferId: id },
+      {
+        onSuccess: () => {
+          setOpenKebabId(null);
+        },
+      }
+    );
+  };
+
+  const handleRecordFinding = (data: {
+    transferId: string;
+    condition: string;
+    severity: FindingSeverity;
+    note: string;
+    disqualifying: boolean;
+  }) => {
+    recordFindingMutation.mutate(data, {
       onSuccess: () => {
         setOpenKebabId(null);
       },
@@ -232,7 +326,7 @@ function TransfersContent() {
             </h1>
           </div>
           <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-            Track and negotiate player transfers between clubs.
+            Track and negotiate player transfers, terms agreements, and clinical medical reviews.
           </p>
         </div>
 
@@ -248,39 +342,39 @@ function TransfersContent() {
 
       {/* Top Stat Cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {/* Open Negotiations */}
+        {/* Active Negotiations */}
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">Open Negotiations</span>
+            <span className="text-xs font-medium text-muted-foreground">Active Bids</span>
             <div className="rounded-xl bg-blue-500/10 p-2 text-blue-500">
               <Clock className="h-4 w-4" />
             </div>
           </div>
           <p className="mt-2 text-2xl font-bold text-foreground">{openCount}</p>
-          <p className="mt-0.5 text-[11px] text-muted-foreground">Active initial bids</p>
+          <p className="mt-0.5 text-[11px] text-muted-foreground">Open bids & counters</p>
         </div>
 
-        {/* Countered */}
+        {/* Medical Review Stage */}
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">Countered</span>
-            <div className="rounded-xl bg-amber-500/10 p-2 text-amber-500">
-              <CornerDownRight className="h-4 w-4" />
+            <span className="text-xs font-medium text-muted-foreground">Medical Reviews</span>
+            <div className="rounded-xl bg-teal-500/10 p-2 text-teal-500">
+              <Stethoscope className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-2 text-2xl font-bold text-amber-500">{counteredCount}</p>
-          <p className="mt-0.5 text-[11px] text-muted-foreground">Counter-proposals active</p>
+          <p className="mt-2 text-2xl font-bold text-teal-600 dark:text-teal-400">{medicalCount}</p>
+          <p className="mt-0.5 text-[11px] text-muted-foreground">Terms agreed & screening</p>
         </div>
 
         {/* Accepted */}
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground">Accepted</span>
+            <span className="text-xs font-medium text-muted-foreground">Accepted & Signed</span>
             <div className="rounded-xl bg-emerald-500/10 p-2 text-emerald-500">
               <CheckCircle2 className="h-4 w-4" />
             </div>
           </div>
-          <p className="mt-2 text-2xl font-bold text-emerald-500">{acceptedCount}</p>
+          <p className="mt-2 text-2xl font-bold text-emerald-600 dark:text-emerald-400">{acceptedCount}</p>
           <p className="mt-0.5 text-[11px] text-muted-foreground">Converted to signings</p>
         </div>
 
@@ -302,13 +396,15 @@ function TransfersContent() {
       {/* Filter Tabs & Search */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         {/* Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-1 rounded-xl border border-border bg-muted/30 p-1">
+        <div className="flex flex-wrap items-center gap-1 rounded-xl border border-border bg-muted/30 p-1 overflow-x-auto">
           {(
             [
               { key: "ALL", label: "All Transfers" },
               { key: "OPEN", label: "Open" },
               { key: "COUNTERED", label: "Countered" },
+              { key: "MEDICAL_REVIEW", label: "Medical Review" },
               { key: "ACCEPTED", label: "Accepted" },
+              { key: "DISQUALIFIED", label: "Disqualified" },
               { key: "REJECTED", label: "Rejected" },
               { key: "WITHDRAWN", label: "Withdrawn" },
             ] as const
@@ -317,7 +413,7 @@ function TransfersContent() {
               key={tab.key}
               type="button"
               onClick={() => setStatusFilter(tab.key)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
                 statusFilter === tab.key
                   ? "bg-card text-foreground shadow-xs"
                   : "text-muted-foreground hover:text-foreground"
@@ -350,23 +446,23 @@ function TransfersContent() {
                 <th className="px-4 py-3.5 font-semibold">Athlete</th>
                 <th className="px-4 py-3.5 font-semibold">From Club</th>
                 <th className="px-4 py-3.5 font-semibold">To Club</th>
-                <th className="px-4 py-3.5 font-semibold">Current Offer</th>
+                <th className="px-4 py-3.5 font-semibold">Current Offer Fee</th>
                 <th className="px-4 py-3.5 font-semibold">Status</th>
                 <th className="px-4 py-3.5 font-semibold">Last Activity</th>
-                <th className="px-4 py-3.5 font-semibold text-right">Actions</th>
+                <th className="px-4 py-3.5 text-right font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {isLoading ? (
                 <tr>
                   <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
-                    Loading transfer negotiations...
+                    Loading transfers...
                   </td>
                 </tr>
               ) : filteredTransfers.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
-                    No transfers found matching your filters.
+                    No transfers found matching your selected filter.
                   </td>
                 </tr>
               ) : (
@@ -376,13 +472,13 @@ function TransfersContent() {
                   return (
                     <tr
                       key={transfer.id}
-                      className="hover:bg-muted/20 transition-colors group cursor-pointer"
                       onClick={() => handleOpenDrawer(transfer)}
+                      className="hover:bg-muted/30 transition-colors cursor-pointer group"
                     >
-                      {/* Athlete */}
+                      {/* Athlete Column */}
                       <td className="px-4 py-3.5">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary">
                             {transfer.athleteName
                               .split(" ")
                               .map((n) => n[0])
@@ -410,7 +506,7 @@ function TransfersContent() {
                         {transfer.toClubName}
                       </td>
 
-                      {/* Current Offer */}
+                      {/* Current Offer Fee */}
                       <td className="px-4 py-3.5 font-bold text-foreground">
                         {formatCurrency(transfer.currentOfferFee)}
                       </td>
@@ -432,7 +528,7 @@ function TransfersContent() {
                       </td>
 
                       {/* Last Activity */}
-                      <td className="px-4 py-3.5 text-muted-foreground whitespace-nowrap">
+                      <td className="px-4 py-3.5 text-muted-foreground font-medium">
                         {transfer.lastActivity}
                       </td>
 
@@ -446,7 +542,7 @@ function TransfersContent() {
                             type="button"
                             onClick={() => handleOpenDrawer(transfer)}
                             className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
-                            title="View Negotiation Drawer"
+                            title="Quick View Drawer"
                           >
                             <Eye className="h-3.5 w-3.5" />
                           </button>
@@ -454,7 +550,7 @@ function TransfersContent() {
                           <Link
                             href={`/dashboard/transfers/${transfer.id}`}
                             className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
-                            title="Full Negotiation Page"
+                            title="View Full Page"
                           >
                             <ExternalLink className="h-3.5 w-3.5" />
                           </Link>
@@ -462,11 +558,11 @@ function TransfersContent() {
                           {/* Kebab toggle */}
                           <button
                             type="button"
-                            onClick={() =>
-                              setOpenKebabId(isKebabOpen ? null : transfer.id)
-                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenKebabId(isKebabOpen ? null : transfer.id);
+                            }}
                             className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
-                            title="Actions"
                           >
                             <MoreVertical className="h-3.5 w-3.5" />
                           </button>
@@ -474,7 +570,10 @@ function TransfersContent() {
 
                         {/* Kebab Menu */}
                         {isKebabOpen && (
-                          <div className="absolute right-4 top-11 z-20 w-48 rounded-xl border border-border bg-card p-1.5 shadow-lg text-left animate-in fade-in-50 zoom-in-95">
+                          <div
+                            className="absolute right-4 top-10 z-30 w-48 rounded-xl border border-border bg-card p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-100 text-left"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <button
                               type="button"
                               onClick={() => {
@@ -484,59 +583,67 @@ function TransfersContent() {
                               className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-foreground hover:bg-muted cursor-pointer"
                             >
                               <Eye className="h-3.5 w-3.5 text-muted-foreground" />
-                              View Negotiation
+                              View Thread
                             </button>
 
                             {(transfer.status === "OPEN" || transfer.status === "COUNTERED") && (
-                              <>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    handleOpenDrawer(transfer);
-                                    setOpenKebabId(null);
-                                  }}
-                                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-amber-600 hover:bg-amber-500/10 cursor-pointer"
-                                >
-                                  <CornerDownRight className="h-3.5 w-3.5" />
-                                  Counter Offer
-                                </button>
-
-                                <button
-                                  type="button"
-                                  onClick={() => handleAcceptTransfer(transfer.id)}
-                                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-emerald-600 hover:bg-emerald-500/10 cursor-pointer"
-                                >
-                                  <CheckCircle2 className="h-3.5 w-3.5" />
-                                  Accept Offer
-                                </button>
-
-                                <button
-                                  type="button"
-                                  onClick={() => handleRejectTransfer(transfer.id)}
-                                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-rose-500 hover:bg-rose-500/10 cursor-pointer"
-                                >
-                                  <XCircle className="h-3.5 w-3.5" />
-                                  Reject Offer
-                                </button>
-
-                                <button
-                                  type="button"
-                                  onClick={() => handleWithdrawTransfer(transfer.id)}
-                                  className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-muted cursor-pointer"
-                                >
-                                  <AlertCircle className="h-3.5 w-3.5" />
-                                  Withdraw Bid
-                                </button>
-                              </>
+                              <button
+                                type="button"
+                                onClick={() => handleAcceptTransfer(transfer.id)}
+                                className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer font-medium"
+                              >
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                Agree Terms
+                              </button>
                             )}
 
-                            <Link
-                              href={`/dashboard/transfers/${transfer.id}`}
-                              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-muted cursor-pointer"
-                            >
-                              <ExternalLink className="h-3.5 w-3.5" />
-                              Full Detail Page
-                            </Link>
+                            {transfer.status === "TERMS_AGREED" && (
+                              <button
+                                type="button"
+                                onClick={() => handleScheduleMedical(transfer.id)}
+                                className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-sky-600 dark:text-sky-400 hover:bg-sky-500/10 cursor-pointer font-medium"
+                              >
+                                <Stethoscope className="h-3.5 w-3.5" />
+                                Schedule Medical
+                              </button>
+                            )}
+
+                            {transfer.status === "MEDICAL_SCHEDULED" &&
+                              (transfer.medicalExam?.findings.length ?? 0) === 0 && (
+                              <button
+                                type="button"
+                                onClick={() => handlePassMedical(transfer.id)}
+                                className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer font-medium"
+                              >
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                Pass Medical & Accept
+                              </button>
+                            )}
+
+                            {transfer.status !== "ACCEPTED" &&
+                              transfer.status !== "DISQUALIFIED" &&
+                              transfer.status !== "REJECTED" &&
+                              transfer.status !== "WITHDRAWN" && (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRejectTransfer(transfer.id)}
+                                    className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-rose-500 hover:bg-rose-500/10 cursor-pointer"
+                                  >
+                                    <XCircle className="h-3.5 w-3.5" />
+                                    Reject Offer
+                                  </button>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => handleWithdrawTransfer(transfer.id)}
+                                    className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-muted cursor-pointer"
+                                  >
+                                    <AlertCircle className="h-3.5 w-3.5" />
+                                    Withdraw Bid
+                                  </button>
+                                </>
+                              )}
                           </div>
                         )}
                       </td>
@@ -549,24 +656,30 @@ function TransfersContent() {
         </div>
       </div>
 
-      {/* Drawer */}
+      {/* Detail Drawer */}
       <TransferDetailDrawer
         isOpen={isDrawerOpen}
         onClose={handleCloseDrawer}
         transfer={selectedTransfer}
         onCounterOffer={handleCounterOffer}
+        onCounterBasedOnFinding={handleCounterBasedOnFinding}
         onAccept={handleAcceptTransfer}
+        onScheduleMedical={handleScheduleMedical}
+        onPassMedical={handlePassMedical}
+        onRecordFinding={handleRecordFinding}
         onReject={handleRejectTransfer}
         onWithdraw={handleWithdrawTransfer}
         isSubmitting={
           counterMutation.isPending ||
           acceptMutation.isPending ||
+          scheduleMedicalMutation.isPending ||
+          passMedicalMutation.isPending ||
           rejectMutation.isPending ||
           withdrawMutation.isPending
         }
       />
 
-      {/* Modal */}
+      {/* Open Transfer Modal */}
       <OpenTransferModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
@@ -582,7 +695,7 @@ export default function TransfersPage() {
     <Suspense
       fallback={
         <div className="flex h-64 items-center justify-center text-xs text-muted-foreground">
-          Loading Transfers Module...
+          Loading transfers...
         </div>
       }
     >

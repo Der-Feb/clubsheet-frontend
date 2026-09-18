@@ -18,15 +18,27 @@ import {
   DollarSign,
   ChevronDown,
   ChevronUp,
+  Stethoscope,
+  Activity,
+  ShieldAlert,
+  AlertTriangle,
 } from "lucide-react";
 import {
   useTransferDetail,
   useCounterTransferOffer,
+  useCounterBasedOnFinding,
   useAcceptTransferOffer,
+  useScheduleMedicalExam,
+  usePassMedicalExam,
   useRejectTransferOffer,
   useWithdrawTransferOffer,
 } from "@/hooks/use-transfers.hook";
-import type { TransferStatus } from "@/types/transfers.types";
+import type {
+  TransferStatus,
+  MedicalExamStatus,
+  FindingSeverity,
+  MedicalFinding,
+} from "@/types/transfers.types";
 
 const STATUS_BADGE: Record<TransferStatus, { label: string; style: string; dot: string }> = {
   OPEN: {
@@ -39,10 +51,30 @@ const STATUS_BADGE: Record<TransferStatus, { label: string; style: string; dot: 
     style: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30",
     dot: "bg-amber-500",
   },
+  TERMS_AGREED: {
+    label: "Terms Agreed (Pending Medical)",
+    style: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30",
+    dot: "bg-teal-500",
+  },
+  MEDICAL_SCHEDULED: {
+    label: "Medical Scheduled",
+    style: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30",
+    dot: "bg-sky-500",
+  },
+  MEDICAL_FLAGGED: {
+    label: "Medical Flagged",
+    style: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30",
+    dot: "bg-orange-500",
+  },
   ACCEPTED: {
     label: "Accepted",
     style: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
     dot: "bg-emerald-500",
+  },
+  DISQUALIFIED: {
+    label: "Disqualified",
+    style: "bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
+    dot: "bg-zinc-500",
   },
   REJECTED: {
     label: "Rejected",
@@ -56,6 +88,40 @@ const STATUS_BADGE: Record<TransferStatus, { label: string; style: string; dot: 
   },
 };
 
+const EXAM_STATUS_BADGE: Record<MedicalExamStatus, { label: string; style: string }> = {
+  SCHEDULED: {
+    label: "Scheduled",
+    style: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30",
+  },
+  PASSED: {
+    label: "Passed / Clear",
+    style: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  },
+  FLAGGED: {
+    label: "Findings Flagged",
+    style: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30",
+  },
+  FAILED: {
+    label: "Failed / Disqualifying",
+    style: "bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/30",
+  },
+};
+
+const SEVERITY_BADGE: Record<FindingSeverity, { label: string; style: string }> = {
+  MINOR: {
+    label: "Minor",
+    style: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  },
+  MODERATE: {
+    label: "Moderate",
+    style: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  },
+  SEVERE: {
+    label: "Severe",
+    style: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+  },
+};
+
 export default function TransferDetailPage({
   params,
 }: {
@@ -66,7 +132,10 @@ export default function TransferDetailPage({
 
   const { data: transfer, isLoading } = useTransferDetail(transferId);
   const counterMutation = useCounterTransferOffer();
+  const counterFindingMutation = useCounterBasedOnFinding();
   const acceptMutation = useAcceptTransferOffer();
+  const scheduleMedicalMutation = useScheduleMedicalExam();
+  const passMedicalMutation = usePassMedicalExam();
   const rejectMutation = useRejectTransferOffer();
   const withdrawMutation = useWithdrawTransferOffer();
 
@@ -75,6 +144,7 @@ export default function TransferDetailPage({
   const [counterFee, setCounterFee] = useState<number>(0);
   const [counterTerms, setCounterTerms] = useState("");
   const [counterNotes, setCounterNotes] = useState("");
+  const [citedFinding, setCitedFinding] = useState<{ id: string; condition: string } | null>(null);
 
   // Collapsible thread item states
   const [expandedOfferIds, setExpandedOfferIds] = useState<Record<string, boolean>>({});
@@ -119,17 +189,51 @@ export default function TransferDetailPage({
     e.preventDefault();
     if (!counterFee) return;
 
-    counterMutation.mutate({
-      transferId: transfer.id,
-      feeAmount: Number(counterFee),
-      terms: counterTerms.trim() || undefined,
-      notes: counterNotes.trim() || undefined,
-    });
+    if (citedFinding) {
+      counterFindingMutation.mutate({
+        transferId: transfer.id,
+        findingId: citedFinding.id,
+        findingCondition: citedFinding.condition,
+        feeAmount: Number(counterFee),
+        terms: counterTerms.trim() || undefined,
+        notes: counterNotes.trim() || undefined,
+      });
+    } else {
+      counterMutation.mutate({
+        transferId: transfer.id,
+        feeAmount: Number(counterFee),
+        terms: counterTerms.trim() || undefined,
+        notes: counterNotes.trim() || undefined,
+      });
+    }
     setShowCounterForm(false);
+    setCitedFinding(null);
   };
 
+  const handleStartFindingCounter = (finding: MedicalFinding) => {
+    setCitedFinding({ id: finding.id, condition: finding.condition });
+    setCounterFee(Math.round(transfer.currentOfferFee * 0.9));
+    setCounterTerms(`Adjusted terms citing ${finding.condition}`);
+    setCounterNotes(`Offer adjusted citing clinical finding: ${finding.condition}`);
+    setShowCounterForm(true);
+  };
+
+  const isTerminal =
+    transfer.status === "ACCEPTED" ||
+    transfer.status === "DISQUALIFIED" ||
+    transfer.status === "REJECTED" ||
+    transfer.status === "WITHDRAWN";
+
   const isNegotiationActive =
-    transfer.status === "OPEN" || transfer.status === "COUNTERED";
+    transfer.status === "OPEN" ||
+    transfer.status === "COUNTERED" ||
+    transfer.status === "MEDICAL_FLAGGED";
+
+  const canPassMedical =
+    transfer.status === "MEDICAL_SCHEDULED" &&
+    (transfer.medicalExam?.findings.length ?? 0) === 0;
+
+  const disqualifyingFinding = transfer.medicalExam?.findings.find((f) => f.disqualifying);
 
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
@@ -193,27 +297,57 @@ export default function TransferDetailPage({
         </div>
       </div>
 
-      {/* Accepted Banner */}
+      {/* Resolution Banner: ACCEPTED */}
       {transfer.status === "ACCEPTED" && (
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5 text-emerald-700 dark:text-emerald-400 space-y-2">
+        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5 text-emerald-700 dark:text-emerald-400 space-y-2 animate-in fade-in duration-200">
           <div className="flex items-center gap-2 font-bold text-sm">
             <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500" />
-            <span>Transfer Accepted — Signing Created</span>
+            <span>Medical cleared — transfer accepted, signing created</span>
           </div>
-          <p className="text-xs leading-relaxed text-emerald-700/90 dark:text-amber-300">
-            This transfer negotiation has been officially accepted. A linked Signing offer record has been created for {transfer.athleteName}.
+          <p className="text-xs leading-relaxed text-emerald-700/90 dark:text-emerald-300">
+            Medical screening passed cleanly. This transfer negotiation has been officially accepted and a Signing record was created.
           </p>
-          <div className="pt-1">
-            <Link
-              href={`/dashboard/signings${
-                transfer.signingId ? `?signingId=${transfer.signingId}` : ""
-              }`}
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs transition-colors cursor-pointer"
-            >
-              <FileSignature className="h-4 w-4" />
-              <span>View Resulting Signing Record</span>
-            </Link>
+          {transfer.signingId && (
+            <div className="pt-1">
+              <Link
+                href={`/dashboard/signings/${transfer.signingId}`}
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs transition-colors cursor-pointer"
+              >
+                <FileSignature className="h-4 w-4" />
+                <span>View Resulting Signing Record</span>
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Resolution Banner: DISQUALIFIED */}
+      {transfer.status === "DISQUALIFIED" && (
+        <div className="rounded-2xl border border-border bg-muted/40 p-5 text-foreground space-y-2 animate-in fade-in duration-200">
+          <div className="flex items-center gap-2 font-bold text-sm text-muted-foreground">
+            <ShieldAlert className="h-5 w-5 shrink-0 text-muted-foreground" />
+            <span>Transfer ended — disqualifying medical finding</span>
           </div>
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Clinical examination revealed a disqualifying finding:{" "}
+            <strong className="text-foreground">
+              {disqualifyingFinding?.condition || "Severe Clinical Condition"}
+            </strong>
+            . The transfer process is ended and the athlete's scouting record has been updated to Dropped.
+          </p>
+        </div>
+      )}
+
+      {/* In-Progress Banner: TERMS_AGREED / MEDICAL_SCHEDULED */}
+      {(transfer.status === "TERMS_AGREED" || transfer.status === "MEDICAL_SCHEDULED") && (
+        <div className="rounded-2xl border border-teal-500/30 bg-teal-500/10 p-5 space-y-2">
+          <div className="flex items-center gap-2 font-bold text-sm text-teal-700 dark:text-teal-400">
+            <Stethoscope className="h-5 w-5 shrink-0 text-teal-500" />
+            <span>Terms Agreed — Medical Screening Stage</span>
+          </div>
+          <p className="text-xs text-teal-700/80 dark:text-teal-300/80 leading-relaxed">
+            Financial agreement reached between clubs. The player is undergoing scheduled medical screening before contract confirmation.
+          </p>
         </div>
       )}
 
@@ -229,14 +363,13 @@ export default function TransferDetailPage({
           {/* Scrollable Thread History Container */}
           <div className="max-h-120 overflow-y-auto space-y-4 relative pr-1 before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-border pt-2">
             {transfer.negotiationHistory.map((offer, idx) => {
-              // Default latest offer to expanded
               const isExpanded =
                 expandedOfferIds[offer.id] ??
                 idx === transfer.negotiationHistory.length - 1;
 
               return (
                 <div key={offer.id} className="relative pl-9">
-                  {/* Enlarged Dot on timeline - aligned centered with line */}
+                  {/* Timeline Dot */}
                   <button
                     type="button"
                     onClick={() => toggleOfferExpand(offer.id)}
@@ -259,7 +392,7 @@ export default function TransferDetailPage({
                       onClick={() => toggleOfferExpand(offer.id)}
                       className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/30 transition-colors"
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-bold text-foreground text-sm">
                           {offer.clubName}
                         </span>
@@ -271,6 +404,14 @@ export default function TransferDetailPage({
                         ) : (
                           <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary border border-primary/20">
                             Original Offer
+                          </span>
+                        )}
+
+                        {/* Cites Finding Chip */}
+                        {offer.citesFindingCondition && (
+                          <span className="inline-flex items-center gap-1 rounded-md bg-purple-500/10 px-2 py-0.5 text-xs font-semibold text-purple-600 dark:text-purple-400 border border-purple-500/20">
+                            <Activity className="h-3.5 w-3.5" />
+                            Cites: {offer.citesFindingCondition}
                           </span>
                         )}
                       </div>
@@ -321,10 +462,104 @@ export default function TransferDetailPage({
                 </div>
               );
             })}
+
+            {/* Medical Review Neutral Timeline Card */}
+            {transfer.medicalExam && (
+              <div className="relative pl-9 pt-1">
+                <div className="absolute left-4 top-5 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-card bg-teal-500 shadow-xs" />
+
+                <div className="rounded-2xl border-2 border-border bg-muted/20 p-5 space-y-4 text-xs shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Stethoscope className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                      <h4 className="font-bold text-foreground text-sm">
+                        Medical Examination Event
+                      </h4>
+                    </div>
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
+                        EXAM_STATUS_BADGE[transfer.medicalExam.status]?.style ||
+                        EXAM_STATUS_BADGE.SCHEDULED.style
+                      }`}
+                    >
+                      {EXAM_STATUS_BADGE[transfer.medicalExam.status]?.label ||
+                        transfer.medicalExam.status}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 text-xs bg-card p-3 rounded-xl border border-border">
+                    <div>
+                      <span className="text-muted-foreground block text-[11px]">Examination Date</span>
+                      <span className="font-semibold text-foreground">{transfer.medicalExam.examDate}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground block text-[11px]">Screening Clinician</span>
+                      <span className="font-semibold text-foreground">{transfer.medicalExam.clinician}</span>
+                    </div>
+                  </div>
+
+                  {/* Findings */}
+                  {transfer.medicalExam.findings.length > 0 && (
+                    <div className="space-y-3 pt-1">
+                      <span className="text-xs font-semibold uppercase text-muted-foreground tracking-wider block">
+                        Clinical Findings ({transfer.medicalExam.findings.length})
+                      </span>
+
+                      <div className="space-y-2">
+                        {transfer.medicalExam.findings.map((finding) => (
+                          <div
+                            key={finding.id}
+                            className="rounded-xl border border-border bg-card p-4 space-y-2"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-foreground text-sm">
+                                {finding.condition}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-semibold ${
+                                    SEVERITY_BADGE[finding.severity]?.style ||
+                                    SEVERITY_BADGE.MINOR.style
+                                  }`}
+                                >
+                                  {finding.severity}
+                                </span>
+                                {finding.disqualifying && (
+                                  <span className="inline-flex items-center rounded-md bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 text-xs font-bold text-rose-500">
+                                    Disqualifying
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                              {finding.note}
+                            </p>
+
+                            {!finding.disqualifying && !isTerminal && (
+                              <div className="pt-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleStartFindingCounter(finding)}
+                                  className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+                                >
+                                  <CornerDownRight className="h-3.5 w-3.5" />
+                                  Counter based on this finding
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Action Bar / Form */}
-          {isNegotiationActive && (
+          {!isTerminal && (
             <div className="pt-4 border-t border-border space-y-3">
               {showCounterForm ? (
                 <form
@@ -338,12 +573,24 @@ export default function TransferDetailPage({
                     </h4>
                     <button
                       type="button"
-                      onClick={() => setShowCounterForm(false)}
+                      onClick={() => {
+                        setShowCounterForm(false);
+                        setCitedFinding(null);
+                      }}
                       className="text-muted-foreground hover:text-foreground cursor-pointer"
                     >
                       &times;
                     </button>
                   </div>
+
+                  {citedFinding && (
+                    <div className="flex items-center gap-2 rounded-xl bg-purple-500/10 border border-purple-500/30 p-2 text-xs text-purple-700 dark:text-purple-300">
+                      <Activity className="h-4 w-4 shrink-0 text-purple-500" />
+                      <span>
+                        Counter citing clinical finding: <strong>{citedFinding.condition}</strong>
+                      </span>
+                    </div>
+                  )}
 
                   <div>
                     <label className="block font-semibold text-foreground mb-1">
@@ -366,7 +613,7 @@ export default function TransferDetailPage({
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. $135,000 + 5% sell-on + $50k performance bonus"
+                      placeholder="e.g. $135,000 + 5% sell-on + treatment clause"
                       value={counterTerms}
                       onChange={(e) => setCounterTerms(e.target.value)}
                       className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
@@ -379,7 +626,7 @@ export default function TransferDetailPage({
                     </label>
                     <textarea
                       rows={3}
-                      placeholder='e.g. We will accept $135k, but with a reduced sell-on clause to 5% and a performance add-on of $50k when he scores over 20 goals'
+                      placeholder='e.g. We will accept $135k, with a reduced sell-on clause to 5% and a performance add-on of $50k'
                       value={counterNotes}
                       onChange={(e) => setCounterNotes(e.target.value)}
                       className="w-full rounded-xl border border-border bg-card p-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
@@ -389,13 +636,17 @@ export default function TransferDetailPage({
                   <div className="flex justify-end gap-2 pt-1">
                     <button
                       type="button"
-                      onClick={() => setShowCounterForm(false)}
+                      onClick={() => {
+                        setShowCounterForm(false);
+                        setCitedFinding(null);
+                      }}
                       className="rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
+                      disabled={!counterFee}
                       className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors"
                     >
                       <Send className="h-3.5 w-3.5" />
@@ -407,21 +658,46 @@ export default function TransferDetailPage({
                 <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => setShowCounterForm(true)}
+                    onClick={() => {
+                      setCitedFinding(null);
+                      setShowCounterForm(true);
+                    }}
                     className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors cursor-pointer"
                   >
                     <CornerDownRight className="h-4 w-4 text-amber-500" />
                     Counter Offer
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => acceptMutation.mutate(transfer.id)}
-                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs transition-colors cursor-pointer"
-                  >
-                    <CheckCircle2 className="h-4 w-4" />
-                    Accept Offer
-                  </button>
+                  {transfer.status === "TERMS_AGREED" ? (
+                    <button
+                      type="button"
+                      onClick={() => scheduleMedicalMutation.mutate({ transferId: transfer.id })}
+                      disabled={scheduleMedicalMutation.isPending}
+                      className="inline-flex items-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-sky-700 shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      <Stethoscope className="h-4 w-4" />
+                      {scheduleMedicalMutation.isPending ? "Scheduling..." : "Schedule Medical"}
+                    </button>
+                  ) : canPassMedical ? (
+                    <button
+                      type="button"
+                      onClick={() => passMedicalMutation.mutate(transfer.id)}
+                      disabled={passMedicalMutation.isPending}
+                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs transition-colors cursor-pointer"
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      {passMedicalMutation.isPending ? "Processing..." : "Pass Medical & Accept"}
+                    </button>
+                  ) : transfer.status !== "MEDICAL_FLAGGED" ? (
+                    <button
+                      type="button"
+                      onClick={() => acceptMutation.mutate(transfer.id)}
+                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs transition-colors cursor-pointer"
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Agree Terms
+                    </button>
+                  ) : null}
 
                   <button
                     type="button"
