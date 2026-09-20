@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Club } from "@/mocks/clubs.mock";
 import { MOCK_ACTIVE_CLUB, MOCK_CLUBS } from "@/mocks/clubs.mock";
 
@@ -15,7 +15,26 @@ export interface UseCurrentClubReturn {
  * Currently backed by mock data — replace internals with real state/API later.
  */
 export function useCurrentClub(): UseCurrentClubReturn {
-  const [activeClub, setActiveClub] = useState<Club>(MOCK_ACTIVE_CLUB);
+  const [activeClub, setActiveClubState] = useState<Club>(MOCK_ACTIVE_CLUB);
+
+  useEffect(() => {
+    try {
+      const storedId = window.localStorage.getItem("clubsheet_active_club");
+      const storedClub = MOCK_CLUBS.find((club) => club.id === storedId);
+      if (storedClub) setActiveClubState(storedClub);
+    } catch {
+      // Storage may be unavailable in privacy-restricted browsers.
+    }
+  }, []);
+
+  const setActiveClub = (club: Club) => {
+    setActiveClubState(club);
+    try {
+      window.localStorage.setItem("clubsheet_active_club", club.id);
+    } catch {
+      // Storage may be unavailable in privacy-restricted browsers.
+    }
+  };
 
   return {
     activeClub,

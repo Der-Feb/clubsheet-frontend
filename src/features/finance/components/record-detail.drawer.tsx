@@ -57,13 +57,13 @@ export function RecordDetailDrawer({
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div className="fixed inset-y-0 right-0 flex w-full max-w-md pl-4 sm:pl-10">
         {/* Drawer Panel */}
         <div
           role="dialog"
           aria-modal="true"
           aria-label="Financial Record Details"
-          className="w-screen max-w-md bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col"
+          className="w-full bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border bg-muted/20">
@@ -187,6 +187,8 @@ export function RecordDetailDrawer({
             <div className="flex items-center gap-2">
               <Link
                 href={`/dashboard/finance/${record.id}`}
+                replace
+                onClick={onClose}
                 className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/10 px-3.5 py-2 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
               >
                 <ExternalLink className="h-3.5 w-3.5" />

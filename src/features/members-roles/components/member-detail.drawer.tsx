@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   X,
   Mail,
@@ -14,10 +14,12 @@ import {
   CheckCircle2,
   ArrowRight,
   KeyRound,
+  Activity,
 } from "lucide-react";
 import { useRoles, usePermissions } from "@/hooks/use-members-roles.hook";
 import type { Member } from "@/types/members-roles.types";
 import Link from "next/link";
+import { MedicalHistoryTable } from "./medical-history.table";
 
 interface MemberDetailDrawerProps {
   isOpen: boolean;
@@ -38,6 +40,7 @@ export function MemberDetailDrawer({
 }: MemberDetailDrawerProps) {
   const { data: roles = [] } = useRoles();
   const allPermissions = usePermissions();
+  const [activeTab, setActiveTab] = useState<"profile" | "medical">("profile");
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -78,9 +81,9 @@ export function MemberDetailDrawer({
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div className="fixed inset-y-0 right-0 flex w-full max-w-md pl-4 sm:pl-10">
         {/* Drawer Panel */}
-        <div className="w-screen max-w-md bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
+        <div className="w-full bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border bg-muted/20">
             <div className="flex items-center gap-3">
@@ -127,6 +130,33 @@ export function MemberDetailDrawer({
 
           {/* Body Content */}
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex gap-4 border-b border-border">
+              <button
+                type="button"
+                onClick={() => setActiveTab("profile")}
+                className={`pb-2.5 text-xs font-semibold transition-colors ${
+                  activeTab === "profile"
+                    ? "border-b-2 border-primary text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Profile
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("medical")}
+                className={`inline-flex items-center gap-1.5 pb-2.5 text-xs font-semibold transition-colors ${
+                  activeTab === "medical"
+                    ? "border-b-2 border-primary text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Activity className="h-3.5 w-3.5" />
+                Medical history
+              </button>
+            </div>
+
+            {activeTab === "profile" && <>
             {/* Contact Information */}
             <div className="rounded-2xl border border-border bg-muted/20 p-4 space-y-3">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -270,6 +300,21 @@ export function MemberDetailDrawer({
                 ))}
               </div>
             </div>
+            </>}
+
+            {activeTab === "medical" && (
+              <section className="space-y-3">
+                <div>
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Medical history
+                  </h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Historical health records are independent of transfer medical examinations.
+                  </p>
+                </div>
+                <MedicalHistoryTable membershipId={member.id} />
+              </section>
+            )}
           </div>
 
           {/* Drawer Footer with Full Page Link */}
@@ -284,6 +329,7 @@ export function MemberDetailDrawer({
 
             <Link
               href={`/dashboard/members/${member.id}`}
+              replace
               onClick={onClose}
               className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
             >

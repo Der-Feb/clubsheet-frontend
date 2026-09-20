@@ -23,7 +23,7 @@ export function DashboardSidebar({
     <aside
       aria-label="Sidebar"
       className={cn(
-        "flex flex-col h-full border-r border-border bg-card text-card-foreground transition-[width] duration-200 ease-in-out overflow-hidden",
+        "flex flex-col h-full border-r border-border bg-card text-card-foreground transition-[width] duration-200 ease-in-out overflow-visible",
         isCollapsed ? "w-16" : "w-60"
       )}
     >

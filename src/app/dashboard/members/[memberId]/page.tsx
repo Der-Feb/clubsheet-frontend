@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   XCircle,
   Save,
+  Activity,
 } from "lucide-react";
 import {
   useMembers,
@@ -28,6 +29,7 @@ import {
   useActivityLogs,
 } from "@/hooks/use-members-roles.hook";
 import { RolePickerModal } from "@/features/members-roles/components/role-picker.modal";
+import { MedicalHistoryTable } from "@/features/members-roles/components/medical-history.table";
 import type { PermissionCategory } from "@/types/members-roles.types";
 
 interface MemberDetailPageProps {
@@ -50,7 +52,7 @@ function MemberDetailContent({ memberId }: { memberId: string }) {
 
   const member = members.find((m) => m.id === memberId);
 
-  const [activeTab, setActiveTab] = useState<"overview" | "permissions" | "activity">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "permissions" | "medical" | "activity">("overview");
 
   // Granular Direct Permissions state
   const [directPermissions, setDirectPermissions] = useState<string[]>([]);
@@ -287,6 +289,18 @@ function MemberDetailContent({ memberId }: { memberId: string }) {
           <History className="h-4 w-4" />
           Activity & History
         </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("medical")}
+          className={`pb-3 text-xs font-semibold border-b-2 transition-colors cursor-pointer flex items-center gap-1.5 ${
+            activeTab === "medical"
+              ? "border-primary text-primary"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Activity className="h-4 w-4" />
+          Medical History
+        </button>
       </div>
 
       {/* TAB CONTENT: Overview */}
@@ -456,6 +470,20 @@ function MemberDetailContent({ memberId }: { memberId: string }) {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {activeTab === "medical" && (
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-xs space-y-4">
+          <div>
+            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">
+              Medical History
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Historical health records are separate from transfer medical examinations.
+            </p>
+          </div>
+          <MedicalHistoryTable membershipId={member.id} />
         </div>
       )}
 

@@ -210,3 +210,9 @@ export function useOpenTransfer() {
     },
   });
 }
+
+export function dropScoutingTarget(targetId: string) {
+  scoutingStore = scoutingStore.map((target) =>
+    target.id === targetId ? { ...target, status: "DROPPED" as const } : target
+  );
+}

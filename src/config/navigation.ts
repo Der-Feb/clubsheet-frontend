@@ -14,6 +14,10 @@ import {
   Settings,
   Target,
   Banknote,
+  FileSignature,
+  ArrowRightLeft,
+  Briefcase,
+  Stethoscope,
   type LucideIcon,
 } from "lucide-react";
 
@@ -102,7 +106,12 @@ export const DASHBOARD_NAVIGATION: NavGroupConfig[] = [
       },
       { label: "Documents", href: "/dashboard/documents", icon: FileText },
       { label: "Scouting", href: "/dashboard/scouting", icon: Target },
+      { label: "Transfers", href: "/dashboard/transfers", icon: ArrowRightLeft },
+      { label: "Signings", href: "/dashboard/signings", icon: FileSignature },
+      { label: "Staff & Coaches", href: "/dashboard/hires", icon: Briefcase },
+      { label: "Contracts", href: "/dashboard/contracts", icon: FileText },
       { label: "Finance", href: "/dashboard/finance", icon: Banknote },
+      { label: "Medical", href: "/dashboard/medical", icon: Stethoscope },
     ],
   },
   {
