@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useEffect, useState, useMemo, useSyncExternalStore } from "react";
+import React, { createContext, useEffect, useLayoutEffect, useState, useMemo, useSyncExternalStore } from "react";
 import type {
   ThemeMode,
   ResolvedThemeMode,
@@ -13,6 +13,8 @@ import { applyThemeToElement } from "@/lib/palette-generator.utils";
 export const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const THEME_COOKIE_NAME = "clubsheet_theme_mode";
+const THEME_BRAND_STORAGE_KEY = "clubsheet_brand";
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
@@ -24,6 +26,20 @@ function setCookie(name: string, value: string, days = 365) {
   if (typeof document === "undefined") return;
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
+function getStoredBrand(): ClubBrand | null {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const stored = window.localStorage.getItem(THEME_BRAND_STORAGE_KEY);
+    if (!stored) return null;
+
+    const brand = JSON.parse(stored) as ClubBrand;
+    return brand && typeof brand === "object" ? brand : null;
+  } catch {
+    return null;
+  }
 }
 
 // React 18/19 subscription for OS system color scheme (avoids setState in effect)
@@ -66,7 +82,7 @@ export function ThemeProvider({
     return initialMode;
   });
 
-  const [brandOverride, setBrandOverride] = useState<ClubBrand | null>(null);
+  const [brandOverride, setBrandOverride] = useState<ClubBrand | null>(getStoredBrand);
 
   // Subscribe to OS color-scheme preference via useSyncExternalStore
   const systemIsDark = useSyncExternalStore(
@@ -94,10 +110,15 @@ export function ThemeProvider({
 
   const setBrand = (newBrand: ClubBrand) => {
     setBrandOverride(newBrand);
+    try {
+      window.localStorage.setItem(THEME_BRAND_STORAGE_KEY, JSON.stringify(newBrand));
+    } catch {
+      // Storage may be unavailable in privacy-restricted browsers.
+    }
   };
 
   // Apply theme tokens to document root
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof document !== "undefined") {
       applyThemeToElement(document.documentElement, brand, resolvedMode);
     }
