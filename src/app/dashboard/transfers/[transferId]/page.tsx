@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -130,6 +131,8 @@ export default function TransferDetailPage({
 }) {
   const resolvedParams = use(params);
   const transferId = resolvedParams.transferId;
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const { data: transfer, isLoading } = useTransferDetail(transferId);
   const counterMutation = useCounterTransferOffer();
@@ -149,7 +152,7 @@ export default function TransferDetailPage({
 
   // Collapsible thread item states
   const [expandedOfferIds, setExpandedOfferIds] = useState<Record<string, boolean>>({});
-  const [isScheduleMedicalOpen, setIsScheduleMedicalOpen] = useState(false);
+  const isScheduleMedicalOpen = searchParams.get("scheduleMedical") === "active";
 
   if (isLoading) {
     return (
@@ -217,6 +220,14 @@ export default function TransferDetailPage({
     setCounterFee(Math.round(transfer.currentOfferFee * 0.9));
     setCounterTerms(`Adjusted terms citing ${finding.condition}`);
     setCounterNotes(`Offer adjusted citing clinical finding: ${finding.condition}`);
+    setShowCounterForm(true);
+  };
+
+  const handleStartCounter = () => {
+    setCitedFinding(null);
+    setCounterFee(transfer.currentOfferFee);
+    setCounterTerms("");
+    setCounterNotes("");
     setShowCounterForm(true);
   };
 
@@ -479,7 +490,7 @@ export default function TransferDetailPage({
                       </h4>
                     </div>
                     <Link
-                      href={`/dashboard/medical?transferId=${transfer.id}`}
+                      href={`/dashboard/medical?transferId=${transfer.id}&recordFinding=active`}
                       className="text-[11px] font-semibold text-primary hover:underline"
                     >
                       Open in Medical
@@ -666,10 +677,7 @@ export default function TransferDetailPage({
                 <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      setCitedFinding(null);
-                      setShowCounterForm(true);
-                    }}
+                    onClick={handleStartCounter}
                     className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors cursor-pointer"
                   >
                     <CornerDownRight className="h-4 w-4 text-amber-500" />
@@ -679,7 +687,7 @@ export default function TransferDetailPage({
                   {transfer.status === "TERMS_AGREED" ? (
                     <button
                       type="button"
-                      onClick={() => setIsScheduleMedicalOpen(true)}
+                      onClick={() => router.push(`/dashboard/transfers/${transfer.id}?scheduleMedical=active`)}
                       disabled={scheduleMedicalMutation.isPending}
                       className="inline-flex items-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-sky-700 shadow-xs transition-colors cursor-pointer disabled:opacity-50"
                     >
@@ -696,14 +704,14 @@ export default function TransferDetailPage({
                       <CheckCircle2 className="h-4 w-4" />
                       {passMedicalMutation.isPending ? "Processing..." : "Pass Medical & Accept"}
                     </button>
-                  ) : transfer.status !== "MEDICAL_FLAGGED" ? (
+                  ) : transfer.medicalCompleted || transfer.status !== "MEDICAL_FLAGGED" ? (
                     <button
                       type="button"
                       onClick={() => acceptMutation.mutate(transfer.id)}
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs transition-colors cursor-pointer"
                     >
                       <CheckCircle2 className="h-4 w-4" />
-                      Agree Terms
+                      {transfer.medicalCompleted ? "Accept Offer" : "Agree Terms"}
                     </button>
                   ) : null}
 
@@ -773,8 +781,8 @@ export default function TransferDetailPage({
       <ScheduleMedicalModal
         isOpen={isScheduleMedicalOpen}
         transfer={transfer}
-        onClose={() => setIsScheduleMedicalOpen(false)}
-        onSchedule={(data) => scheduleMedicalMutation.mutate(data, { onSuccess: () => setIsScheduleMedicalOpen(false) })}
+        onClose={() => router.push(`/dashboard/transfers/${transfer.id}`)}
+        onSchedule={(data) => scheduleMedicalMutation.mutate(data, { onSuccess: () => router.push(`/dashboard/transfers/${transfer.id}`) })}
         isLoading={scheduleMedicalMutation.isPending}
       />
     </div>

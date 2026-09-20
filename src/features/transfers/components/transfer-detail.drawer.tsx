@@ -22,6 +22,7 @@ import {
   FileText,
   Activity,
   ShieldAlert,
+  Plus,
 } from "lucide-react";
 import type {
   Transfer,
@@ -539,7 +540,7 @@ export function TransferDetailDrawer({
                           </h4>
                         </div>
                         <Link
-                          href={`/dashboard/medical?transferId=${transfer.id}`}
+                          href={`/dashboard/medical?transferId=${transfer.id}&recordFinding=active`}
                           className="text-[10px] font-semibold text-primary hover:underline"
                         >
                           Open in Medical
