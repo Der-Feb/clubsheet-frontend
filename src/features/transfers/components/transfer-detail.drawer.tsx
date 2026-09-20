@@ -205,6 +205,14 @@ export function TransferDetailDrawer({
     }).format(amount);
   };
 
+  const formatSeverity = (severity: string) => {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-md bg-blue-500/10 px-1 py-0.5 text-[8px] font-semibold text-blue-600 dark:text-blue-400 border border-blue-500/20">
+        {severity}
+      </span>
+    );
+  };
+
   const handleSubmitCounter = (e: React.FormEvent) => {
     e.preventDefault();
     if (!counterFee) return;
@@ -275,9 +283,9 @@ export function TransferDetailDrawer({
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div className="fixed inset-y-0 right-0 flex w-full max-w-md pl-4 sm:pl-10">
         {/* Drawer Panel */}
-        <div className="w-screen max-w-md bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
+        <div className="w-full bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
           {/* Drawer Header */}
           <div className="p-6 border-b border-border bg-muted/20 space-y-3 shrink-0">
             <div className="flex items-center justify-between">
@@ -530,6 +538,12 @@ export function TransferDetailDrawer({
                             Medical Examination
                           </h4>
                         </div>
+                        <Link
+                          href={`/dashboard/medical?transferId=${transfer.id}`}
+                          className="text-[10px] font-semibold text-primary hover:underline"
+                        >
+                          Open in Medical
+                        </Link>
                         <span
                           className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
                             EXAM_STATUS_BADGE[transfer.medicalExam.status]?.style ||
@@ -570,14 +584,7 @@ export function TransferDetailDrawer({
                                     {finding.condition}
                                   </span>
                                   <div className="flex items-center gap-1.5">
-                                    <span
-                                      className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-semibold ${
-                                        SEVERITY_BADGE[finding.severity]?.style ||
-                                        SEVERITY_BADGE.MINOR.style
-                                      }`}
-                                    >
-                                      {finding.severity}
-                                    </span>
+                                    {formatSeverity(finding.severity)}
                                     {finding.disqualifying && (
                                       <span className="inline-flex items-center rounded-md bg-rose-500/10 border border-rose-500/30 px-1.5 py-0.5 text-[10px] font-bold text-rose-500">
                                         Disqualifying
@@ -606,6 +613,19 @@ export function TransferDetailDrawer({
                               </div>
                             ))}
                           </div>
+                        </div>
+                      )}
+                      {/* Add new finding button */}
+                      {canPassMedical && (
+                        <div className="pt-2 border-t border-border/40 border-border">
+                          <button
+                            type="button"
+                            onClick={() => setShowCounterForm(true)}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/5 px-2.5 py-1 text-[11px] font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+                          >
+                            <Plus className="h-3 w-3" />
+                            Add New Finding
+                          </button>
                         </div>
                       )}
                     </div>

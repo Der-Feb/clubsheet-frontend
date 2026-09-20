@@ -382,6 +382,7 @@ export function usePassMedicalExam() {
  * Record a clinical finding on a Medical Exam:
  * - If disqualifying -> Status becomes DISQUALIFIED, linked scouting target updated to DROPPED
  * - If non-disqualifying -> Status becomes MEDICAL_FLAGGED
+ * - Appends new finding to existing findings array (supports multiple findings per exam)
  */
 export function useRecordMedicalFinding() {
   const queryClient = useQueryClient();
@@ -447,6 +448,66 @@ export function useRecordMedicalFinding() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transfers"] });
       queryClient.invalidateQueries({ queryKey: ["scouting"] });
+    },
+  });
+}
+
+/**
+ * Add a new medical finding to an existing medical exam without changing status.
+ * Use this when you want to add additional findings to an exam that already has findings.
+ */
+export function useAddMedicalFinding() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: {
+      transferId: string;
+      condition: string;
+      severity: FindingSeverity;
+      note: string;
+      disqualifying: boolean;
+    }) => {
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      const target = transfersStore.find((t) => t.id === data.transferId);
+      if (!target) throw new Error("Transfer not found");
+
+      const newFinding: MedicalFinding = {
+        id: `fnd-${Date.now()}`,
+        examId: target.medicalExam?.id || `med-${Date.now()}`,
+        condition: data.condition,
+        severity: data.severity,
+        note: data.note,
+        disqualifying: data.disqualifying,
+      };
+
+      const existingFindings = target.medicalExam?.findings || [];
+      const updatedFindings = [...existingFindings, newFinding];
+
+      const newExamStatus = data.disqualifying ? "FAILED" : "FLAGGED";
+
+      transfersStore = transfersStore.map((t) => {
+        if (t.id === data.transferId) {
+          return {
+            ...t,
+            medicalExam: {
+              id: target.medicalExam?.id || `med-${Date.now()}`,
+              transferId: t.id,
+              athleteId: t.athleteId,
+              status: newExamStatus,
+              examDate: target.medicalExam?.examDate || new Date().toISOString().split("T")[0],
+              clinician: target.medicalExam?.clinician || "Dr. Patrick Rutayisire",
+              findings: updatedFindings,
+            },
+          };
+        }
+        return t;
+      });
+
+      return transfersStore.find((t) => t.id === data.transferId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transfers"] });
     },
   });
 }

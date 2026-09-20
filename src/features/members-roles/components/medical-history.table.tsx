@@ -2,13 +2,26 @@
 
 import { Activity, CalendarDays } from "lucide-react";
 import { useMedicalRecordsByMembership } from "@/hooks/use-medical.hook";
-import type { MedicalRecordStatus } from "@/types/medical.types";
+import type { MedicalRecord, MedicalRecordStatus, MedicalRecordType } from "@/types/medical.types";
 
 const STATUS_STYLE: Record<MedicalRecordStatus, string> = {
   ACTIVE: "border border-danger/20 bg-danger/10 text-danger",
   RECOVERING: "border border-border bg-muted text-muted-foreground",
   RECOVERED: "border border-border bg-muted text-muted-foreground",
 };
+
+const TYPE_LABEL: Record<MedicalRecordType, string> = {
+  CHECKUP: "Checkup",
+  INJURY: "Injury",
+  DOPING_TEST: "Doping test",
+};
+
+function getResultStyle(record: MedicalRecord): string {
+  if (record.status === "ACTIVE" && (record.result === "FLAGGED" || record.result === "POSITIVE")) {
+    return "border border-danger/20 bg-danger/10 text-danger";
+  }
+  return "border border-border bg-muted text-muted-foreground";
+}
 
 export function MedicalHistoryTable({ membershipId }: { membershipId: string }) {
   const { data: records = [], isLoading } = useMedicalRecordsByMembership(membershipId);
@@ -27,12 +40,14 @@ export function MedicalHistoryTable({ membershipId }: { membershipId: string }) 
 
   return (
     <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full min-w-[580px] text-left text-xs">
+      <table className="w-full min-w-[700px] text-left text-xs">
         <thead className="bg-muted/50 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
           <tr>
             <th className="px-4 py-3">Condition</th>
+            <th className="px-4 py-3">Type</th>
             <th className="px-4 py-3">Occurred</th>
             <th className="px-4 py-3">Severity</th>
+            <th className="px-4 py-3">Result</th>
             <th className="px-4 py-3">Status</th>
           </tr>
         </thead>
@@ -45,6 +60,7 @@ export function MedicalHistoryTable({ membershipId }: { membershipId: string }) 
                   {record.condition}
                 </span>
               </td>
+              <td className="px-4 py-3 text-foreground">{TYPE_LABEL[record.type]}</td>
               <td className="px-4 py-3 text-muted-foreground">
                 <span className="inline-flex items-center gap-1.5">
                   <CalendarDays className="h-3.5 w-3.5" />
@@ -52,6 +68,11 @@ export function MedicalHistoryTable({ membershipId }: { membershipId: string }) 
                 </span>
               </td>
               <td className="px-4 py-3 text-foreground">{record.severity}</td>
+              <td className="px-4 py-3">
+                <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold ${getResultStyle(record)}`}>
+                  {record.result}
+                </span>
+              </td>
               <td className="px-4 py-3">
                 <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold ${STATUS_STYLE[record.status]}`}>
                   {record.status}

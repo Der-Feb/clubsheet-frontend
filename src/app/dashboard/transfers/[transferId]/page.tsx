@@ -39,6 +39,7 @@ import type {
   FindingSeverity,
   MedicalFinding,
 } from "@/types/transfers.types";
+import { ScheduleMedicalModal } from "@/features/transfers/components/schedule-medical.modal";
 
 const STATUS_BADGE: Record<TransferStatus, { label: string; style: string; dot: string }> = {
   OPEN: {
@@ -148,6 +149,7 @@ export default function TransferDetailPage({
 
   // Collapsible thread item states
   const [expandedOfferIds, setExpandedOfferIds] = useState<Record<string, boolean>>({});
+  const [isScheduleMedicalOpen, setIsScheduleMedicalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -476,6 +478,12 @@ export default function TransferDetailPage({
                         Medical Examination Event
                       </h4>
                     </div>
+                    <Link
+                      href={`/dashboard/medical?transferId=${transfer.id}`}
+                      className="text-[11px] font-semibold text-primary hover:underline"
+                    >
+                      Open in Medical
+                    </Link>
                     <span
                       className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
                         EXAM_STATUS_BADGE[transfer.medicalExam.status]?.style ||
@@ -671,7 +679,7 @@ export default function TransferDetailPage({
                   {transfer.status === "TERMS_AGREED" ? (
                     <button
                       type="button"
-                      onClick={() => scheduleMedicalMutation.mutate({ transferId: transfer.id })}
+                      onClick={() => setIsScheduleMedicalOpen(true)}
                       disabled={scheduleMedicalMutation.isPending}
                       className="inline-flex items-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-sky-700 shadow-xs transition-colors cursor-pointer disabled:opacity-50"
                     >
@@ -762,6 +770,13 @@ export default function TransferDetailPage({
           )}
         </div>
       </div>
+      <ScheduleMedicalModal
+        isOpen={isScheduleMedicalOpen}
+        transfer={transfer}
+        onClose={() => setIsScheduleMedicalOpen(false)}
+        onSchedule={(data) => scheduleMedicalMutation.mutate(data, { onSuccess: () => setIsScheduleMedicalOpen(false) })}
+        isLoading={scheduleMedicalMutation.isPending}
+      />
     </div>
   );
 }
