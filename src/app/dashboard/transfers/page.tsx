@@ -586,14 +586,14 @@ function TransfersContent() {
                               View Thread
                             </button>
 
-                            {(transfer.status === "OPEN" || transfer.status === "COUNTERED") && (
+                            {(transfer.status === "OPEN" || transfer.status === "COUNTERED" || (transfer.status === "MEDICAL_FLAGGED" && transfer.medicalCompleted)) && (
                               <button
                                 type="button"
                                 onClick={() => handleAcceptTransfer(transfer.id)}
                                 className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer font-medium"
                               >
                                 <CheckCircle2 className="h-3.5 w-3.5" />
-                                Agree Terms
+                                {transfer.medicalCompleted ? "Accept Offer" : "Agree Terms"}
                               </button>
                             )}
 

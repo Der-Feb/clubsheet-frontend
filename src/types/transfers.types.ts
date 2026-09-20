@@ -65,6 +65,7 @@ export interface Transfer {
   toClubLogo?: string;
   currentOfferFee: number;
   status: TransferStatus;
+  medicalCompleted: boolean;
   lastActivity: string;
   createdAt: string;
   negotiationHistory: TransferOffer[];

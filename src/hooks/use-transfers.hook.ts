@@ -92,6 +92,7 @@ export function useCreateTransfer() {
         toClubName: data.toClubName,
         currentOfferFee: data.feeAmount,
         status: "OPEN",
+        medicalCompleted: false,
         lastActivity: "Just now",
         createdAt: new Date().toISOString().split("T")[0],
         negotiationHistory: [initialOffer],
@@ -229,10 +230,9 @@ export function useAgreeTerms() {
       const target = transfersStore.find((t) => t.id === transferId);
       if (!target) throw new Error("Transfer not found");
 
-      // Each agreed set of terms receives its own examination. This is especially
-      // important after a counter based on a prior finding: the revised offer
-      // must be reviewed independently rather than reusing a flagged result.
-      const defaultExam: MedicalExam = {
+      // Reuse an existing examination when a counter offer is accepted so the
+      // negotiation does not create duplicate medical records.
+      const medicalExam: MedicalExam = target.medicalExam || {
         id: `med-${Date.now()}`,
         transferId: target.id,
         athleteId: target.athleteId,
@@ -248,7 +248,7 @@ export function useAgreeTerms() {
             ...t,
             status: "TERMS_AGREED" as TransferStatus,
             lastActivity: "Just now",
-            medicalExam: defaultExam,
+            medicalExam,
           };
         }
         return t;
@@ -349,6 +349,7 @@ export function usePassMedicalExam() {
           return {
             ...t,
             status: "ACCEPTED" as TransferStatus,
+            medicalCompleted: true,
             lastActivity: "Just now",
             signingId: createdSigningId,
             medicalExam: t.medicalExam
@@ -428,6 +429,7 @@ export function useRecordMedicalFinding() {
           return {
             ...t,
             status: newTransferStatus,
+            medicalCompleted: true,
             lastActivity: "Just now",
             medicalExam: {
               id: target.medicalExam?.id || `med-${Date.now()}`,
@@ -444,6 +446,62 @@ export function useRecordMedicalFinding() {
       });
 
       return transfersStore.find((t) => t.id === data.transferId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transfers"] });
+      queryClient.invalidateQueries({ queryKey: ["scouting"] });
+    },
+  });
+}
+
+export function useRecordMedicalFindings() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: {
+      transferId: string;
+      findings: Array<{
+        condition: string;
+        severity: FindingSeverity;
+        note: string;
+        disqualifying: boolean;
+      }>;
+    }) => {
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      const target = transfersStore.find((transfer) => transfer.id === data.transferId);
+      if (!target) throw new Error("Transfer not found");
+
+      const findings: MedicalFinding[] = data.findings.map((finding, index) => ({
+        id: `fnd-${Date.now()}-${index}`,
+        examId: target.medicalExam?.id || `med-${Date.now()}`,
+        condition: finding.condition,
+        severity: finding.severity,
+        note: finding.note,
+        disqualifying: finding.disqualifying,
+      }));
+      const hasDisqualifyingFinding = findings.some((finding) => finding.disqualifying);
+
+      transfersStore = transfersStore.map((transfer) => {
+        if (transfer.id !== data.transferId) return transfer;
+        return {
+          ...transfer,
+          status: hasDisqualifyingFinding ? "DISQUALIFIED" : "MEDICAL_FLAGGED",
+          medicalCompleted: true,
+          lastActivity: "Just now",
+          medicalExam: {
+            id: target.medicalExam?.id || `med-${Date.now()}`,
+            transferId: transfer.id,
+            athleteId: transfer.athleteId,
+            status: hasDisqualifyingFinding ? "FAILED" : "FLAGGED",
+            examDate: target.medicalExam?.examDate || new Date().toISOString().split("T")[0],
+            clinician: target.medicalExam?.clinician || "Dr. Patrick Rutayisire",
+            findings: [...(target.medicalExam?.findings || []), ...findings],
+          },
+        };
+      });
+
+      return transfersStore.find((transfer) => transfer.id === data.transferId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transfers"] });
@@ -490,6 +548,7 @@ export function useAddMedicalFinding() {
         if (t.id === data.transferId) {
           return {
             ...t,
+            medicalCompleted: true,
             medicalExam: {
               id: target.medicalExam?.id || `med-${Date.now()}`,
               transferId: t.id,
@@ -521,11 +580,45 @@ export function useAcceptTransferOffer() {
   const queryClient = useQueryClient();
   const agreeTermsMutation = useAgreeTerms();
   const passMedicalExamMutation = usePassMedicalExam();
+  const createSigningMutation = useCreateSigning();
 
   return useMutation({
     mutationFn: async (transferId: string) => {
       const target = transfersStore.find((t) => t.id === transferId);
       if (!target) throw new Error("Transfer not found");
+
+      if ((target.status === "COUNTERED" || target.status === "MEDICAL_FLAGGED") && target.medicalCompleted) {
+        let createdSigningId = target.signingId || `sng-${Date.now()}`;
+
+        if (!target.signingId) {
+          const signing = await createSigningMutation.mutateAsync({
+            athleteName: target.athleteName,
+            transferId: target.id,
+            scoutingTargetId: target.scoutingTargetId || undefined,
+            contractLengthMonths: 36,
+            salaryAmount: Math.round(target.currentOfferFee / 12),
+            salaryPeriod: "MONTHLY",
+            signingBonus: Math.round(target.currentOfferFee * 0.1),
+            effectiveDate: new Date().toISOString().split("T")[0],
+            registrationWindowOpen: true,
+          });
+          createdSigningId = signing.id;
+        }
+
+        transfersStore = transfersStore.map((transfer) =>
+          transfer.id === transferId
+            ? {
+                ...transfer,
+                status: "ACCEPTED" as TransferStatus,
+                medicalCompleted: true,
+                signingId: createdSigningId,
+                lastActivity: "Just now",
+              }
+            : transfer
+        );
+
+        return transfersStore.find((transfer) => transfer.id === transferId);
+      }
 
       if (target.medicalExam?.status === "PASSED") {
         return passMedicalExamMutation.mutateAsync(transferId);
