@@ -582,10 +582,6 @@ export function useAcceptTransferOffer() {
       const target = transfersStore.find((t) => t.id === transferId);
       if (!target) throw new Error("Transfer not found");
 
-      if (target.status === "ACCEPTED") {
-        return target;
-      }
-
       if (target.status === "MEDICAL_FLAGGED" && target.medicalCompleted) {
         let createdSigningId = target.signingId ?? null;
 
@@ -622,9 +618,13 @@ export function useAcceptTransferOffer() {
 
       if (target.status === "MEDICAL_SCHEDULED") {
         return passMedicalExamMutation.mutateAsync(transferId);
-      } else {
+      }
+
+      if (target.status === "OPEN" || target.status === "COUNTERED") {
         return agreeTermsMutation.mutateAsync(transferId);
       }
+
+      throw new Error(`Transfer cannot be accepted from status ${target.status}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transfers"] });
