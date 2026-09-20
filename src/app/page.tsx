@@ -54,6 +54,12 @@ export default function Home() {
           >
             Get Started
           </Link>
+          <Link
+            href="/dashboard"
+            className="bg-primary text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-tertiary hover:-translate-y-0.5 transition-all shadow-sm hover:shadow-md"
+          >
+            Dashboard
+          </Link>
         </div>
       </header>
 
