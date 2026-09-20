@@ -4,7 +4,6 @@ import { useState } from "react";
 import { LogOut, Settings, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { MockUser } from "@/mocks/user.mock";
-import { ThemeToggle } from "@/components/theme-toggle.component";
 
 interface UserMenuProps {
   user: MockUser;
@@ -58,7 +57,7 @@ export function UserMenu({ user, isCollapsed = false }: UserMenuProps) {
             role="menu"
             aria-label="User menu"
             className={cn(
-              "absolute z-20 min-w-[220px] rounded-xl border border-border bg-card py-1 shadow-lg text-card-foreground",
+              "absolute z-20 w-[min(220px,calc(100vw-1rem))] max-w-[calc(100vw-1rem)] min-w-0 rounded-xl border border-border bg-card py-1 text-card-foreground shadow-lg",
               isCollapsed
                 ? "bottom-0 left-full ml-2"
                 : "bottom-full left-0 mb-1"
@@ -72,12 +71,6 @@ export function UserMenu({ user, isCollapsed = false }: UserMenuProps) {
                   {user.role}
                 </span>
               )}
-            </div>
-
-            {/* Theme switcher row */}
-            <div className="px-3 py-2 border-b border-border flex items-center justify-between">
-              <span className="text-xs text-muted-foreground font-medium">Theme</span>
-              <ThemeToggle />
             </div>
 
             <div className="py-1">

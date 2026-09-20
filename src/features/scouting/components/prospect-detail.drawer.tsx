@@ -70,9 +70,9 @@ export function ProspectDetailDrawer({
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div className="fixed inset-y-0 right-0 flex w-full max-w-md pl-4 sm:pl-10">
         {/* Drawer Panel */}
-        <div className="w-screen max-w-md bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
+        <div className="w-full bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border bg-muted/20">
             <div className="flex items-center gap-3">
