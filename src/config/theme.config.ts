@@ -1,6 +1,12 @@
 import type { ClubBrand } from "@/types/theme.types";
 
 /**
+ * Temporarily lock the application to its light palette while retaining the
+ * theme system for a future dark-mode release.
+ */
+export const DARK_MODE_ENABLED = false;
+
+/**
  * Default ClubSheet brand palette used when no custom club branding is provided.
  */
 export const DEFAULT_CLUBSHEET_BRAND: ClubBrand = {

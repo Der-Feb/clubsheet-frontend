@@ -7,7 +7,7 @@ import type {
   ClubBrand,
   ThemeContextValue,
 } from "@/types/theme.types";
-import { DEFAULT_CLUBSHEET_BRAND } from "@/config/theme.config";
+import { DARK_MODE_ENABLED, DEFAULT_CLUBSHEET_BRAND } from "@/config/theme.config";
 import { applyThemeToElement } from "@/lib/palette-generator.utils";
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null);
@@ -96,6 +96,10 @@ export function ThemeProvider({
 
   // Compute resolved mode ("light" | "dark")
   const resolvedMode: ResolvedThemeMode = useMemo(() => {
+    if (!DARK_MODE_ENABLED) {
+      return "light";
+    }
+
     if (mode === "system") {
       return systemIsDark ? "dark" : "light";
     }

@@ -4,6 +4,7 @@ import React from "react";
 import { Sun, Moon, Laptop } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme.hook";
 import type { ThemeMode } from "@/types/theme.types";
+import { DARK_MODE_ENABLED } from "@/config/theme.config";
 import { cn } from "@/lib/utils";
 
 interface ThemeToggleProps {
@@ -19,6 +20,10 @@ export function ThemeToggle({
   variant = "segmented",
 }: ThemeToggleProps) {
   const { mode, resolvedMode, setMode } = useTheme();
+
+  if (!DARK_MODE_ENABLED) {
+    return null;
+  }
 
   if (variant === "icon-button") {
     const nextMode = resolvedMode === "dark" ? "light" : "dark";

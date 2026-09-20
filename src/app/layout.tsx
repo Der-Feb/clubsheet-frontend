@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import Script from "next/script";
 import { ThemeProvider } from "@/components/theme-provider.component";
+import { DARK_MODE_ENABLED } from "@/config/theme.config";
 import type { ThemeMode } from "@/types/theme.types";
 import "./globals.css";
 import Providers from "./provider";
@@ -21,10 +22,12 @@ export const metadata: Metadata = {
   title: "ClubSheet - Club Management Platform",
   description: "A modern management platform designed specifically for football clubs and academies",
   icons: {
-    icon: [
-      { url: "/favicon/favicon-light.ico", media: "(prefers-color-scheme: light)" },
-      { url: "/favicon/favicon-dark.ico",  media: "(prefers-color-scheme: dark)"  },
-    ],
+    icon: DARK_MODE_ENABLED
+      ? [
+          { url: "/favicon/favicon-light.ico", media: "(prefers-color-scheme: light)" },
+          { url: "/favicon/favicon-dark.ico", media: "(prefers-color-scheme: dark)" },
+        ]
+      : [{ url: "/favicon/favicon-light.ico" }],
   },
 };
 
@@ -34,7 +37,8 @@ const antiFlashScript = `
   try {
     var match = document.cookie.match(/(?:^|; )clubsheet_theme_mode=([^;]*)/);
     var mode = match ? decodeURIComponent(match[1]) : 'system';
-    var isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var darkModeEnabled = ${DARK_MODE_ENABLED};
+    var isDark = darkModeEnabled && (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches));
     if (isDark) {
       document.documentElement.classList.add('dark');
       document.documentElement.setAttribute('data-theme', 'dark');
