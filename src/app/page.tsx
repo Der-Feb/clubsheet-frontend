@@ -30,12 +30,12 @@ const starterItems = [
 
 export default function Home() {
   return (
-    <div className="bg-quaternary">
+    <div className="home-page bg-quaternary">
 
       {/* Navbar */}
       <header className="flex justify-between items-center w-full px-6 py-4 sticky top-0 z-100 bg-quaternary/90 backdrop-blur-sm border-b border-secondary/50">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo-light-clip.jpeg" alt="ClubSheet" width={22} height={16} />
+          <Image src="/images/logo-light-clip.jpeg" alt="ClubSheet" width={22} height={16} style={{ objectFit: 'contain' }} />
           <span className="text-base font-bold ml-1 text-primary">ClubSheet</span>
         </Link>
 
@@ -58,9 +58,9 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section id="features" className="flex w-screen">
-        <div className="flex-1 pl-13 pt-[4.6rem] left-home-hero-section">
-          <div className="inline-flex items-center gap-2 bg-secondary rounded-[.4rem] px-3 py-1.5">
+      <section id="features" className="flex min-h-[calc(100svh-65px)] w-full flex-col overflow-hidden lg:flex-row">
+        <div className="flex flex-1 flex-col justify-center px-6 py-10 sm:px-10 lg:pl-13 lg:pr-6 lg:py-8 left-home-hero-section">
+          <div className="inline-flex w-max items-center gap-2 bg-secondary rounded-[.4rem] px-3 py-1.5">
             <div className="h-[.6rem] w-[.6rem] bg-primary rounded-full shrink-0 animate-swell" />
             <span className="font-semibold text-[.65rem] leading-none text-zinc-700">NEW PLATFORM UPDATE</span>
           </div>
@@ -96,7 +96,7 @@ export default function Home() {
                   className="relative h-7 w-7 rounded-full border-2 border-white overflow-hidden shrink-0 animate-wave"
                   style={{ zIndex: avatarLinks.length - ndx, animationDelay: `${ndx * 0.2}s` }}
                 >
-                  <Image src={avatar} alt={`Avatar ${ndx}`} fill className="object-cover" />
+                  <Image src={avatar} alt={`Avatar ${ndx}`} fill sizes="28px" className="object-cover" />
                 </div>
               ))}
             </div>
@@ -104,7 +104,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex-1 right-home-hero-section pr-12 pt-[4.6rem] relative">
+        <div className="relative flex flex-1 items-center px-6 py-8 sm:px-10 lg:py-8 lg:pl-6 lg:pr-12 right-home-hero-section">
           <div
             className="absolute -left-30 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,95,49,0.12)] border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
             style={{ animationDelay: ".3s" }}
@@ -131,8 +131,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-fit shadow-[10px_20px_50px_rgba(0,0,0,0.67)] rounded-2xl translate-y-5 mt-22 hover:scale-[1.02] transition-transform duration-300 cursor-default">
-            <Image src="/hero-image.jpeg" alt="ClubSheet dashboard" width={720} height={720} className="rounded-2xl" />
+          <div className="mt-8 w-full max-w-2xl translate-y-2 overflow-hidden rounded-2xl shadow-[10px_20px_50px_rgba(0,0,0,0.67)] transition-transform duration-300 hover:scale-[1.02] cursor-default lg:mt-0 lg:translate-y-5">
+            <Image src="/images/hero-image.jpeg" alt="ClubSheet dashboard" width={1360} height={768} className="h-auto max-h-[calc(100svh-12rem)] w-full rounded-2xl object-contain" />
           </div>
 
           <div
@@ -314,7 +314,7 @@ export default function Home() {
 
             <div className="col-span-2 sm:col-span-2 flex flex-col gap-4">
               <div className="flex items-center gap-2">
-                <Image src="/logo-dark-clip.jpeg" alt="ClubSheet" width={20} height={15} className="rounded-sm opacity-90" />
+                <Image src="/images/logo-dark-clip.jpeg" alt="ClubSheet" width={20} height={15} className="rounded-sm opacity-90" style={{ objectFit: 'contain' }} />
                 <span className="text-white font-bold text-xs tracking-tight">ClubSheet</span>
               </div>
               <p className="text-[0.65rem] leading-relaxed max-w-68">
