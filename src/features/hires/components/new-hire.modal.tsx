@@ -47,6 +47,17 @@ export function NewHireModal({
   );
 
   useEffect(() => {
+    if (!isOpen) {
+      setPersonName("");
+      setPersonEmail("");
+      setRole("Coach");
+      setContractLengthMonths(24);
+      setSalaryAmount(5000);
+      setSalaryPeriod("MONTHLY");
+      setSigningBonus(5000);
+      setStartDate(new Date().toISOString().split("T")[0]);
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onClose();
     };

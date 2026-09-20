@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   X,
@@ -161,6 +162,7 @@ export function TransferDetailDrawer({
   onWithdraw,
   isSubmitting = false,
 }: TransferDetailDrawerProps) {
+  const router = useRouter();
   // Inline counter form state
   const [showCounterForm, setShowCounterForm] = useState(false);
   const [counterFee, setCounterFee] = useState<number>(0);
@@ -621,7 +623,10 @@ export function TransferDetailDrawer({
                         <div className="pt-2 border-t border-border/40 border-border">
                           <button
                             type="button"
-                            onClick={() => setShowCounterForm(true)}
+                            onClick={() => {
+                              onClose();
+                              router.push(`/dashboard/medical?transferId=${transfer.id}&recordFinding=active`);
+                            }}
                             className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/5 px-2.5 py-1 text-[11px] font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
                           >
                             <Plus className="h-3 w-3" />

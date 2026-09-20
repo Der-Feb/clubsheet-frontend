@@ -39,7 +39,7 @@ export const MOCK_MEDICAL_RECORDS: MedicalRecord[] = [
     result: "PENDING",
     overallComments: "Sample submitted to the competition laboratory; result pending.",
     clinician: "Competition Medical Officer",
-    transferId: "trf-2",
+    transferId: "trf-102",
     createdAt: "2026-09-04",
   },
 ];

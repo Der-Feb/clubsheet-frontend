@@ -77,6 +77,7 @@ function SigningsContent() {
   const [openKebabId, setOpenKebabId] = useState<string | null>(null);
 
   // Queries & Mutations
+  const { data: allSignings = [] } = useSignings("ALL");
   const { data: signings = [], isLoading } = useSignings(statusFilter);
   const createSigningMutation = useCreateSigning();
   const acceptInvitationMutation = useAcceptSigningInvitation();
@@ -115,10 +116,10 @@ function SigningsContent() {
   });
 
   // Calculate stats
-  const totalCount = signings.length;
-  const awaitingCount = signings.filter((s) => s.status === "AWAITING_ACCEPTANCE").length;
-  const pendingRegCount = signings.filter((s) => s.status === "PENDING_REGISTRATION").length;
-  const registeredCount = signings.filter((s) => s.status === "REGISTERED").length;
+  const totalCount = allSignings.length;
+  const awaitingCount = allSignings.filter((s) => s.status === "AWAITING_ACCEPTANCE").length;
+  const pendingRegCount = allSignings.filter((s) => s.status === "PENDING_REGISTRATION").length;
+  const registeredCount = allSignings.filter((s) => s.status === "REGISTERED").length;
 
   // Handlers with URL param sync
   const handleOpenDrawer = (signing: Signing) => {

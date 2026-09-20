@@ -122,8 +122,10 @@ function HiresContent() {
   }) => {
     createHireMutation.mutate(data, {
       onSuccess: (newHire) => {
-        handleCloseModal();
-        handleOpenDrawer(newHire);
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("newHire");
+        params.set("hireId", newHire.id);
+        router.push(`?${params.toString()}`);
       },
     });
   };

@@ -325,23 +325,18 @@ export function usePassMedicalExam() {
       }
 
       // 1. Create Signing record & shared contract
-      let createdSigningId = `sng-${Date.now()}`;
-      try {
-        const res = await createSigningMutation.mutateAsync({
-          athleteName: target.athleteName,
-          transferId: target.id,
-          scoutingTargetId: target.scoutingTargetId || undefined,
-          contractLengthMonths: 36,
-          salaryAmount: Math.round(target.currentOfferFee / 12),
-          salaryPeriod: "MONTHLY",
-          signingBonus: Math.round(target.currentOfferFee * 0.1),
-          effectiveDate: new Date().toISOString().split("T")[0],
-          registrationWindowOpen: true,
-        });
-        if (res?.id) createdSigningId = res.id;
-      } catch {
-        // Continue
-      }
+      const signing = await createSigningMutation.mutateAsync({
+        athleteName: target.athleteName,
+        transferId: target.id,
+        scoutingTargetId: target.scoutingTargetId || undefined,
+        contractLengthMonths: 36,
+        salaryAmount: Math.round(target.currentOfferFee / 12),
+        salaryPeriod: "MONTHLY",
+        signingBonus: Math.round(target.currentOfferFee * 0.1),
+        effectiveDate: new Date().toISOString().split("T")[0],
+        registrationWindowOpen: true,
+      });
+      const createdSigningId = signing.id;
 
       // 2. Update Transfer to ACCEPTED
       transfersStore = transfersStore.map((t) => {
@@ -587,10 +582,14 @@ export function useAcceptTransferOffer() {
       const target = transfersStore.find((t) => t.id === transferId);
       if (!target) throw new Error("Transfer not found");
 
-      if ((target.status === "COUNTERED" || target.status === "MEDICAL_FLAGGED") && target.medicalCompleted) {
-        let createdSigningId = target.signingId || `sng-${Date.now()}`;
+      if (target.status === "ACCEPTED") {
+        return target;
+      }
 
-        if (!target.signingId) {
+      if (target.status === "MEDICAL_FLAGGED" && target.medicalCompleted) {
+        let createdSigningId = target.signingId ?? null;
+
+        if (!createdSigningId) {
           const signing = await createSigningMutation.mutateAsync({
             athleteName: target.athleteName,
             transferId: target.id,
@@ -602,6 +601,7 @@ export function useAcceptTransferOffer() {
             effectiveDate: new Date().toISOString().split("T")[0],
             registrationWindowOpen: true,
           });
+          if (!signing.id) throw new Error("Signing creation did not return an ID");
           createdSigningId = signing.id;
         }
 
@@ -620,7 +620,7 @@ export function useAcceptTransferOffer() {
         return transfersStore.find((transfer) => transfer.id === transferId);
       }
 
-      if (target.medicalExam?.status === "PASSED") {
+      if (target.status === "MEDICAL_SCHEDULED") {
         return passMedicalExamMutation.mutateAsync(transferId);
       } else {
         return agreeTermsMutation.mutateAsync(transferId);

@@ -18,9 +18,13 @@ export function useCurrentClub(): UseCurrentClubReturn {
   const [activeClub, setActiveClubState] = useState<Club>(MOCK_ACTIVE_CLUB);
 
   useEffect(() => {
-    const storedId = window.localStorage.getItem("clubsheet_active_club");
-    const storedClub = MOCK_CLUBS.find((club) => club.id === storedId);
-    if (storedClub) setActiveClubState(storedClub);
+    try {
+      const storedId = window.localStorage.getItem("clubsheet_active_club");
+      const storedClub = MOCK_CLUBS.find((club) => club.id === storedId);
+      if (storedClub) setActiveClubState(storedClub);
+    } catch {
+      // Storage may be unavailable in privacy-restricted browsers.
+    }
   }, []);
 
   const setActiveClub = (club: Club) => {

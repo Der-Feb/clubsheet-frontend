@@ -46,6 +46,19 @@ export function NewSigningModal({
   >([]);
 
   useEffect(() => {
+    if (!isOpen) {
+      setAthleteName("");
+      setContractLengthMonths(36);
+      setSalaryAmount(7500);
+      setSalaryPeriod("MONTHLY");
+      setSigningBonus(10000);
+      setEffectiveDate(new Date().toISOString().split("T")[0]);
+      setPerformanceAddOn("");
+      setSellOnClause("");
+      setRegistrationWindowOpen(true);
+      setOtherFees([]);
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onClose();
     };
