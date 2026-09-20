@@ -72,13 +72,13 @@ export function SigningDetailDrawer({
       case "DRAFT":
         return 1;
       case "AWAITING_ACCEPTANCE":
-        return 2;
-      case "PENDING_REGISTRATION":
         return 3;
-      case "REGISTERED":
+      case "PENDING_REGISTRATION":
         return 4;
+      case "REGISTERED":
+        return 5;
       default:
-        return 2;
+        return 3;
     }
   };
 
@@ -94,9 +94,9 @@ export function SigningDetailDrawer({
         aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div className="fixed inset-y-0 right-0 flex w-full max-w-md pl-4 sm:pl-10">
         {/* Drawer Panel */}
-        <div className="w-screen max-w-md bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
+        <div className="w-full bg-card border-l border-border shadow-2xl text-card-foreground animate-in slide-in-from-right duration-250 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border bg-muted/20">
             <div className="flex items-center gap-3">
@@ -159,12 +159,13 @@ export function SigningDetailDrawer({
                 Signing Progress Timeline
               </h3>
 
-              <div className="grid grid-cols-4 gap-1 pt-2">
+              <div className="grid grid-cols-5 gap-1 pt-2">
                 {[
                   { step: 1, label: "Draft" },
-                  { step: 2, label: "Invitation Sent" },
-                  { step: 3, label: "Accepted" },
-                  { step: 4, label: "Registered" },
+                  { step: 2, label: "Contract" },
+                  { step: 3, label: "Invitation" },
+                  { step: 4, label: "Accepted" },
+                  { step: 5, label: "Registered" },
                 ].map((item) => {
                   const isDone = item.step <= currentStep;
                   const isCurrent = item.step === currentStep;

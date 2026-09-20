@@ -109,13 +109,13 @@ export default function SigningDetailPage({
       case "DRAFT":
         return 1;
       case "AWAITING_ACCEPTANCE":
-        return 2;
-      case "PENDING_REGISTRATION":
         return 3;
-      case "REGISTERED":
+      case "PENDING_REGISTRATION":
         return 4;
+      case "REGISTERED":
+        return 5;
       default:
-        return 2;
+        return 3;
     }
   };
 
@@ -221,12 +221,13 @@ export default function SigningDetailPage({
           Signing Workflow Stepper
         </h2>
 
-        <div className="grid grid-cols-4 gap-2 pt-2">
+        <div className="grid grid-cols-2 gap-2 pt-2 sm:grid-cols-5">
           {[
-            { step: 1, label: "Draft Offer", desc: "Contract created" },
-            { step: 2, label: "Invitation Sent", desc: "Awaiting response" },
-            { step: 3, label: "Invitation Accepted", desc: "Contract confirmed" },
-            { step: 4, label: "Registered", desc: "Official league registration" },
+            { step: 1, label: "Draft Offer", desc: "Terms proposed" },
+            { step: 2, label: "Contract Created", desc: "Terms recorded" },
+            { step: 3, label: "Invitation Sent", desc: "Awaiting response" },
+            { step: 4, label: "Invitation Accepted", desc: "Contract confirmed" },
+            { step: 5, label: "Registered", desc: "Official league registration" },
           ].map((item) => {
             const isDone = item.step <= currentStep;
             const isCurrent = item.step === currentStep;
