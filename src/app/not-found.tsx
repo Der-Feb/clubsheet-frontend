@@ -5,7 +5,7 @@ import BackButton from "../components/buttons/back.button";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-quaternary flex flex-col justify-between p-6 sm:p-10 relative overflow-hidden">
+    <div className="static-brand-page relative flex min-h-dvh flex-col justify-between overflow-hidden bg-quaternary p-6 sm:p-10">
       {/* Subtle Background Ambience */}
       <div
         className="absolute inset-0 pointer-events-none opacity-40"

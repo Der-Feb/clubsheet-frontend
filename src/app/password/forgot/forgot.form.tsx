@@ -24,7 +24,7 @@ export default function ForgotForm() {
         </div>
 
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Check your email</h2>
+          <h2 className="text-lg font-bold text-gray-900">Check your email</h2>
           <p className="text-gray-500 text-xs sm:text-sm mt-1 max-w-sm mx-auto">
             We sent a password reset link to <span className="font-semibold text-gray-700">{email}</span>.
           </p>
@@ -61,7 +61,7 @@ export default function ForgotForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 text-xs sm:text-sm">
+    <form onSubmit={handleSubmit} className="auth-form space-y-4 text-[0.7rem] sm:text-xs [&_[data-slot=field-label]]:text-xs">
       <Field>
         <FieldLabel htmlFor="email">Email Address</FieldLabel>
         <div className="relative">

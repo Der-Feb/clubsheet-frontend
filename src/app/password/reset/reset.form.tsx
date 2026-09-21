@@ -6,12 +6,14 @@ import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { PasswordRequirements, passwordMeetsRequirements } from "@/components/auth/password-requirements";
 
 export default function ResetForm() {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,8 +22,8 @@ export default function ResetForm() {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 5) {
-      setError("Password must be at least 5 characters long");
+    if (!passwordMeetsRequirements(password)) {
+      setError("Please meet the password requirements below.");
       return;
     }
 
@@ -39,7 +41,7 @@ export default function ResetForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 text-xs sm:text-sm">
+    <form onSubmit={handleSubmit} className="auth-form space-y-4 text-xs sm:text-sm">
       {error && (
         <FieldError className="p-2.5 rounded-lg bg-red-50 text-red-600 border border-red-200">
           {error}
@@ -56,6 +58,8 @@ export default function ResetForm() {
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onFocus={() => setIsPasswordFocused(true)}
+            onBlur={() => setIsPasswordFocused(false)}
             required
             className="pr-10"
           />
@@ -68,6 +72,7 @@ export default function ResetForm() {
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
+        <PasswordRequirements password={password} isVisible={isPasswordFocused} />
       </Field>
 
       <Field>
@@ -92,6 +97,9 @@ export default function ResetForm() {
             {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
+        {confirmPassword.length > 0 && confirmPassword !== password && (
+          <p className="mt-1 text-[0.7rem] text-red-600 sm:text-xs">Passwords do not match.</p>
+        )}
       </Field>
 
       <button

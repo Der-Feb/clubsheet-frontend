@@ -99,7 +99,8 @@
 }
 
 /* The marketing homepage keeps ClubSheet's classic green identity. */
-.home-page {
+.home-page,
+.static-brand-page {
   --color-primary: #005F31;
   --color-primary-hover: #004d27;
   --color-primary-active: #003b1e;
@@ -270,6 +271,10 @@
 
 .home-nav-scroll::-webkit-scrollbar {
   display: none;
+}
+
+.auth-form input::placeholder {
+  font-size: 0.875rem;
 }
 
 .home-brand-shadow-card {
