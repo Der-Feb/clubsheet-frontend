@@ -48,7 +48,7 @@ export default function InfiniteMarquee() {
     /* Outer clip wrapper: [clip-path:inset(0)] prevents ANYTHING inside from overflowing the page boundary */
     <div className="relative w-full overflow-hidden [clip-path:inset(0)] border-y border-primary/10 bg-quaternary py-1 select-none sm:py-4">
       {/* Track wrapper forced to exact 100% parent width */}
-      <div className="w-full overflow-hidden">
+      <div className="w-full overflow-hidden motion-reduce:overflow-x-auto">
         <div 
           ref={containerRef} 
           className="flex w-max shrink-0 items-center gap-8"

@@ -59,7 +59,7 @@ export default function Home() {
               Get Started Free
             </Link>
             <Link
-              href="#hero"
+              href="#features"
               className="px-5 py-2.5 rounded-xl bg-white border border-secondary text-xs font-semibold text-zinc-700 hover:border-primary hover:text-primary hover:-translate-y-0.5 transition-all shadow-sm"
             >
               See How It Works
