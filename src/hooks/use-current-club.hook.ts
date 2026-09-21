@@ -49,8 +49,8 @@ export interface UseCurrentClubReturn {
 }
 
 /**
- * Returns the currently active club and the full list of available clubs.
- * Currently backed by mock data — replace internals with real state/API later.
+ * Returns the shared active club selection and the full list of available mock clubs.
+ * The selection hydrates from browser storage; updates are shared across hook consumers and saved.
  */
 export function useCurrentClub(): UseCurrentClubReturn {
   const activeClubIdSnapshot = useSyncExternalStore(

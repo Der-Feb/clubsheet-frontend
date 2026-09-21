@@ -19,6 +19,10 @@ export function getClubThemeCookieName(clubId: string): string {
   return `${CLUB_THEME_COOKIE_PREFIX}${clubId}`;
 }
 
+/**
+ * Reads the active club ID from browser storage.
+ * Returns `null` outside the browser or when storage is missing or inaccessible.
+ */
 export function getStoredActiveClubId(): string | null {
   if (typeof window === "undefined") return null;
 
@@ -29,6 +33,10 @@ export function getStoredActiveClubId(): string | null {
   }
 }
 
+/**
+ * Persists the active club ID for both client-side restoration and server rendering.
+ * Does nothing outside the browser; the cookie is still written if local storage is unavailable.
+ */
 export function persistActiveClubId(clubId: string): void {
   if (typeof window === "undefined") return;
 
@@ -41,6 +49,10 @@ export function persistActiveClubId(clubId: string): void {
   document.cookie = `${ACTIVE_CLUB_COOKIE_NAME}=${encodeURIComponent(clubId)}; max-age=31536000; path=/; SameSite=Lax`;
 }
 
+/**
+ * Reads a club's cached brand and generated CSS variables from browser storage.
+ * Returns `null` when the snapshot cannot be read or lacks the required fields.
+ */
 export function getStoredClubTheme(clubId: string): StoredClubTheme | null {
   if (typeof window === "undefined") return null;
 
@@ -63,6 +75,10 @@ export function getStoredClubBrand(clubId: string): ClubBrand | null {
   return getStoredClubTheme(clubId)?.brand || null;
 }
 
+/**
+ * Caches a club's brand and mode-specific CSS variables for client restoration,
+ * and writes the brand to a cookie for server rendering. Does nothing outside the browser.
+ */
 export function persistClubTheme(
   clubId: string,
   brand: ClubBrand,

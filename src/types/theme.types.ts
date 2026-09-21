@@ -85,6 +85,6 @@ export interface ThemeContextValue {
   setMode: (mode: ThemeMode) => void;
   /** The active club's brand colours (empty object = ClubSheet default). */
   brand: ClubBrand;
-  /** Update the active club brand and optionally associate it with a club ID. */
+  /** Update the active brand and persist it for the supplied or stored active club, when available. */
   setBrand: (brand: ClubBrand, clubId?: string) => void;
 }
