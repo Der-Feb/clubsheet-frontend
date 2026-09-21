@@ -40,7 +40,7 @@ export function MedicalHistoryTable({ membershipId }: { membershipId: string }) 
 
   return (
     <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full min-w-[700px] text-left text-xs">
+      <table className="w-full min-w-[43.75rem] text-left text-xs">
         <thead className="bg-muted/50 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
           <tr>
             <th className="px-4 py-3">Condition</th>

@@ -134,7 +134,7 @@ export default function AthletesPage() {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
           <p className="text-xs font-medium text-muted-foreground uppercase">Total Athletes</p>
           <p className="mt-1 text-2xl font-bold text-foreground">248</p>

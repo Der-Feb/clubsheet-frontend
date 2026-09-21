@@ -93,7 +93,7 @@ export function CreateGroupDialog({ isOpen, onClose }: CreateGroupDialogProps) {
               <div className="space-y-2">
                 <label className="text-xs font-semibold text-foreground">Group Type</label>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <button
                     type="button"
                     onClick={() => setGroupType('CUSTOM')}

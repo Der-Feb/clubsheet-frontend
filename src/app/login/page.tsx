@@ -4,8 +4,8 @@ import LoginForm from "./login.form";
 
 export default function LoginPage() {
   return (
-    <div className="h-screen w-screen overflow-hidden flex items-center justify-center bg-linear-to-br from-amber-50 via-teal-50 to-emerald-100 p-4 sm:p-6 lg:p-8">
-      <div className="relative w-full max-w-5xl h-full max-h-[90vh] bg-[#111111] rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row">
+    <div className="min-h-dvh w-full overflow-y-auto flex items-center justify-center bg-linear-to-br from-amber-50 via-teal-50 to-emerald-100 p-4 sm:p-6 lg:p-8">
+      <div className="relative w-full max-w-5xl min-h-[calc(100dvh-2rem)] lg:h-[90vh] lg:max-h-[90vh] bg-[#111111] rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row">
         {/* Left Hero Brand Panel - Server Rendered */}
         <div className="relative w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-between text-white z-10 overflow-hidden">
           <Image

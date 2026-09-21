@@ -57,7 +57,7 @@ export function UserMenu({ user, isCollapsed = false }: UserMenuProps) {
             role="menu"
             aria-label="User menu"
             className={cn(
-              "absolute z-20 w-[min(220px,calc(100vw-1rem))] max-w-[calc(100vw-1rem)] min-w-0 rounded-xl border border-border bg-card py-1 text-card-foreground shadow-lg",
+              "absolute z-20 w-[min(13.75rem,calc(100vw-1rem))] max-w-[calc(100vw-1rem)] min-w-0 rounded-xl border border-border bg-card py-1 text-card-foreground shadow-lg",
               isCollapsed
                 ? "bottom-0 left-full ml-2"
                 : "bottom-full left-0 mb-1"

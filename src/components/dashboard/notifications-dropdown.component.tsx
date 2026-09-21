@@ -139,7 +139,7 @@ export function NotificationsDropdown() {
         <div
           role="dialog"
           aria-label="Notifications panel"
-          className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl border border-border bg-card shadow-xl z-50 overflow-hidden text-card-foreground"
+          className="absolute right-0 mt-2 w-[min(20rem,calc(100vw-1rem))] sm:w-[min(24rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card shadow-xl z-50 overflow-hidden text-card-foreground"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border px-4 py-3 bg-muted/30">
@@ -195,7 +195,7 @@ export function NotificationsDropdown() {
           </div>
 
           {/* Notifications List */}
-          <div className="max-h-[360px] overflow-y-auto divide-y divide-border">
+          <div className="max-h-[22.5rem] overflow-y-auto divide-y divide-border">
             {filteredNotifications.length === 0 ? (
               <div className="py-10 text-center px-4">
                 <p className="text-sm font-medium text-foreground">

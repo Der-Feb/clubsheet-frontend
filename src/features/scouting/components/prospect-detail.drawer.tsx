@@ -121,7 +121,7 @@ export function ProspectDetailDrawer({
           {/* Body Content */}
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Rating & Market Value Overview */}
-            <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl border border-border bg-card shadow-xs">
+            <div className="grid grid-cols-1 gap-3 p-4 rounded-2xl border border-border bg-card shadow-xs sm:grid-cols-2">
               <div className="space-y-0.5">
                 <p className="text-[11px] font-semibold text-muted-foreground uppercase">
                   Overall Rating
@@ -289,7 +289,7 @@ export function ProspectDetailDrawer({
           </div>
 
           {/* Drawer Footer with Link to Full Prospect Page */}
-          <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
+          <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">
             <button
               type="button"
               onClick={onClose}

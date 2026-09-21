@@ -196,7 +196,7 @@ export function ContractDetailDrawer({
                 Contract Terms & Compensation
               </h3>
 
-              <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                 {/* Duration */}
                 <div className="rounded-xl border border-border bg-muted/30 p-3">
                   <span className="text-muted-foreground block text-[11px]">Duration</span>
@@ -326,7 +326,7 @@ export function ContractDetailDrawer({
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border bg-card shrink-0 flex items-center justify-between gap-3">
+          <div className="flex shrink-0 flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">
             <button
               type="button"
               onClick={onClose}

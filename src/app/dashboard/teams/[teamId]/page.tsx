@@ -54,7 +54,7 @@ export default async function TeamDetailPage({ params }: TeamDetailProps) {
           </button>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-border grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+        <div className="mt-6 grid grid-cols-1 gap-4 border-t border-border pt-6 text-xs sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <span className="text-muted-foreground block">Active Squad</span>
             <span className="font-semibold text-foreground">26 Athletes</span>

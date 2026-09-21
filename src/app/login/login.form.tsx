@@ -75,7 +75,7 @@ export default function LoginForm() {
         <div className="grow border-t border-gray-200" />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
           type="button"
           className="flex items-center justify-center gap-2 border border-gray-300 py-1.5 sm:py-2 rounded-lg hover:bg-gray-50 text-xs sm:text-sm font-medium text-gray-700 transition-colors cursor-pointer"

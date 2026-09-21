@@ -216,7 +216,7 @@ export function HireDetailDrawer({
               </div>
 
               {contract ? (
-                <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                   <div className="rounded-xl border border-border bg-muted/30 p-3">
                     <span className="text-muted-foreground block text-[11px]">Salary</span>
                     <span className="font-bold text-foreground text-sm">

@@ -175,7 +175,7 @@ function PermissionDetailContent({ permissionId }: { permissionId: string }) {
 
       {/* TAB 2: Authorized Staff Members */}
       {activeTab === "members" && (
-        <div className="rounded-2xl border border-border bg-card shadow-xs overflow-hidden">
+        <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-xs">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">

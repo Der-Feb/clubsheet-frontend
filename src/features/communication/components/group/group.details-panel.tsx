@@ -43,7 +43,7 @@ export function GroupDetailsPanel({ onOpenInvite }: GroupDetailsPanelProps) {
   const pref = groupConv?.notificationPreference || 'ALL';
 
   return (
-    <aside className="w-80 h-full flex flex-col bg-card border-l border-border overflow-hidden shrink-0 transition-all duration-300">
+    <aside className="h-full w-[min(20rem,100vw)] max-w-full shrink-0 flex flex-col overflow-hidden border-l border-border bg-card transition-all duration-300">
       {/* Panel Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <h3 className="text-sm font-bold text-foreground">

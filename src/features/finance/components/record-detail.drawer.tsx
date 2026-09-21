@@ -170,7 +170,7 @@ export function RecordDetailDrawer({
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
+          <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">
             {onDeleteRecord ? (
               <button
                 type="button"

@@ -17,7 +17,7 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm">
-      <FieldGroup className="grid grid-cols-2 gap-3">
+      <FieldGroup className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="first-name">First Name</FieldLabel>
           <Input id="first-name" name="firstName" placeholder="John" required />
@@ -54,7 +54,7 @@ export default function RegisterForm() {
         </div>
       </Field>
 
-      <FieldGroup className="grid grid-cols-2 gap-3">
+      <FieldGroup className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="dob">Date of Birth</FieldLabel>
           <div className="relative">
@@ -128,7 +128,7 @@ export default function RegisterForm() {
         <div className="grow border-t border-gray-200" />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
           type="button"
           className="flex items-center justify-center gap-2 border border-gray-300 py-1.5 sm:py-2 rounded-lg hover:bg-gray-50 text-xs sm:text-sm font-medium text-gray-700 transition-colors cursor-pointer"
