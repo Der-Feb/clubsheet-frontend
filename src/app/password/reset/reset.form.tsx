@@ -23,6 +23,7 @@ export default function ResetForm() {
     setError(null);
 
     if (!passwordMeetsRequirements(password)) {
+      setIsPasswordFocused(true);
       setError("Please meet the password requirements below.");
       return;
     }

@@ -12,6 +12,7 @@ export default function RegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [hasFailedPasswordValidation, setHasFailedPasswordValidation] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState<"Male" | "Female">("Male");
   const [error, setError] = useState<string | null>(null);
@@ -19,9 +20,11 @@ export default function RegisterForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!passwordMeetsRequirements(password)) {
+      setHasFailedPasswordValidation(true);
       setError("Please meet the password requirements below.");
       return;
     }
+    setHasFailedPasswordValidation(false);
     if (password !== confirmPassword) {
       setError("Your passwords do not match.");
       return;
@@ -60,6 +63,7 @@ export default function RegisterForm() {
             value={password}
             onChange={(event) => {
               setPassword(event.target.value);
+              setHasFailedPasswordValidation(false);
               setError(null);
             }}
             onFocus={() => setIsPasswordFocused(true)}
@@ -75,7 +79,10 @@ export default function RegisterForm() {
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
-        <PasswordRequirements password={password} isVisible={isPasswordFocused} />
+        <PasswordRequirements
+          password={password}
+          isVisible={isPasswordFocused || hasFailedPasswordValidation}
+        />
       </Field>
 
       <Field>
