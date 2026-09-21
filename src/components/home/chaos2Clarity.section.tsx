@@ -43,13 +43,11 @@ export function Chaos2ClaritySection() {
     const sticky     = stickyRef.current;
     const cardField  = cardFieldRef.current;
     if (!scrollWrap || !sticky || !cardField) return;
-    if (
-      window.matchMedia('(max-width: 1023px)').matches ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) return;
-
+    const media = gsap.matchMedia();
+    media.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
     const cardEls = gsap.utils.toArray<HTMLElement>('[data-chaos-card]', cardField);
     const floatTweens: (gsap.core.Tween | undefined)[] = [];
+    const sourceDimensions = new Map<HTMLElement, { width: number; height: number }>();
 
     // Set all initial states immediately so nothing is visible until scroll
     gsap.set(containerRef.current, { opacity: 0 });
@@ -136,14 +134,25 @@ export function Chaos2ClaritySection() {
           const slotEl = document.getElementById(`slot-${card.id}`);
           if (!slotEl) return;
 
-          // Capture live GSAP transform so targets are absolute (not cumulative)
+          // Measure the source without transforms so the morph can be reversed cleanly.
           const currentX = gsap.getProperty(el, 'x') as number;
           const currentY = gsap.getProperty(el, 'y') as number;
+          const currentRotation = gsap.getProperty(el, 'rotation') as number;
+          const currentScale = gsap.getProperty(el, 'scale') as number;
 
+          gsap.set(el, { clearProps: 'width,height', x: 0, y: 0, rotation: 0, scale: 1 });
+          const sourceRect = el.getBoundingClientRect();
+          gsap.set(el, {
+            x: currentX,
+            y: currentY,
+            rotation: currentRotation,
+            scale: currentScale,
+          });
           const cardRect = el.getBoundingClientRect();
           const slotRect = slotEl.getBoundingClientRect();
           const targetWidth = slotRect.width;
           const targetHeight = slotRect.height;
+          sourceDimensions.set(el, { width: sourceRect.width, height: sourceRect.height });
 
           const deltaX  = slotRect.left + slotRect.width  / 2 - cardRect.left - cardRect.width  / 2;
           const deltaY  = slotRect.top  + slotRect.height / 2 - cardRect.top  - cardRect.height / 2;
@@ -255,6 +264,12 @@ export function Chaos2ClaritySection() {
               duration: 0.5,
               ease: 'power2.out',
               overwrite: true,
+              ...(sourceDimensions.has(el)
+                ? {
+                    width: sourceDimensions.get(el)!.width,
+                    height: sourceDimensions.get(el)!.height,
+                  }
+                : {}),
               onComplete: () => {
                 gsap.set(el, { clearProps: 'width,height' });
                 floatTweens[i] = gsap.to(el, {
@@ -285,6 +300,8 @@ export function Chaos2ClaritySection() {
       ctx.revert();
       window.removeEventListener('resize', handleResize);
     };
+    });
+    return () => media.revert();
   }, []);
 
   return (

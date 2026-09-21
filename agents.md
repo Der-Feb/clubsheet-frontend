@@ -222,10 +222,6 @@ CSS calculations must be handled in CSS whenever the calculation is a presentati
 
 ---
 
-## 6.6 Commit Workflow
-
-Only create a git commit when the user explicitly asks for one. When committing, inspect the complete diff first and use a conventional, specific prefix that describes the change, such as `fix(css):`, `refactor(css):`, or `feat(css):`.
-
 Prefer:
 
 ```css
@@ -249,6 +245,10 @@ where appropriate.
 Do not use JavaScript for layout calculations unless the layout genuinely depends on runtime application state.
 
 ---
+
+## 6.6 Commit Workflow
+
+Only create a git commit when the user explicitly asks for one. When committing, inspect the complete diff first and use a conventional, specific prefix that describes the change, such as `fix(css):`, `refactor(css):`, or `feat(css):`.
 
 # 7. Colors and Design Tokens
 
@@ -566,12 +566,6 @@ Dialogs should:
 * avoid accidental destructive actions
 
 Destructive operations should require an appropriate confirmation.
-
----
-
-# Commit Workflow
-
-Only create commits when the user explicitly asks for them. After that request, inspect `git status` and the full `git diff` before committing, keep commits focused, and use meaningful, specific, one-sentence conventional messages with an appropriate prefix and scope, such as `fix(css): remove conflicting display utilities`, `refactor(css): remove unused helpers`, or `feat(css): add brand token support`.
 
 ---
 

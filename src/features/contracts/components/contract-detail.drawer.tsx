@@ -263,7 +263,7 @@ export function ContractDetailDrawer({
 
                 {/* Custom Additional Fees */}
                 {contract.otherFees && contract.otherFees.length > 0 && (
-                  <div className="col-span-2 rounded-xl border border-border bg-muted/30 p-3 space-y-2">
+                  <div className="col-span-full rounded-xl border border-border bg-muted/30 p-3 space-y-2">
                     <span className="text-muted-foreground block text-[11px] font-semibold uppercase tracking-wider">
                       Additional Fees & Commissions
                     </span>

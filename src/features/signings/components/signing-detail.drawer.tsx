@@ -284,7 +284,7 @@ export function SigningDetailDrawer({
                     </span>
                   </div>
 
-                  <div className="col-span-2 rounded-xl border border-border bg-muted/30 p-3 flex justify-between items-center">
+                  <div className="sm:col-span-2 rounded-xl border border-border bg-muted/30 p-3 flex justify-between items-center">
                     <div>
                       <span className="text-muted-foreground block text-[11px]">Signing Bonus</span>
                       <span className="font-bold text-emerald-500 text-sm">

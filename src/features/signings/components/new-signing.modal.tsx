@@ -200,7 +200,7 @@ export function NewSigningModal({
 
             {/* Salary Amount & Period */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <label className="font-semibold text-foreground mb-1 flex items-center gap-1">
                   <DollarSign className="h-3.5 w-3.5 text-muted-foreground" />
                   Salary Amount ($)

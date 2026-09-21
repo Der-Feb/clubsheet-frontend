@@ -97,7 +97,7 @@ export function OpenTransferModal({
           <div className="flex-1 overflow-y-auto py-4 space-y-4 text-xs pr-1">
             {/* Athlete Name & Position */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <label className="font-semibold text-foreground mb-1 flex items-center gap-1">
                   <User className="h-3.5 w-3.5 text-muted-foreground" />
                   Athlete Full Name <span className="text-rose-500">*</span>

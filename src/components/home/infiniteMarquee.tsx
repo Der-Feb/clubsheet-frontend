@@ -30,6 +30,7 @@ export default function InfiniteMarquee() {
 
   useEffect(() => {
     if (!containerRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const ctx = gsap.context(() => {
       gsap.to(containerRef.current, {

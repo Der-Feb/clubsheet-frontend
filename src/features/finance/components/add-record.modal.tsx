@@ -175,7 +175,7 @@ export function AddRecordModal({
 
           {/* Amount & Currency */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="col-span-2 space-y-1.5">
+            <div className="col-span-full space-y-1.5 sm:col-span-2">
               <label className="text-xs font-semibold text-foreground">
                 Amount <span className="text-danger">*</span>
               </label>

@@ -36,7 +36,7 @@ export default function Home() {
       <HomeNavbar />
 
       {/* Hero */}
-      <section id="features" className="flex min-h-[calc(100svh-4rem)] w-full flex-col overflow-hidden lg:flex-row">
+      <section id="hero" className="flex min-h-[calc(100svh-4rem)] w-full flex-col overflow-hidden lg:flex-row">
         <div className="flex min-w-0 flex-1 flex-col justify-center px-6 py-10 sm:px-10 lg:pl-13 lg:pr-6 lg:py-8 left-home-hero-section">
           <div className="inline-flex w-max items-center gap-2 bg-secondary rounded-[.4rem] px-3 py-1.5">
             <div className="h-[.6rem] w-[.6rem] bg-primary rounded-full shrink-0 animate-swell" />
@@ -59,7 +59,7 @@ export default function Home() {
               Get Started Free
             </Link>
             <Link
-              href="#features"
+              href="#hero"
               className="px-5 py-2.5 rounded-xl bg-white border border-secondary text-xs font-semibold text-zinc-700 hover:border-primary hover:text-primary hover:-translate-y-0.5 transition-all shadow-sm"
             >
               See How It Works

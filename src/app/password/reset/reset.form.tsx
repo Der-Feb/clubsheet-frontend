@@ -57,7 +57,10 @@ export default function ResetForm() {
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError(null);
+            }}
             onFocus={() => setIsPasswordFocused(true)}
             onBlur={() => setIsPasswordFocused(false)}
             required
@@ -84,7 +87,10 @@ export default function ResetForm() {
             type={showConfirmPassword ? "text" : "password"}
             placeholder="••••••••"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setError(null);
+            }}
             required
             className="pr-10"
           />
