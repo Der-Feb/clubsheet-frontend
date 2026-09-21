@@ -1,735 +1,105 @@
-╔══════════════════════════════════════╗
-║              HERO                    ║
-║                                      ║
-║     Run your club with clarity.      ║
-║          [3D CLUBSHEET UI]           ║
-╚══════════════════════════════════════╝
+# ClubSheet
 
-        ← INFINITE MARQUEE →
+ClubSheet is a shared workspace for sports clubs and academies.
 
- ATHLETES · TEAMS · TRAINING · MATCHES
- ACADEMY · KITS · FINANCE · MEDICAL
+Running a club involves much more than what happens on match day. People, teams, training, contracts, finances, medical information, communication, and decisions all need to stay connected. In many clubs, that information is scattered across spreadsheets, messaging groups, paper documents, and individual memories.
 
+ClubSheet brings those parts of the club together in one organized place.
 
-┌──────────────────────────────────────┐
-│          CHAOS → CLARITY             │
-│                                      │
-│  Spreadsheets → ClubSheet            │
-└──────────────────────────────────────┘
+## The Idea
 
+The central idea is simple:
 
-        EVERYTHING YOU NEED
-             FROM DAY ONE
+> A club should be able to understand and run its work from one clear workspace.
 
-       ✓ Athletes     ✓ Teams
-       ✓ Coaches     ✓ Training
-       ✓ People      ✓ Memberships
-       ✓ Roles       ✓ Activity
+Instead of asking:
 
+- Which spreadsheet has the latest athlete information?
+- Who has access to this document?
+- Was the training schedule shared with everyone?
+- What is the current status of this contract?
+- Where are the medical or registration details?
+- Which version of the financial record is correct?
 
-        BUILD YOUR CLUB
+ClubSheet gives the club a shared source of truth.
 
-   + Academy       + Matches
-   + Kit           + Finance
-   + Medical       + Events
-   + Development   + ...
+## Who It Is For
 
+ClubSheet is intended for:
 
-          CLUBSHEET MODULES
-                 
-       [interactive visual]
+- Football clubs
+- Sports academies
+- Youth development programs
+- Multi-team organizations
+- Club administrators and directors
+- Coaches and technical staff
+- Medical and performance staff
+- Scouts and recruitment teams
+- People who manage contracts, finances, or registrations
 
+It is designed for clubs that are growing beyond informal tools and need a clearer way to coordinate their people and operations.
 
-       ONLY PAY FOR WHAT
-          YOU NEED
+## How It Works
 
-       CORE + MODULES
-       [Explore Plans]
+Each club has its own workspace. The club can organize its people, teams, activities, and records in one connected environment.
 
+A person may have different responsibilities in different clubs. For example, someone could be a coach in one club and an administrator in another. ClubSheet keeps those relationships separate so that each person sees the responsibilities and information relevant to their role in the selected club.
 
-          WHY CLUBS USE IT
+Access is based on the club relationship and assigned responsibilities. A coach, administrator, medical staff member, and athlete do not need to see or manage the same things.
 
-     Less admin
-     Better visibility
-     One source of truth
-     Clearer access
-     Built to grow
-     Better experience
+## What the Club Can Organize
 
+### People and Teams
 
-        ONE CLUB.
-      MANY PERSPECTIVES.
+Keep information about athletes, coaches, staff, members, teams, and academy groups connected. A person's club role and team involvement can be understood alongside the rest of their club information.
 
-    ADMIN | COACH | ATHLETE | STAFF
+### Sporting Operations
 
+Organize training, attendance, matches, team activity, athlete development, and academy operations. The goal is to make the club's daily work visible and easier to coordinate.
 
-        A BETTER CLUB DAY
+### Contracts and Recruitment
 
-   08:00 → 12:00 → 15:00 → 18:00
+Follow contracts, hires, signings, transfers, scouting prospects, and registration-related work. Important decisions and supporting information can stay connected instead of being spread across separate files.
 
+### Finance
 
-          BUILT FOR
+Track income, expenses, salaries, signing bonuses, additional fees, and other financial records related to club operations.
 
-   Clubs | Academies | Youth
-   Competitive | Multi-team
+### Medical and Athlete Information
 
+Keep relevant medical records and athlete information available to the people responsible for managing athlete welfare and development.
 
-       MOBILE EXPERIENCE
+### Communication and Collaboration
 
-       [Phone] [Phone] [Phone]
+Give club members a place to communicate in context. Conversations, group information, and club work should support one another instead of living in completely separate systems.
 
+### Roles and Permissions
 
-      QUESTIONS CLUBS ASK
+Let each club decide who can access information and perform specific actions. ClubSheet is built around the idea that good organization includes clear responsibility and controlled access.
 
-        [Creative FAQ]
+## The Core Value
 
+ClubSheet helps clubs move from scattered information to connected work.
 
-      ┌───────────────────────┐
-      │                       │
-      │   YOUR CLUB IS MORE   │
-      │   THAN SPREADSHEETS.  │
-      │                       │
-      │     [GET STARTED]     │
-      │                       │
-      └───────────────────────┘
+It aims to provide:
 
+- Less administrative confusion
+- A clearer view of the whole club
+- Better coordination between departments
+- More reliable information
+- Clearer responsibilities and access
+- Less repeated data entry
+- Better continuity when people change roles
+- A stronger foundation for growth
 
-              FOOTER
+## A Typical Club Day
 
-----
+An administrator can review the club's people and records, a coach can check team activity and training, a scout can follow prospects, medical staff can manage athlete information, and leadership can understand the wider operational picture.
 
+Everyone works from the same club context while seeing the parts that belong to their responsibility.
 
-Yeah. For the **Chaos → Clarity** animation, I’d make it feel like the club’s messy information is literally being **pulled together into ClubSheet**.
+## The Long-Term Vision
 
-The important part is: don't scatter 50 random things. Use a controlled set of recognizable objects, each representing a real problem.
+ClubSheet is intended to become the operating center of a club: the place where its people, decisions, activities, and history come together.
 
-## The scattered pieces
-
-I’d use around **12–16 objects**.
-
-### 1. Spreadsheet
-
-A small floating window:
-
-> `athletes_2026.xlsx`
-
-Inside:
-
-```text
-Athlete       Team       Status
-Alex         U18        Active
-Daniel       U18        Active
-Michael      U16        ?
-```
-
-This represents scattered athlete information.
-
-**Movement:** starts upper-left, slightly rotated, drifts diagonally toward the center.
-
----
-
-### 2. Another spreadsheet
-
-> `membership_list.xlsx`
-
-This should be visually different from the athlete spreadsheet.
-
-**Movement:** starts bottom-left and slides upward toward the center.
-
----
-
-### 3. WhatsApp/message bubbles
-
-Don't use actual WhatsApp branding. Make generic chat bubbles.
-
-```text
-Coach:
-"Is training still at 18:00?"
-
-Admin:
-"Yes, same field."
-
-Coach:
-"👍"
-```
-
-**Movement:** starts far right and floats toward the center.
-
----
-
-### 4. Calendar
-
-A small calendar card:
-
-```text
-TUE 24
-
-18:00
-U18 Training
-
-20:00
-Senior Training
-```
-
-**Movement:** starts upper-right, rotates slightly as it moves inward.
-
----
-
-### 5. Athlete profile card
-
-```text
-┌─────────────────┐
-│   👤            │
-│ Alex Johnson    │
-│ Forward         │
-│ U18             │
-└─────────────────┘
-```
-
-**Movement:** starts lower-right.
-
-This one should eventually become part of the final ClubSheet UI.
-
----
-
-### 6. Team card
-
-```text
-U18
-24 Athletes
-Coach: David
-```
-
-**Movement:** starts left-middle.
-
----
-
-### 7. Training card
-
-```text
-TRAINING
-
-U18
-Today · 18:00
-Pitch 2
-```
-
-**Movement:** starts bottom-right.
-
----
-
-### 8. Coach card
-
-```text
-COACH
-
-David Smith
-U18
-```
-
-**Movement:** starts top-middle, slightly behind other objects.
-
----
-
-### 9. Notification
-
-A tiny notification:
-
-> 🔔 New athlete added
-
-**Movement:** starts somewhere near the edge and rapidly moves inward.
-
----
-
-### 10. Document
-
-A generic document:
-
-```text
-ATHLETE REGISTRATION
-
-Name: Alex Johnson
-Team: U18
-Status: Active
-```
-
-**Movement:** starts bottom-left with a slight rotation.
-
----
-
-### 11. Access/permission card
-
-```text
-ACCESS
-
-Coach
-✓ Teams
-✓ Athletes
-✓ Training
-```
-
-**Movement:** starts far right.
-
-This subtly introduces your permissions functionality.
-
----
-
-### 12. Match fixture
-
-```text
-MATCH
-
-U18
-
-ClubSheet FC
-     VS
-Rivals FC
-
-Saturday · 15:00
-```
-
-**Movement:** starts top-right.
-
----
-
-### 13. Finance document
-
-Since you're going to have Finance as a module:
-
-```text
-EXPENSE
-
-Equipment
-$240
-```
-
-**Movement:** starts far bottom-right.
-
-Don't make this prominent in the first version; it's just another piece of club admin chaos.
-
----
-
-### 14. Medical record
-
-Something subtle:
-
-```text
-ATHLETE RECORD
-
-Medical
-Updated
-```
-
-**Movement:** starts far left.
-
-Again, don't expose sensitive-looking details. It's just a visual representation.
-
----
-
-### 15. Kit/equipment card
-
-```text
-KIT
-
-Home Jersey
-Size M
-Assigned
-```
-
-**Movement:** starts upper-left.
-
----
-
-### 16. Random sticky notes
-
-A couple of tiny notes:
-
-> “Call parents”
-
-> “Update roster”
-
-> “Confirm pitch”
-
-These are mostly **atmospheric**.
-
-They make the chaos feel human rather than like a collection of polished UI cards.
-
----
-
-# But here's the important part
-
-**Don't have everything move directly into the center at the same speed.**
-
-That will look like a bunch of cards flying into a black hole 😂.
-
-Give them **different movement phases**.
-
----
-
-# Phase 1 — Chaos
-
-At the beginning:
-
-```text
-                    MATCH
-                       ↘
-
-      SPREADSHEET
-          ↘
-                         CALENDAR
-
-  DOCUMENT
-                   [ EMPTY CENTER ]
-                             ↗
-                 TRAINING
-
-      MESSAGE
-                           ↗
-
-                 ATHLETE
-```
-
-Everything is slightly:
-
-* rotated
-* offset
-* different sizes
-* different depths
-* moving at slightly different speeds
-
-The center should remain relatively empty.
-
-And the headline could be:
-
-# Running a club shouldn't feel this scattered.
-
----
-
-# Phase 2 — The pull
-
-As the user scrolls:
-
-**everything begins moving toward the center.**
-
-But not all at once.
-
-For example:
-
-### 0–20% scroll
-
-Only the farthest objects begin moving.
-
-```text
-Spreadsheet ───────→
-                     \
-                      \
-                       CENTER
-```
-
-### 20–40%
-
-More objects start converging.
-
-```text
-Message ───────────→
-Calendar ────────→
-Athlete ───────→
-
-          [CENTER]
-```
-
-### 40–60%
-
-Objects accelerate.
-
-The rotations gradually return to:
-
-```text
-rotate: 12deg → 0deg
-```
-
-Cards straighten themselves.
-
-This is an important visual metaphor:
-
-> **Chaos is becoming organized.**
-
----
-
-# Phase 3 — Compression
-
-Around 60–75%:
-
-The individual cards shouldn't simply disappear.
-
-Instead, they **snap into a system**.
-
-For example:
-
-```text
-ATHLETE CARD
-      ↓
-TEAM CARD
-      ↓
-TRAINING
-      ↓
-MATCH
-      ↓
-PEOPLE
-      ↓
-
-     CLUBSHEET
-```
-
-The objects move closer together and begin becoming components of the dashboard.
-
-You can literally have:
-
-**Athlete card → becomes a athlete row**
-
-**Training card → becomes dashboard widget**
-
-**Team card → becomes team widget**
-
-**Notification → becomes activity feed**
-
-That's much cooler than simply fading everything away.
-
----
-
-# Phase 4 — ClubSheet appears
-
-Then the scattered pieces become one beautiful dashboard.
-
-Something like:
-
-```text
-┌──────────────────────────────────────────────┐
-│ CLUBSHEET                                    │
-│                                              │
-│  Overview                                    │
-│                                              │
-│  ┌───────────┐  ┌───────────┐               │
-│  │ 24        │  │ 4         │               │
-│  │ Athletes   │  │ Teams     │               │
-│  └───────────┘  └───────────┘               │
-│                                              │
-│  Upcoming Training                           │
-│  ───────────────────────────────             │
-│  U18 · Today · 18:00                         │
-│                                              │
-│  Recent Activity                             │
-│  ───────────────────────────────             │
-│  Alex Johnson added to U18                   │
-│                                              │
-└──────────────────────────────────────────────┘
-```
-
-Then your headline changes:
-
-# From scattered to organized.
-
-Or:
-
-# Everything your club needs. Together.
-
----
-
-# Phase 5 — The dashboard takes over
-
-This is important.
-
-Once the dashboard appears, **stop the chaotic animation**.
-
-Don't continue throwing stuff around.
-
-The dashboard becomes stable.
-
-Then you can have a subtle:
-
-**scale 0.95 → 1**
-
-and:
-
-**opacity 0 → 1**
-
-Then the page continues scrolling naturally.
-
----
-
-# The actual scroll timeline
-
-I'd structure the ScrollTrigger timeline roughly like this:
-
-```text
-SCROLL PROGRESS
-
-0% ───────────────────────────────────────── 100%
-
-│
-├── 0–15%
-│   Objects barely move
-│   Establish the chaos
-│
-├── 15–35%
-│   Objects begin converging
-│
-├── 35–55%
-│   Objects accelerate toward center
-│
-├── 55–70%
-│   Cards straighten
-│   Objects compress
-│
-├── 70–85%
-│   ClubSheet dashboard forms
-│
-├── 85–100%
-│   Dashboard stabilizes
-│   Headline changes
-│
-└── RELEASE
-    Normal page scrolling resumes
-```
-
-And the section itself should be **pinned** during this sequence.
-
----
-
-# Add depth too
-
-Don't put every object on the same plane.
-
-Have three depth layers.
-
-### Background
-
-* spreadsheet
-* documents
-* subtle calendar
-* abstract lines
-
-Very slow movement.
-
-### Middle
-
-* team
-* coach
-* training
-* match
-* membership
-
-Normal movement.
-
-### Foreground
-
-* athlete card
-* notification
-* chat bubble
-* key UI elements
-
-Faster movement.
-
-This creates a really nice **3D/parallax feeling even though most of it is just DOM/CSS**.
-
----
-
-# One more thing I'd add: connection lines
-
-This could make the transformation **really special**.
-
-As the objects start moving toward ClubSheet, thin lines appear between them:
-
-```text
-ATHLETE ───────── TEAM
-   │                │
-   │                │
-TRAINING ─────── COACH
-   │                │
-   └────── CLUB ────┘
-```
-
-At first the lines are messy.
-
-As everything converges, the lines reorganize into a clean network.
-
-Then:
-
-**everything collapses into ClubSheet.**
-
-That's a beautiful visual metaphor for what the product actually does:
-
-> **It connects the different parts of the club.**
-
----
-
-# And don't make every scattered object equally important
-
-I'd establish a hierarchy:
-
-### Hero objects
-
-These are the things users immediately recognize:
-
-**Athletes · Teams · Training · Coaches · Messages · Spreadsheets**
-
-### Secondary objects
-
-These enrich the scene:
-
-**Matches · Memberships · Calendar · Documents**
-
-### Easter eggs
-
-These hint at your larger platform:
-
-**Academy · Kits · Finance · Medical**
-
-That way you're already teasing the **modular ClubSheet ecosystem** without having to explain every module in the Chaos section.
-
----
-
-## The final visual story
-
-I'd literally make the visitor experience:
-
-**SCATTERED**
-
-> spreadsheets
-> messages
-> calendars
-> athlete cards
-> documents
-> schedules
-
-↓
-
-**PULL**
-
-> everything starts moving toward one place
-
-↓
-
-**CONNECT**
-
-> relationships begin forming
-
-↓
-
-**ORGANIZE**
-
-> cards straighten and become structured
-
-↓
-
-**CLUBSHEET**
-
-> one beautiful club workspace
-
-↓
-
-**CLARITY**
-
-> **Everything your club needs. Together.**
-
-That is the animation I'd build. It isn't just a cool scroll effect — **the animation itself explains the product.**
+The aim is not to add another disconnected tool. The aim is to give clubs a clearer way to work, communicate, grow, and make decisions with confidence.
