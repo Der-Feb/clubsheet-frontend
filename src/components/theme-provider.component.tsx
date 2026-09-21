@@ -9,11 +9,15 @@ import type {
 } from "@/types/theme.types";
 import { DARK_MODE_ENABLED, DEFAULT_CLUBSHEET_BRAND } from "@/config/theme.config";
 import { applyThemeToElement } from "@/lib/palette-generator.utils";
+import {
+  getStoredActiveClubId,
+  getStoredClubBrand,
+  persistClubTheme,
+} from "@/lib/theme-storage.utils";
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const THEME_COOKIE_NAME = "clubsheet_theme_mode";
-const THEME_BRAND_STORAGE_KEY = "clubsheet_brand";
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 function getCookie(name: string): string | null {
@@ -29,17 +33,8 @@ function setCookie(name: string, value: string, days = 365) {
 }
 
 function getStoredBrand(): ClubBrand | null {
-  if (typeof window === "undefined") return null;
-
-  try {
-    const stored = window.localStorage.getItem(THEME_BRAND_STORAGE_KEY);
-    if (!stored) return null;
-
-    const brand = JSON.parse(stored) as ClubBrand;
-    return brand && typeof brand === "object" ? brand : null;
-  } catch {
-    return null;
-  }
+  const activeClubId = getStoredActiveClubId();
+  return activeClubId ? getStoredClubBrand(activeClubId) : null;
 }
 
 // React 18/19 subscription for OS system color scheme (avoids setState in effect)
@@ -63,13 +58,16 @@ interface ThemeProviderProps {
   children: React.ReactNode;
   /** Initial mode passed from server cookies to prevent SSR mismatch/flash */
   initialMode?: ThemeMode;
-  /** Active club brand passed into provider */
+  /** Active club ID resolved by the server */
+  initialClubId?: string;
+  /** Active club brand resolved by the server */
   activeBrand?: ClubBrand;
 }
 
 export function ThemeProvider({
   children,
   initialMode = "system",
+  initialClubId,
   activeBrand,
 }: ThemeProviderProps) {
   const [mode, setModeState] = useState<ThemeMode>(() => {
@@ -82,7 +80,9 @@ export function ThemeProvider({
     return initialMode;
   });
 
-  const [brandOverride, setBrandOverride] = useState<ClubBrand | null>(getStoredBrand);
+  const [brandOverride, setBrandOverride] = useState<ClubBrand | null>(() =>
+    initialClubId ? null : getStoredBrand()
+  );
 
   // Subscribe to OS color-scheme preference via useSyncExternalStore
   const systemIsDark = useSyncExternalStore(
@@ -112,13 +112,10 @@ export function ThemeProvider({
     setCookie(THEME_COOKIE_NAME, newMode);
   };
 
-  const setBrand = (newBrand: ClubBrand) => {
+  const setBrand = (newBrand: ClubBrand, clubId?: string) => {
     setBrandOverride(newBrand);
-    try {
-      window.localStorage.setItem(THEME_BRAND_STORAGE_KEY, JSON.stringify(newBrand));
-    } catch {
-      // Storage may be unavailable in privacy-restricted browsers.
-    }
+    const activeClubId = clubId || getStoredActiveClubId();
+    if (activeClubId) persistClubTheme(activeClubId, newBrand, resolvedMode);
   };
 
   // Apply theme tokens to document root

@@ -1,8 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import type { Club } from "@/mocks/clubs.mock";
 import { MOCK_ACTIVE_CLUB, MOCK_CLUBS } from "@/mocks/clubs.mock";
+import {
+  getStoredActiveClubId,
+  persistActiveClubId,
+} from "@/lib/theme-storage.utils";
+
+let activeClubId = MOCK_ACTIVE_CLUB.id;
+let hasHydratedActiveClub = false;
+const activeClubListeners = new Set<() => void>();
+
+function subscribeToActiveClub(listener: () => void) {
+  activeClubListeners.add(listener);
+  return () => activeClubListeners.delete(listener);
+}
+
+function getActiveClubSnapshot() {
+  return activeClubId;
+}
+
+function getActiveClubServerSnapshot() {
+  return MOCK_ACTIVE_CLUB.id;
+}
+
+function notifyActiveClubChange() {
+  activeClubListeners.forEach((listener) => listener());
+}
+
+function hydrateActiveClub() {
+  if (hasHydratedActiveClub) return;
+  hasHydratedActiveClub = true;
+
+  const storedId = getStoredActiveClubId();
+  const storedClub = storedId && MOCK_CLUBS.find((club) => club.id === storedId);
+  if (storedClub && storedClub.id !== activeClubId) {
+    activeClubId = storedClub.id;
+    notifyActiveClubChange();
+  }
+  persistActiveClubId(activeClubId);
+}
 
 export interface UseCurrentClubReturn {
   activeClub: Club;
@@ -15,26 +53,22 @@ export interface UseCurrentClubReturn {
  * Currently backed by mock data — replace internals with real state/API later.
  */
 export function useCurrentClub(): UseCurrentClubReturn {
-  const [activeClub, setActiveClubState] = useState<Club>(MOCK_ACTIVE_CLUB);
+  const activeClubIdSnapshot = useSyncExternalStore(
+    subscribeToActiveClub,
+    getActiveClubSnapshot,
+    getActiveClubServerSnapshot
+  );
 
   useEffect(() => {
-    try {
-      const storedId = window.localStorage.getItem("clubsheet_active_club");
-      const storedClub = MOCK_CLUBS.find((club) => club.id === storedId);
-      if (storedClub) setActiveClubState(storedClub);
-    } catch {
-      // Storage may be unavailable in privacy-restricted browsers.
-    }
+    hydrateActiveClub();
   }, []);
 
-  const setActiveClub = (club: Club) => {
-    setActiveClubState(club);
-    try {
-      window.localStorage.setItem("clubsheet_active_club", club.id);
-    } catch {
-      // Storage may be unavailable in privacy-restricted browsers.
-    }
-  };
+  const activeClub = MOCK_CLUBS.find((club) => club.id === activeClubIdSnapshot) || MOCK_ACTIVE_CLUB;
+  const setActiveClub = useCallback((club: Club) => {
+    activeClubId = club.id;
+    persistActiveClubId(club.id);
+    notifyActiveClubChange();
+  }, []);
 
   return {
     activeClub,
