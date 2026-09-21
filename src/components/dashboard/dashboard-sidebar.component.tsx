@@ -11,13 +11,15 @@ import { DashboardNav } from "./navigation/dashboard-nav.component";
 interface DashboardSidebarProps {
   isCollapsed: boolean;
   onCollapseToggle: () => void;
+  initialClubId?: string;
 }
 
 export function DashboardSidebar({
   isCollapsed,
   onCollapseToggle,
+  initialClubId,
 }: DashboardSidebarProps) {
-  const { activeClub, clubs, setActiveClub } = useCurrentClub();
+  const { activeClub, clubs, setActiveClub } = useCurrentClub(initialClubId);
 
   return (
     <aside

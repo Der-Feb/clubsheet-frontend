@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import type { Club } from "@/mocks/clubs.mock";
 import { useTheme } from "@/hooks/use-theme.hook";
 import { DEFAULT_CLUBSHEET_BRAND } from "@/config/theme.config";
+import { getStoredClubBrand } from "@/lib/theme-storage.utils";
 
 interface ClubSwitcherProps {
   activeClub: Club;
@@ -25,7 +26,8 @@ export function ClubSwitcher({
 
   function handleSelect(club: Club) {
     onSelect(club);
-    setBrand(club.brand || DEFAULT_CLUBSHEET_BRAND);
+    const storedBrand = getStoredClubBrand(club.id);
+    setBrand(storedBrand || club.brand || DEFAULT_CLUBSHEET_BRAND, club.id);
     setOpen(false);
   }
 

@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import Script from "next/script";
+import type { CSSProperties } from "react";
 import { ThemeProvider } from "@/components/theme-provider.component";
-import { DARK_MODE_ENABLED } from "@/config/theme.config";
-import type { ThemeMode } from "@/types/theme.types";
+import { DARK_MODE_ENABLED, DEFAULT_CLUBSHEET_BRAND } from "@/config/theme.config";
+import { MOCK_ACTIVE_CLUB, MOCK_CLUBS } from "@/mocks/clubs.mock";
+import { getThemeCssVariables } from "@/lib/palette-generator.utils";
+import {
+  ACTIVE_CLUB_COOKIE_NAME,
+  getClubThemeCookieName,
+} from "@/lib/theme-storage.utils";
+import type { ClubBrand, ThemeMode } from "@/types/theme.types";
 import "./globals.css";
 import Providers from "./provider";
 
@@ -31,45 +38,29 @@ export const metadata: Metadata = {
   },
 };
 
-// Inline script to prevent theme flash (FOUC) before hydration
+// Inline script to apply an exact cached palette before hydration when SSR has no club snapshot.
 const antiFlashScript = `
 (function() {
   try {
     var root = document.documentElement;
-    var setVar = function(name, value) {
-      if (value) root.style.setProperty(name, value);
+    var cookieValue = function(name) {
+      var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+      return match ? decodeURIComponent(match[1]) : null;
     };
-    var applyStoredBrand = function() {
-      var storedBrand = window.localStorage.getItem('clubsheet_brand');
-      if (!storedBrand) return false;
-      var brand = JSON.parse(storedBrand);
-      if (!brand || typeof brand !== 'object') return false;
+    var activeClubId = cookieValue('${ACTIVE_CLUB_COOKIE_NAME}') || window.localStorage.getItem('clubsheet_active_club');
+    var serverClubId = root.getAttribute('data-initial-club-id');
 
-      var primary = brand.primary || '#005F31';
-      var secondary = brand.secondary || '#DFE3DA';
-      var tertiary = brand.tertiary || primary;
-
-      setVar('--color-primary', primary);
-      setVar('--color-primary-hover', primary);
-      setVar('--color-primary-active', primary);
-      setVar('--color-primary-subtle', 'color-mix(in srgb, ' + primary + ' 6%, white)');
-      setVar('--color-primary-muted', 'color-mix(in srgb, ' + primary + ' 10%, white)');
-      setVar('--color-primary-foreground', '#ffffff');
-      setVar('--color-secondary', secondary);
-      setVar('--color-secondary-hover', secondary);
-      setVar('--color-secondary-foreground', '#09090b');
-      setVar('--color-tertiary', tertiary);
-      setVar('--color-tertiary-hover', tertiary);
-      setVar('--color-tertiary-foreground', '#ffffff');
-      setVar('--color-accent', tertiary);
-      setVar('--color-accent-foreground', '#ffffff');
-      setVar('--color-quaternary', 'color-mix(in srgb, ' + primary + ' 6%, white)');
-      setVar('--color-quinary', 'color-mix(in srgb, ' + primary + ' 10%, white)');
-      setVar('--color-ring', primary);
-      return true;
-    };
-
-    applyStoredBrand();
+    // SSR already used the active club's source-of-truth brand. Only use a browser snapshot when SSR lacked it.
+    if (activeClubId && (!serverClubId || serverClubId !== activeClubId)) {
+      var storedTheme = window.localStorage.getItem('clubsheet_brand_' + activeClubId);
+      var snapshot = storedTheme ? JSON.parse(storedTheme) : null;
+      var variables = snapshot && snapshot.variables;
+      if (variables && typeof variables === 'object') {
+        Object.keys(variables).forEach(function(name) {
+          root.style.setProperty(name, variables[name]);
+        });
+      }
+    }
 
     var match = document.cookie.match(/(?:^|; )clubsheet_theme_mode=([^;]*)/);
     var mode = match ? decodeURIComponent(match[1]) : 'system';
@@ -97,11 +88,32 @@ export default async function RootLayout({
     rawMode && ["system", "light", "dark"].includes(rawMode)
       ? (rawMode as ThemeMode)
       : "system";
+  const storedClubId = cookieStore.get(ACTIVE_CLUB_COOKIE_NAME)?.value;
+  const activeClub = MOCK_CLUBS.find((club) => club.id === storedClubId) || MOCK_ACTIVE_CLUB;
+  const initialClubId = MOCK_CLUBS.some((club) => club.id === storedClubId)
+    ? storedClubId
+    : undefined;
+  const storedBrand = initialClubId
+    ? cookieStore.get(getClubThemeCookieName(initialClubId))?.value
+    : undefined;
+  let activeBrand: ClubBrand = activeClub.brand || DEFAULT_CLUBSHEET_BRAND;
+
+  if (storedBrand) {
+    try {
+      activeBrand = JSON.parse(decodeURIComponent(storedBrand)) as ClubBrand;
+    } catch {
+      // Fall back to the club's API/mock brand when the cached cookie is invalid.
+    }
+  }
+
+  const initialThemeStyle = getThemeCssVariables(activeBrand, "light") as CSSProperties;
 
   return (
     <html
       lang="en"
       suppressHydrationWarning
+      data-initial-club-id={initialClubId}
+      style={initialThemeStyle}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
@@ -111,7 +123,11 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: antiFlashScript }}
         />
         <Providers>
-          <ThemeProvider initialMode={initialMode}>
+          <ThemeProvider
+            initialMode={initialMode}
+            initialClubId={initialClubId}
+            activeBrand={activeBrand}
+          >
             {children}
           </ThemeProvider>
         </Providers>
