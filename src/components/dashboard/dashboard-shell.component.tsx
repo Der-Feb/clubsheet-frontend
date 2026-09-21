@@ -7,9 +7,10 @@ import { MobileSidebarDrawer } from "./mobile-sidebar-drawer.component";
 
 interface DashboardShellProps {
   children: React.ReactNode;
+  initialClubId?: string;
 }
 
-export function DashboardShell({ children }: DashboardShellProps) {
+export function DashboardShell({ children, initialClubId }: DashboardShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
@@ -20,6 +21,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
         <DashboardSidebar
           isCollapsed={sidebarCollapsed}
           onCollapseToggle={() => setSidebarCollapsed((v) => !v)}
+          initialClubId={initialClubId}
         />
       </div>
 
@@ -27,6 +29,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
       <MobileSidebarDrawer
         open={mobileDrawerOpen}
         onClose={() => setMobileDrawerOpen(false)}
+        initialClubId={initialClubId}
       />
 
       {/* Main column */}

@@ -10,10 +10,11 @@ import { DashboardNav } from "./navigation/dashboard-nav.component";
 interface MobileSidebarDrawerProps {
   open: boolean;
   onClose: () => void;
+  initialClubId?: string;
 }
 
-export function MobileSidebarDrawer({ open, onClose }: MobileSidebarDrawerProps) {
-  const { activeClub, clubs, setActiveClub } = useCurrentClub();
+export function MobileSidebarDrawer({ open, onClose, initialClubId }: MobileSidebarDrawerProps) {
+  const { activeClub, clubs, setActiveClub } = useCurrentClub(initialClubId);
 
   if (!open) return null;
 
