@@ -115,7 +115,7 @@ export function AddRecordModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="add-record-title"
-        className="relative z-10 w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
+        className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
       >
         <div className="flex items-center justify-between pb-4 border-b border-border">
           <div className="flex items-center gap-2">
@@ -174,8 +174,8 @@ export function AddRecordModal({
           </div>
 
           {/* Amount & Currency */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="col-span-2 space-y-1.5">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="col-span-full space-y-1.5 sm:col-span-2">
               <label className="text-xs font-semibold text-foreground">
                 Amount <span className="text-danger">*</span>
               </label>

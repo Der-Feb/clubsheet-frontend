@@ -3,21 +3,40 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { PasswordRequirements, passwordMeetsRequirements } from "@/components/auth/password-requirements";
 
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [hasFailedPasswordValidation, setHasFailedPasswordValidation] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState<"Male" | "Female">("Male");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!passwordMeetsRequirements(password)) {
+      setHasFailedPasswordValidation(true);
+      setError("Please meet the password requirements below.");
+      return;
+    }
+    setHasFailedPasswordValidation(false);
+    if (password !== confirmPassword) {
+      setError("Your passwords do not match.");
+      return;
+    }
+    setError(null);
     // Submission handler with form values
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm">
-      <FieldGroup className="grid grid-cols-2 gap-3">
+    <form onSubmit={handleSubmit} className="auth-form space-y-2 text-[0.7rem] sm:space-y-2.5 sm:text-xs [&_[data-slot=field-label]]:text-xs">
+      {error && <FieldError className="rounded-lg border border-red-200 bg-red-50 p-2.5 text-red-600">{error}</FieldError>}
+      <FieldGroup className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="first-name">First Name</FieldLabel>
           <Input id="first-name" name="firstName" placeholder="John" required />
@@ -41,6 +60,14 @@ export default function RegisterForm() {
             name="password"
             type={showPassword ? "text" : "password"}
             placeholder="********"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setHasFailedPasswordValidation(false);
+              setError(null);
+            }}
+            onFocus={() => setIsPasswordFocused(true)}
+            onBlur={() => setIsPasswordFocused(false)}
             required
           />
           <button
@@ -52,9 +79,44 @@ export default function RegisterForm() {
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
+        <PasswordRequirements
+          password={password}
+          isVisible={isPasswordFocused || hasFailedPasswordValidation}
+        />
       </Field>
 
-      <FieldGroup className="grid grid-cols-2 gap-3">
+      <Field>
+        <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
+        <div className="relative">
+          <Input
+            id="confirm-password"
+            name="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="********"
+            value={confirmPassword}
+            onChange={(event) => {
+              setConfirmPassword(event.target.value);
+              setError(null);
+            }}
+            aria-invalid={confirmPassword.length > 0 && confirmPassword !== password}
+            className="pr-10"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-700"
+            aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+          >
+            {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
+        {confirmPassword.length > 0 && confirmPassword !== password && (
+          <p className="mt-1 text-[0.7rem] text-red-600 sm:text-xs">Passwords do not match.</p>
+        )}
+      </Field>
+
+      <FieldGroup className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="dob">Date of Birth</FieldLabel>
           <div className="relative">
@@ -67,7 +129,7 @@ export default function RegisterForm() {
             id="nationality"
             name="nationality"
             defaultValue=""
-            className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-xs sm:text-sm text-gray-800 shadow-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/25"
+            className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-[0.7rem] text-gray-800 shadow-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/25 sm:text-xs"
           >
             <option value="" disabled>Select country</option>
             <option value="US">United States</option>
@@ -128,10 +190,10 @@ export default function RegisterForm() {
         <div className="grow border-t border-gray-200" />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
           type="button"
-          className="flex items-center justify-center gap-2 border border-gray-300 py-1.5 sm:py-2 rounded-lg hover:bg-gray-50 text-xs sm:text-sm font-medium text-gray-700 transition-colors cursor-pointer"
+          className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 py-1.5 text-[0.7rem] font-medium text-gray-700 transition-colors hover:bg-gray-50 sm:py-2 sm:text-xs cursor-pointer"
         >
           <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -155,8 +217,9 @@ export default function RegisterForm() {
         </button>
         <button
           type="button"
-          className="flex items-center justify-center gap-2 bg-black text-white py-1.5 sm:py-2 rounded-lg hover:bg-gray-800 text-xs sm:text-sm font-medium transition-colors cursor-pointer"
+          className="flex items-center justify-center gap-2 rounded-lg bg-black py-1.5 text-[0.7rem] font-medium text-white transition-colors hover:bg-gray-800 sm:py-2 sm:text-xs cursor-pointer"
         >
+          {/* Inline Apple brand mark; lucide-react does not include brand logos. */}
           <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.09 1.73-.96 2.76 1.01.08 2.07-.51 2.69-1.26z" />
           </svg>
@@ -164,7 +227,7 @@ export default function RegisterForm() {
         </button>
       </div>
 
-      <p className="text-center text-xs sm:text-sm text-gray-500 pt-1">
+      <p className="pt-1 text-center text-[0.7rem] text-gray-500 sm:text-xs">
         Already have an account?{" "}
         <Link href="/login" className="text-emerald-800 font-semibold hover:underline">
           Sign In

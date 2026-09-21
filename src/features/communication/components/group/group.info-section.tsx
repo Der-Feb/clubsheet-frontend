@@ -36,7 +36,7 @@ export function GroupInfoSection({ group }: GroupInfoSectionProps) {
       )}
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border/50 text-center text-xs">
+      <div className="grid grid-cols-1 gap-2 pt-2 border-t border-border/50 text-center text-xs sm:grid-cols-2">
         <div className="p-2 rounded-lg bg-muted/40">
           <p className="font-bold text-foreground">{group.memberIds.length}</p>
           <p className="text-[10px] text-muted-foreground">Members</p>

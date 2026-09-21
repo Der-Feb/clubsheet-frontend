@@ -462,7 +462,7 @@ export default function TransferDetailPage({
 
                         {offer.notes && (
                           <div className="rounded-xl border border-border bg-card p-3 text-xs text-foreground space-y-1">
-                            <span className="font-semibold text-muted-foreground block text-[10px] uppercase flex items-center gap-1">
+                            <span className="font-semibold text-muted-foreground text-[10px] uppercase flex items-center gap-1">
                               <MessageSquare className="h-3 w-3 text-primary" />
                               Negotiation Comment
                             </span>

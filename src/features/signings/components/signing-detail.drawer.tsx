@@ -263,7 +263,7 @@ export function SigningDetailDrawer({
               </div>
 
               {contract ? (
-                <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                   <div className="rounded-xl border border-border bg-muted/30 p-3">
                     <span className="text-muted-foreground block text-[11px]">Salary</span>
                     <span className="font-bold text-foreground text-sm">
@@ -284,7 +284,7 @@ export function SigningDetailDrawer({
                     </span>
                   </div>
 
-                  <div className="col-span-2 rounded-xl border border-border bg-muted/30 p-3 flex justify-between items-center">
+                  <div className="sm:col-span-2 rounded-xl border border-border bg-muted/30 p-3 flex justify-between items-center">
                     <div>
                       <span className="text-muted-foreground block text-[11px]">Signing Bonus</span>
                       <span className="font-bold text-emerald-500 text-sm">
@@ -328,7 +328,7 @@ export function SigningDetailDrawer({
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
+          <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">
             <button
               type="button"
               onClick={onClose}

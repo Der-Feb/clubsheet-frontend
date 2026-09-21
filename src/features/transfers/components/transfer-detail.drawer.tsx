@@ -558,7 +558,7 @@ export function TransferDetailDrawer({
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 text-[11px] bg-card p-2.5 rounded-xl border border-border">
+                      <div className="grid grid-cols-1 gap-2 text-[11px] bg-card p-2.5 rounded-xl border border-border sm:grid-cols-2">
                         <div>
                           <span className="text-muted-foreground block text-[10px]">Exam Date</span>
                           <span className="font-medium text-foreground">{transfer.medicalExam.examDate}</span>
@@ -741,7 +741,7 @@ export function TransferDetailDrawer({
             {!isTerminal && !showCounterForm && (
               <div className="space-y-3 pt-2">
                 {/* Main Action based on stage */}
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {onCounterOffer && (
                     <button
                       type="button"
@@ -793,7 +793,7 @@ export function TransferDetailDrawer({
                 </div>
 
                 {/* Reject & Withdraw Actions (Available at every active stage) */}
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {onReject && (
                     <button
                       type="button"

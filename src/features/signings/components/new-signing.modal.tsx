@@ -165,7 +165,7 @@ export function NewSigningModal({
             </div>
 
             {/* Contract Length & Effective Date */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
                 <label className="block font-semibold text-foreground mb-1">
                   Contract Length (Months)
@@ -199,8 +199,8 @@ export function NewSigningModal({
             </div>
 
             {/* Salary Amount & Period */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="col-span-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="sm:col-span-2">
                 <label className="font-semibold text-foreground mb-1 flex items-center gap-1">
                   <DollarSign className="h-3.5 w-3.5 text-muted-foreground" />
                   Salary Amount ($)
@@ -250,7 +250,7 @@ export function NewSigningModal({
             </div>
 
             {/* Performance Add-On & Sell-On Clause */}
-            <div className="grid grid-cols-2 gap-3 pt-1 border-t border-border">
+            <div className="grid grid-cols-1 gap-3 pt-1 border-t border-border sm:grid-cols-2">
               <div>
                 <label className="block font-semibold text-foreground mb-1">
                   Performance Add-On ($)

@@ -229,7 +229,7 @@ function PermissionsContent() {
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+          <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
@@ -328,7 +328,7 @@ function PermissionsContent() {
       {/* TAB 2: ROLE MATRIX COMPARISON */}
       {activeTab === "matrix" && (
         <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-xs">
-          <table className="w-full text-left border-collapse min-w-[700px]">
+          <table className="w-full text-left border-collapse min-w-[43.75rem]">
             <thead>
               <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                 <th className="py-3 px-4 min-w-56">Permission</th>
@@ -388,7 +388,7 @@ function PermissionsContent() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+          <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-xs">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">

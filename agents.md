@@ -177,9 +177,13 @@ Good candidates include:
 
 Do not create extremely long Tailwind class strings when a small CSS class would make the code significantly clearer.
 
+## 6.3 Responsive Units
+
+Prefer responsive relative units for layout and sizing, including `rem`, `em`, `%`, `vw`, `vh`, and `clamp()`. Do not introduce new fixed `px` dimensions for layout, spacing, typography, or component sizing unless a browser API, border, icon, image, or other asset genuinely requires a fixed pixel value. When a fixed value is unavoidable, keep it scoped and document the reason when it is not self-evident.
+
 ---
 
-## 6.3 Utility Composition and Wrapper Classes
+## 6.4 Utility Composition and Wrapper Classes
 
 When a combination of 3 or more Tailwind utilities appears together more than 3 times across components, extract them into a reusable wrapper utility class.
 
@@ -212,9 +216,11 @@ This prevents utility class bloat while maintaining the benefits of Tailwind's u
 
 ---
 
-## 6.3 Styling Calculations Belong in CSS
+## 6.5 Styling Calculations Belong in CSS
 
 CSS calculations must be handled in CSS whenever the calculation is a presentation concern.
+
+---
 
 Prefer:
 
@@ -239,6 +245,10 @@ where appropriate.
 Do not use JavaScript for layout calculations unless the layout genuinely depends on runtime application state.
 
 ---
+
+## 6.6 Commit Workflow
+
+Only create a git commit when the user explicitly asks for one. When committing, inspect the complete diff first and use a conventional, specific prefix that describes the change, such as `fix(css):`, `refactor(css):`, or `feat(css):`.
 
 # 7. Colors and Design Tokens
 

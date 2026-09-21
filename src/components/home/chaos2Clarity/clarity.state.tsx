@@ -54,18 +54,18 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
   return (
     <div
       ref={containerRef}
-      className="w-full h-full flex items-center justify-center pointer-events-none"
+      className="clarity-state-container w-full h-full flex items-center justify-center pointer-events-none"
       style={{ opacity: 0 }}
       aria-hidden="true"
     >
       {/* App window — chrome fades in separately via chromeRef */}
       <div
         ref={chromeRef}
-        className="relative w-[82vw] h-[88%] max-w-275 flex flex-col rounded-2xl overflow-hidden"
+        className="clarity-state-chrome relative w-[82vw] h-[88%] max-w-275 flex flex-col rounded-2xl overflow-hidden"
         style={{ opacity: 0 }}
       >
         {/* Inset shadow ring — doesn't clip content */}
-        <div className="absolute inset-0 rounded-2xl shadow-[0_2rem_5rem_rgba(0,95,49,0.2)] border border-secondary pointer-events-none z-10" />
+        <div className="absolute inset-0 rounded-2xl home-brand-shadow-frame border border-secondary pointer-events-none z-10" />
 
         {/* URL bar */}
         <div className="relative z-20 flex items-center gap-3 px-4 py-2.5 bg-secondary/40 border-b border-secondary shrink-0">
@@ -95,7 +95,7 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
         </div>
 
         {/* Dashboard grid */}
-        <div className="relative z-20 flex-1 min-h-0 grid grid-cols-12 grid-rows-6 gap-2 p-3 bg-quaternary overflow-hidden">
+        <div className="clarity-dashboard-grid relative z-20 flex-1 min-h-0 grid grid-cols-12 grid-rows-6 gap-2 p-3 bg-quaternary overflow-hidden">
 
           {/* ── Row 1: stat tiles ──────────────────────────────────────── */}
 

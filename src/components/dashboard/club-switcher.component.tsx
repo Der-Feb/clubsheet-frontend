@@ -73,7 +73,7 @@ export function ClubSwitcher({
             role="listbox"
             aria-label="Select club"
             className={cn(
-              "absolute z-20 mt-1 min-w-[220px] rounded-xl border border-border bg-card py-1 shadow-lg",
+              "absolute z-20 mt-1 min-w-[13.75rem] max-w-[calc(100vw-1rem)] rounded-xl border border-border bg-card py-1 shadow-lg",
               isCollapsed ? "left-full ml-2 top-0" : "left-0 top-full"
             )}
           >

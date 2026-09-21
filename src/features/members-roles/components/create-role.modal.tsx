@@ -69,7 +69,7 @@ export function CreateRoleModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="create-role-title"
-        className="relative z-10 w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
+        className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
       >
         <div className="flex items-center justify-between pb-4 border-b border-border">
           <div className="flex items-center gap-2">

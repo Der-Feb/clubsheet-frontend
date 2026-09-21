@@ -11,7 +11,7 @@ export default async function ChatChannelPage({
   const conversationType: 'group' | 'dm' = channelId.startsWith('dm-') ? 'dm' : 'group';
 
   return (
-    <div className="w-screen h-screen overflow-hidden">
+    <div className="w-full h-dvh overflow-hidden">
       <CommunicationLayout
         initialConversationId={channelId}
         initialConversationType={conversationType}
