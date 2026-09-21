@@ -12,6 +12,18 @@ let activeClubId = MOCK_ACTIVE_CLUB.id;
 let hasHydratedActiveClub = false;
 const activeClubListeners = new Set<() => void>();
 
+function getValidClubId(clubId?: string) {
+  return clubId && MOCK_CLUBS.some((club) => club.id === clubId) ? clubId : null;
+}
+
+function initializeActiveClub(clubId?: string) {
+  const initialClubId = getValidClubId(clubId);
+  if (typeof window !== "undefined" && !hasHydratedActiveClub && initialClubId) {
+    activeClubId = initialClubId;
+  }
+  return initialClubId || MOCK_ACTIVE_CLUB.id;
+}
+
 function subscribeToActiveClub(listener: () => void) {
   activeClubListeners.add(listener);
   return () => activeClubListeners.delete(listener);
@@ -19,10 +31,6 @@ function subscribeToActiveClub(listener: () => void) {
 
 function getActiveClubSnapshot() {
   return activeClubId;
-}
-
-function getActiveClubServerSnapshot() {
-  return MOCK_ACTIVE_CLUB.id;
 }
 
 function notifyActiveClubChange() {
@@ -52,11 +60,12 @@ export interface UseCurrentClubReturn {
  * Returns the shared active club selection and the full list of available mock clubs.
  * The selection hydrates from browser storage; updates are shared across hook consumers and saved.
  */
-export function useCurrentClub(): UseCurrentClubReturn {
+export function useCurrentClub(initialClubId?: string): UseCurrentClubReturn {
+  const resolvedInitialClubId = initializeActiveClub(initialClubId);
   const activeClubIdSnapshot = useSyncExternalStore(
     subscribeToActiveClub,
     getActiveClubSnapshot,
-    getActiveClubServerSnapshot
+    () => resolvedInitialClubId
   );
 
   useEffect(() => {
