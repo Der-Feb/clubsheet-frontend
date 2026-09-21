@@ -98,7 +98,7 @@ export function OpenTransferModal({
             {/* Athlete Name & Position */}
             <div className="grid grid-cols-3 gap-3">
               <div className="col-span-2">
-                <label className="block font-semibold text-foreground mb-1 flex items-center gap-1">
+                <label className="font-semibold text-foreground mb-1 flex items-center gap-1">
                   <User className="h-3.5 w-3.5 text-muted-foreground" />
                   Athlete Full Name <span className="text-rose-500">*</span>
                 </label>
@@ -129,7 +129,7 @@ export function OpenTransferModal({
             {/* From Club & To Club */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block font-semibold text-foreground mb-1 flex items-center gap-1">
+                <label className="font-semibold text-foreground mb-1 flex items-center gap-1">
                   <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
                   From Club (Selling) <span className="text-rose-500">*</span>
                 </label>
@@ -144,7 +144,7 @@ export function OpenTransferModal({
               </div>
 
               <div>
-                <label className="block font-semibold text-foreground mb-1 flex items-center gap-1">
+                <label className="font-semibold text-foreground mb-1 flex items-center gap-1">
                   <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
                   To Club (Purchasing) <span className="text-rose-500">*</span>
                 </label>
@@ -161,7 +161,7 @@ export function OpenTransferModal({
 
             {/* Opening Transfer Fee */}
             <div>
-              <label className="block font-semibold text-foreground mb-1 flex items-center gap-1">
+              <label className="font-semibold text-foreground mb-1 flex items-center gap-1">
                 <DollarSign className="h-3.5 w-3.5 text-muted-foreground" />
                 Opening Transfer Fee ($) <span className="text-rose-500">*</span>
               </label>
