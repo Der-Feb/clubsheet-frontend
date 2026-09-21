@@ -98,6 +98,7 @@
   --color-info-foreground: #ffffff;
 }
 
+/* The marketing homepage keeps ClubSheet's classic green identity. */
 .home-page {
   --color-primary: #005F31;
   --color-primary-hover: #004d27;
@@ -105,16 +106,21 @@
   --color-primary-subtle: #f7fbf3;
   --color-primary-muted: #eef5ed;
   --color-primary-foreground: #ffffff;
+
   --color-secondary: #DFE3DA;
   --color-secondary-hover: #cfd5c8;
   --color-secondary-foreground: #09090b;
+
   --color-tertiary: #01562D;
   --color-tertiary-hover: #014323;
   --color-tertiary-foreground: #ffffff;
+
   --color-accent: #01562D;
   --color-accent-foreground: #ffffff;
+
   --color-quaternary: #f7fbf3;
   --color-quinary: #eef5ed;
+
   --color-background: #ffffff;
   --color-foreground: #09090b;
   --color-card: #ffffff;
@@ -175,38 +181,20 @@
 
 /* Utility Wrapper Classes */
 
-/* Button Styles */
-.btn-primary {
-  @apply px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary-hover transition-colors font-semibold;
-}
-
-.btn-secondary {
-  @apply px-8 py-3 border-2 border-border text-foreground rounded-lg hover:border-primary hover:text-primary transition-colors font-semibold;
-}
-
-.btn-sm {
-  @apply px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary-hover transition-colors font-medium;
-}
-
 /* Flex Utilities */
 .flex-center {
   @apply flex items-center justify-center;
-}
-
-/* Link Hover Effects */
-.nav-link {
-  @apply text-muted-foreground hover:text-primary transition-colors;
 }
 
 /* animations */
 @keyframes swell {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 0px rgba(0, 95, 49, 0.4);
+    box-shadow: 0 0 0 color-mix(in srgb, var(--color-primary) 40%, transparent);
   }
   50% {
     transform: scale(1.2);
-    box-shadow: 0 0 12px rgba(0, 95, 49, 0.8);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-primary) 80%, transparent);
   }
 }
 .animate-swell {
@@ -242,6 +230,18 @@
     circle at left, 
     var(--color-quinary) 20%, var(--color-quaternary), transparent 50%
   );
+}
+
+.home-brand-shadow-card {
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.home-brand-shadow-modal {
+  box-shadow: 0 2rem 5rem color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+.home-brand-shadow-frame {
+  box-shadow: 0 2rem 5rem color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
 /* Chaos→Clarity: slot panels start hidden; GSAP reveals them during scroll */

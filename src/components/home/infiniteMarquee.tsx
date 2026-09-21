@@ -45,7 +45,7 @@ export default function InfiniteMarquee() {
 
   return (
     /* Outer clip wrapper: [clip-path:inset(0)] prevents ANYTHING inside from overflowing the page boundary */
-    <div className="relative w-full overflow-hidden [clip-path:inset(0)] border-y border-emerald-950/10 py-4 bg-quaternary select-none">
+    <div className="relative w-full overflow-hidden [clip-path:inset(0)] border-y border-primary/10 py-4 bg-quaternary select-none">
       {/* Track wrapper forced to exact 100% parent width */}
       <div className="w-full overflow-hidden">
         <div 
@@ -60,7 +60,7 @@ export default function InfiniteMarquee() {
                 key={ndx}
                 className="flex shrink-0 items-center gap-2.5 rounded-xl border border-gray-200/80 bg-white/90 px-4 py-2 text-xs font-bold tracking-wider text-gray-700 shadow-xs"
               >
-                <IconComponent className="h-4 w-4 text-emerald-600 shrink-0" />
+                <IconComponent className="h-4 w-4 text-primary shrink-0" />
                 <span>{item.label}</span>
               </div>
             );

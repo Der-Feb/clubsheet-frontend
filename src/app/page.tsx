@@ -112,7 +112,7 @@ export default function Home() {
 
         <div className="relative flex flex-1 items-center px-6 py-8 sm:px-10 lg:py-8 lg:pl-6 lg:pr-12 right-home-hero-section">
           <div
-            className="absolute -left-30 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,95,49,0.12)] border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
+            className="absolute -left-30 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl home-brand-shadow-card border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
             style={{ animationDelay: ".3s" }}
           >
             <svg width={36} height={36} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
@@ -128,7 +128,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="absolute top-30 right-32 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,95,49,0.12)] border border-secondary flex flex-col items-center gap-2 animate-wave hover:scale-105 transition-transform cursor-default">
+          <div className="absolute top-30 right-32 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl home-brand-shadow-card border border-secondary flex flex-col items-center gap-2 animate-wave hover:scale-105 transition-transform cursor-default">
             <span className="text-[0.6rem] font-semibold text-zinc-500 uppercase tracking-wider">Next Match</span>
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white font-bold text-[0.6rem]">CS</div>
@@ -142,7 +142,7 @@ export default function Home() {
           </div>
 
           <div
-            className="absolute bottom-0 -left-8 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,95,49,0.12)] border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
+            className="absolute bottom-0 -left-8 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl home-brand-shadow-card border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
             style={{ animationDelay: ".2s" }}
           >
             <div className="w-8 h-8 rounded-full bg-quinary flex items-center justify-center text-primary">

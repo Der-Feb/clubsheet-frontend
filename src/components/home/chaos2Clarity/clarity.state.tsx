@@ -65,7 +65,7 @@ export function ClarityState({ containerRef, chromeRef }: ClarityStateProps) {
         style={{ opacity: 0 }}
       >
         {/* Inset shadow ring — doesn't clip content */}
-        <div className="absolute inset-0 rounded-2xl shadow-[0_2rem_5rem_rgba(0,95,49,0.2)] border border-secondary pointer-events-none z-10" />
+        <div className="absolute inset-0 rounded-2xl home-brand-shadow-frame border border-secondary pointer-events-none z-10" />
 
         {/* URL bar */}
         <div className="relative z-20 flex items-center gap-3 px-4 py-2.5 bg-secondary/40 border-b border-secondary shrink-0">

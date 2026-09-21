@@ -35,16 +35,52 @@ export const metadata: Metadata = {
 const antiFlashScript = `
 (function() {
   try {
+    var root = document.documentElement;
+    var setVar = function(name, value) {
+      if (value) root.style.setProperty(name, value);
+    };
+    var applyStoredBrand = function() {
+      var storedBrand = window.localStorage.getItem('clubsheet_brand');
+      if (!storedBrand) return false;
+      var brand = JSON.parse(storedBrand);
+      if (!brand || typeof brand !== 'object') return false;
+
+      var primary = brand.primary || '#005F31';
+      var secondary = brand.secondary || '#DFE3DA';
+      var tertiary = brand.tertiary || primary;
+
+      setVar('--color-primary', primary);
+      setVar('--color-primary-hover', primary);
+      setVar('--color-primary-active', primary);
+      setVar('--color-primary-subtle', 'color-mix(in srgb, ' + primary + ' 6%, white)');
+      setVar('--color-primary-muted', 'color-mix(in srgb, ' + primary + ' 10%, white)');
+      setVar('--color-primary-foreground', '#ffffff');
+      setVar('--color-secondary', secondary);
+      setVar('--color-secondary-hover', secondary);
+      setVar('--color-secondary-foreground', '#09090b');
+      setVar('--color-tertiary', tertiary);
+      setVar('--color-tertiary-hover', tertiary);
+      setVar('--color-tertiary-foreground', '#ffffff');
+      setVar('--color-accent', tertiary);
+      setVar('--color-accent-foreground', '#ffffff');
+      setVar('--color-quaternary', 'color-mix(in srgb, ' + primary + ' 6%, white)');
+      setVar('--color-quinary', 'color-mix(in srgb, ' + primary + ' 10%, white)');
+      setVar('--color-ring', primary);
+      return true;
+    };
+
+    applyStoredBrand();
+
     var match = document.cookie.match(/(?:^|; )clubsheet_theme_mode=([^;]*)/);
     var mode = match ? decodeURIComponent(match[1]) : 'system';
     var darkModeEnabled = ${DARK_MODE_ENABLED};
     var isDark = darkModeEnabled && (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches));
     if (isDark) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.setAttribute('data-theme', 'dark');
+      root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.setAttribute('data-theme', 'light');
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
     }
   } catch (e) {}
 })();
