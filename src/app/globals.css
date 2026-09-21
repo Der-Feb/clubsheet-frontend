@@ -213,6 +213,38 @@
   animation: bounceUp 1.8s ease-in-out infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .chaos-card-field {
+    display: none;
+  }
+
+  .clarity-state-container,
+  .clarity-state-chrome,
+  .clarity-state-container [data-slot-panel] {
+    opacity: 1 !important;
+  }
+
+  .chaos2-clarity-headline-initial,
+  .chaos2-clarity-subtitle-initial {
+    display: none;
+  }
+
+  .chaos2-clarity-headline-final,
+  .chaos2-clarity-subtitle-final {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
@@ -232,6 +264,14 @@
   );
 }
 
+.home-nav-scroll {
+  scrollbar-width: none;
+}
+
+.home-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 .home-brand-shadow-card {
   box-shadow: 0 20px 50px color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
@@ -242,6 +282,148 @@
 
 .home-brand-shadow-frame {
   box-shadow: 0 2rem 5rem color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+/* The source card content expands with its shell only when the morph begins. */
+.chaos-card-morphing > * {
+  width: 100%;
+  max-width: none;
+}
+
+@keyframes chaos-badge-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.25rem); }
+}
+
+.chaos-mobile-badge {
+  animation: chaos-badge-drift 2.8s ease-in-out infinite;
+}
+
+.chaos-mobile-arrow {
+  animation: chaos-arrow-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes chaos-arrow-pulse {
+  0%, 100% { transform: translateY(0); opacity: 0.65; }
+  50% { transform: translateY(0.35rem); opacity: 1; }
+}
+
+@media (max-width: 1023px) {
+  .chaos2-clarity-wrap {
+    height: auto;
+  }
+
+  .chaos2-clarity-sticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 32rem;
+    overflow: visible;
+  }
+
+  .chaos2-clarity-layer {
+    position: relative;
+    inset: auto;
+    min-height: 32rem;
+  }
+
+  .chaos-card-field {
+    display: none;
+  }
+
+  .clarity-state-container {
+    height: auto !important;
+    min-height: 32rem;
+    opacity: 1 !important;
+    padding: 0.75rem;
+  }
+
+  .clarity-state-chrome {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 38rem;
+    opacity: 1 !important;
+  }
+
+  .clarity-dashboard-grid {
+    flex: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    overflow: visible;
+  }
+
+  .clarity-dashboard-grid > [id] {
+    grid-column: span 1 !important;
+    grid-row: auto !important;
+    min-height: 5rem;
+  }
+
+  .clarity-dashboard-grid > #slot-spreadsheet,
+  .clarity-dashboard-grid > #slot-groupChat {
+    min-height: 15rem;
+  }
+
+  .chaos2-clarity-layer [data-slot-panel] {
+    opacity: 1 !important;
+  }
+
+  .clarity-state-chrome > .clarity-dashboard-grid {
+    min-height: 34rem;
+  }
+
+  .chaos2-clarity-headline-initial,
+  .chaos2-clarity-subtitle-initial {
+    display: none;
+  }
+
+  .chaos2-clarity-headline-final,
+  .chaos2-clarity-subtitle-final {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .chaos2-clarity-headline-strip {
+    display: none;
+  }
+
+  .chaos2-clarity-layer {
+    display: none;
+  }
+
+  .chaos-mobile-text {
+    display: flex;
+  }
+
+  .clarity-state-chrome {
+    min-height: 0;
+  }
+
+  .clarity-state-chrome > .clarity-dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: 0.75rem;
+    overflow: visible;
+  }
+
+  .clarity-dashboard-grid > [id] {
+    min-height: 5.5rem;
+  }
+
+  .clarity-dashboard-grid > #slot-spreadsheet,
+  .clarity-dashboard-grid > #slot-groupChat {
+    min-height: 16rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chaos-mobile-badge,
+  .chaos-mobile-arrow {
+    animation: none;
+  }
 }
 
 /* Chaos→Clarity: slot panels start hidden; GSAP reveals them during scroll */

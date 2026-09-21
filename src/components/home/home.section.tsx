@@ -228,7 +228,7 @@ export function FaqSection() {
           className="fixed inset-0 z-200 flex items-center justify-center bg-zinc-900/50 backdrop-blur-sm px-4"
           onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
         >
-          <div className="w-full max-w-md bg-white rounded-2xl home-brand-shadow-modal border border-secondary p-7 flex flex-col gap-5">
+          <div className="max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl home-brand-shadow-modal border border-secondary bg-white p-7 flex flex-col gap-5">
             <div className="flex items-start justify-between gap-4">
               <div className="flex flex-col gap-1">
                 <h3 className="font-bold text-zinc-900 text-sm">Ask us anything</h3>

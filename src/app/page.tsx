@@ -9,6 +9,7 @@ import Link from "next/link";
 import InfiniteMarquee from "@/components/home/infiniteMarquee";
 import Chaos2ClaritySection from "@/components/home/chaos2Clarity.section";
 import { FaqSection, WhoSection } from "@/components/home/home.section";
+import { HomeNavbar } from "@/components/home/home.navbar";
 
 const avatarLinks = [
   "https://images.unsplash.com/photo-1615109398623-88346a601842?ixid=M3w4MjcwNjd8MHwxfHNlYXJjaHwxfHxodW1hbnxlbnwwfHx8fDE3ODc1NzY5NDZ8MA&ixlib=rb-4.1.0&fit=max&q=80",
@@ -32,40 +33,11 @@ export default function Home() {
   return (
     <div className="home-page bg-quaternary">
 
-      {/* Navbar */}
-      <header className="flex justify-between items-center w-full px-6 py-4 sticky top-0 z-100 bg-quaternary/90 backdrop-blur-sm border-b border-secondary/50">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/images/logo-light-clip.jpeg" alt="ClubSheet" width={22} height={16} style={{ objectFit: 'contain' }} />
-          <span className="text-base font-bold ml-1 text-primary">ClubSheet</span>
-        </Link>
-
-        <nav className="flex gap-8">
-          <Link href="#features" className="text-zinc-600 hover:text-primary transition-colors text-xs font-medium">Features</Link>
-          <Link href="#modules"  className="text-zinc-600 hover:text-primary transition-colors text-xs font-medium">Modules</Link>
-          <Link href="#who"      className="text-zinc-600 hover:text-primary transition-colors text-xs font-medium">Who it&apos;s for</Link>
-          <Link href="#faq"      className="text-zinc-600 hover:text-primary transition-colors text-xs font-medium">FAQ</Link>
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <Link href="/login" className="text-zinc-600 hover:text-primary transition-colors text-xs font-medium">Sign In</Link>
-          <Link
-            href="/register"
-            className="bg-primary text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-tertiary hover:-translate-y-0.5 transition-all shadow-sm hover:shadow-md"
-          >
-            Get Started
-          </Link>
-          <Link
-            href="/dashboard"
-            className="bg-primary text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-tertiary hover:-translate-y-0.5 transition-all shadow-sm hover:shadow-md"
-          >
-            Dashboard
-          </Link>
-        </div>
-      </header>
+      <HomeNavbar />
 
       {/* Hero */}
-      <section id="features" className="flex min-h-[calc(100svh-65px)] w-full flex-col overflow-hidden lg:flex-row">
-        <div className="flex flex-1 flex-col justify-center px-6 py-10 sm:px-10 lg:pl-13 lg:pr-6 lg:py-8 left-home-hero-section">
+      <section id="features" className="flex min-h-[calc(100svh-4rem)] w-full flex-col overflow-hidden lg:flex-row">
+        <div className="flex min-w-0 flex-1 flex-col justify-center px-6 py-10 sm:px-10 lg:pl-13 lg:pr-6 lg:py-8 left-home-hero-section">
           <div className="inline-flex w-max items-center gap-2 bg-secondary rounded-[.4rem] px-3 py-1.5">
             <div className="h-[.6rem] w-[.6rem] bg-primary rounded-full shrink-0 animate-swell" />
             <span className="font-semibold text-[.65rem] leading-none text-zinc-700">NEW PLATFORM UPDATE</span>
@@ -74,12 +46,12 @@ export default function Home() {
           <div className="pt-10">
             <span className="text-3xl block font-bold text-zinc-900">Run your club with</span>
             <span className="text-3xl block text-primary font-bold pt-3">clarity.</span>
-            <span className="text-sm block pt-8 w-2/3 text-zinc-700 leading-relaxed">
+            <span className="block w-full max-w-md pt-8 text-sm leading-relaxed text-zinc-700 sm:w-2/3">
               The modern management platform for football clubs and academies. Organise athletes, staff, and schedules in one place.
             </span>
           </div>
 
-          <div className="flex pt-10 gap-3 pb-4">
+          <div className="flex flex-wrap gap-3 pt-10 pb-4">
             <Link
               href="/register"
               className="bg-primary text-white text-xs font-semibold px-5 py-2.5 rounded-xl hover:bg-tertiary hover:-translate-y-0.5 transition-all shadow-sm hover:shadow-lg"
@@ -94,7 +66,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex pt-8 gap-4 pb-8 items-center">
+          <div className="flex flex-wrap items-center gap-4 pt-8 pb-8">
             <div className="flex -space-x-3 items-center">
               {avatarLinks.map((avatar, ndx) => (
                 <div
@@ -110,7 +82,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative flex flex-1 items-center px-6 py-8 sm:px-10 lg:py-8 lg:pl-6 lg:pr-12 right-home-hero-section">
+        <div className="relative hidden flex-1 items-center px-6 py-8 sm:px-10 lg:flex lg:py-8 lg:pl-6 lg:pr-12 right-home-hero-section">
           <div
             className="absolute -left-30 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl home-brand-shadow-card border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
             style={{ animationDelay: ".3s" }}
@@ -137,7 +109,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-8 w-full max-w-2xl translate-y-2 overflow-hidden rounded-2xl shadow-[10px_20px_50px_rgba(0,0,0,0.67)] transition-transform duration-300 hover:scale-[1.02] cursor-default lg:mt-0 lg:translate-y-5">
+          <div className="mt-8 w-full max-w-2xl translate-y-2 overflow-hidden rounded-2xl home-brand-shadow-frame transition-transform duration-300 hover:scale-[1.02] cursor-default lg:mt-0 lg:translate-y-5">
             <Image src="/images/hero-image.jpeg" alt="ClubSheet dashboard" width={1360} height={768} className="h-auto max-h-[calc(100svh-12rem)] w-full rounded-2xl object-contain" />
           </div>
 
@@ -157,10 +129,10 @@ export default function Home() {
       </section>
 
       {/* Marquee */}
-      <section className="w-full max-w-full min-w-0 overflow-hidden my-8">
-        <div className="h-10" />
+      <section className="my-0 w-full max-w-full min-w-0 overflow-hidden sm:my-8">
+        <div className="hidden h-10 sm:block" />
         <InfiniteMarquee />
-        <div className="h-10" />
+        <div className="hidden h-10 sm:block" />
       </section>
 
       {/* Chaos → Clarity */}

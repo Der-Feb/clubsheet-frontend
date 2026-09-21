@@ -2,20 +2,20 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { Draggable } from 'gsap/Draggable';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowDown } from 'lucide-react';
 
 import { chaosCards } from './chaos2Clarity/chaos.state';
 import { ClarityState } from './chaos2Clarity/clarity.state';
 
-gsap.registerPlugin(Draggable, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
-const Z = { base: 10, hover: 500, drag: 1000 } as const;
+const Z = { base: 10, hover: 500 } as const;
 
 // ---------------------------------------------------------------------------
 // Visual story
 //
-//  0%  – 15%   Chaos:      cards float, drag enabled
+//  0%  – 15%   Chaos:      cards float and respond to hover
 //  15% – 40%   Converge:   cards fly toward their slot positions, un-rotate.
 //                          The window chrome fades in gently around them —
 //                          the frame appears AROUND the moving cards.
@@ -43,10 +43,13 @@ export function Chaos2ClaritySection() {
     const sticky     = stickyRef.current;
     const cardField  = cardFieldRef.current;
     if (!scrollWrap || !sticky || !cardField) return;
+    if (
+      window.matchMedia('(max-width: 1023px)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return;
 
     const cardEls = gsap.utils.toArray<HTMLElement>('[data-chaos-card]', cardField);
     const floatTweens: (gsap.core.Tween | undefined)[] = [];
-    const draggableInstances: Draggable[] = [];
 
     // Set all initial states immediately so nothing is visible until scroll
     gsap.set(containerRef.current, { opacity: 0 });
@@ -60,8 +63,7 @@ export function Chaos2ClaritySection() {
         : [];
     gsap.set(getPanels(), { opacity: 0 });
 
-    // Apply initial rotations via gsap.set so GSAP owns the full transform
-    // from the start — no CSS transform conflict with Draggable
+    // Apply initial rotations via gsap.set so GSAP owns the full transform.
     cardEls.forEach((el, i) => {
       gsap.set(el, { rotation: chaosCards[i]?.initialRotation ?? 0 });
     });
@@ -82,62 +84,17 @@ export function Chaos2ClaritySection() {
         }));
       });
 
-      // ── 2. Draggable + hover ───────────────────────────────────────────
+      // ── 2. Hover ───────────────────────────────────────────────────────
       cardEls.forEach((el, i) => {
         let isHovered  = false;
-        let isDragging = false;
-
-        const restartFloat = () => {
-          floatTweens[i]?.kill();
-          floatTweens[i] = gsap.to(el, {
-            x: `+=${gsap.utils.random(-28, 28)}`,
-            y: `+=${gsap.utils.random(-22, 22)}`,
-            rotation: `+=${gsap.utils.random(-6, 6)}`,
-            duration: gsap.utils.random(2.5, 4.2),
-            ease: 'sine.inOut',
-            repeat: -1,
-            yoyo: true,
-          });
-        };
-
-        // Kill any existing Draggable on this element before creating a new one
-        // (prevents issues with React StrictMode double-invoking effects)
-        Draggable.get(el)?.kill();
-
-        const [instance] = Draggable.create(el, {
-          bounds: cardField,
-          edgeResistance: 0.85,
-          type: 'x,y',
-          // Allow Draggable to work alongside GSAP transforms
-          allowContextMenu: true,
-          onPress() {
-            isDragging = true;
-            // Kill the float tween completely so it stops fighting drag
-            floatTweens[i]?.kill();
-            floatTweens[i] = undefined;
-            gsap.to(el, { scale: 1.3, rotation: 0, zIndex: Z.drag, duration: 0.2, ease: 'power2.out' });
-          },
-          onRelease() {
-            isDragging = false;
-            if (isHovered) {
-              gsap.to(el, { scale: 1.25, zIndex: Z.hover, duration: 0.2 });
-            } else {
-              gsap.to(el, { scale: 1, zIndex: Z.base, duration: 0.2 });
-              restartFloat();
-            }
-          },
-        });
-        draggableInstances.push(instance);
 
         el.addEventListener('mouseenter', () => {
           isHovered = true;
-          if (isDragging) return;
           floatTweens[i]?.pause();
           gsap.to(el, { scale: 1.25, rotation: 0, zIndex: Z.hover, duration: 0.2, ease: 'power2.out' });
         });
         el.addEventListener('mouseleave', () => {
           isHovered  = false;
-          if (isDragging) return;
           gsap.to(el, { scale: 1, zIndex: Z.base, duration: 0.2, ease: 'power2.out' });
           floatTweens[i]?.resume();
         });
@@ -149,9 +106,7 @@ export function Chaos2ClaritySection() {
       const buildTimeline = () => {
         if (masterTl) { masterTl.kill(); masterTl = null; }
         floatTweens.forEach((t)  => t?.pause());
-        draggableInstances.forEach((d) => d.disable());
-
-        // Re-hide panels in case of rebuild
+          // Re-hide panels in case of rebuild
         gsap.set(getPanels(), { opacity: 0 });
 
         masterTl = gsap.timeline({ paused: true });
@@ -187,6 +142,8 @@ export function Chaos2ClaritySection() {
 
           const cardRect = el.getBoundingClientRect();
           const slotRect = slotEl.getBoundingClientRect();
+          const targetWidth = slotRect.width;
+          const targetHeight = slotRect.height;
 
           const deltaX  = slotRect.left + slotRect.width  / 2 - cardRect.left - cardRect.width  / 2;
           const deltaY  = slotRect.top  + slotRect.height / 2 - cardRect.top  - cardRect.height / 2;
@@ -195,10 +152,14 @@ export function Chaos2ClaritySection() {
 
           const start = layerStart[card.layer] ?? 0.15;
 
+          masterTl!.call(() => el.classList.add('chaos-card-morphing'), [], start);
+
           // Phase 1: card flies to its slot center, straightens out
           masterTl!.to(el, {
             x: targetX,
             y: targetY,
+            width: targetWidth,
+            height: targetHeight,
             rotation: 0,
             scale: 1,
             ease: 'power2.inOut',
@@ -262,7 +223,6 @@ export function Chaos2ClaritySection() {
         scrub: 1.8,
 
         onEnter() {
-          draggableInstances.forEach((d) => d.disable());
           floatTweens.forEach((t) => t?.pause());
           buildTimeline();
         },
@@ -270,14 +230,6 @@ export function Chaos2ClaritySection() {
         onLeaveBack() {
           masterTl?.kill();
           masterTl = null;
-
-          // Reset cards
-          cardEls.forEach((el) => {
-            gsap.to(el, {
-              x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
-              duration: 0.5, ease: 'power2.out', overwrite: true,
-            });
-          });
 
           // Reset chrome and container
           gsap.set(containerRef.current, { opacity: 0 });
@@ -290,18 +242,31 @@ export function Chaos2ClaritySection() {
           gsap.set(subtitleRef.current,  { opacity: 1 });
           gsap.set(subtitle2Ref.current, { opacity: 0, y: '0.5rem' });
 
-          // Re-enable chaos
-          draggableInstances.forEach((d) => d.enable());
+          // Re-enable chaos after each card has finished returning to its source size.
           cardEls.forEach((el, i) => {
             floatTweens[i]?.kill();
-            floatTweens[i] = gsap.to(el, {
-              x: `+=${gsap.utils.random(-28, 28)}`,
-              y: `+=${gsap.utils.random(-22, 22)}`,
-              rotation: `+=${gsap.utils.random(-6, 6)}`,
-              duration: gsap.utils.random(2.5, 4.2),
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
+            el.classList.remove('chaos-card-morphing');
+            gsap.to(el, {
+              x: 0,
+              y: 0,
+              rotation: 0,
+              scale: 1,
+              opacity: 1,
+              duration: 0.5,
+              ease: 'power2.out',
+              overwrite: true,
+              onComplete: () => {
+                gsap.set(el, { clearProps: 'width,height' });
+                floatTweens[i] = gsap.to(el, {
+                  x: `+=${gsap.utils.random(-28, 28)}`,
+                  y: `+=${gsap.utils.random(-22, 22)}`,
+                  rotation: `+=${gsap.utils.random(-6, 6)}`,
+                  duration: gsap.utils.random(2.5, 4.2),
+                  ease: 'sine.inOut',
+                  repeat: -1,
+                  yoyo: true,
+                });
+              },
             });
           });
         },
@@ -316,46 +281,46 @@ export function Chaos2ClaritySection() {
     const handleResize = () => ScrollTrigger.refresh();
     window.addEventListener('resize', handleResize);
     return () => {
-      draggableInstances.forEach((d) => d.kill());
+      cardEls.forEach((el) => el.classList.remove('chaos-card-morphing'));
       ctx.revert();
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   return (
-    <div ref={scrollWrapRef} className="relative h-[600vh] w-full">
+    <div ref={scrollWrapRef} className="chaos2-clarity-wrap relative h-[600vh] w-full">
       <div
         ref={stickyRef}
-        className="sticky top-0 h-screen w-full overflow-hidden select-none bg-quaternary"
+        className="chaos2-clarity-sticky sticky top-0 h-dvh w-full overflow-hidden select-none bg-quaternary"
       >
         {/* Headline strip — sits below the sticky navbar (navbar ~4rem tall) */}
-        <div className="absolute inset-x-0 top-16 h-24 z-50 pointer-events-none flex flex-col items-center justify-center text-center px-4 gap-1.5">
+        <div className="chaos2-clarity-headline-strip absolute inset-x-0 top-16 z-50 flex h-24 flex-col items-center justify-center gap-1.5 px-4 text-center pointer-events-none">
           <div className="relative flex justify-center w-full">
-            <h2 ref={headline1Ref} className="font-bold text-2xl text-zinc-900 tracking-tight leading-tight">
+            <h2 ref={headline1Ref} className="chaos2-clarity-headline-initial font-bold text-2xl text-zinc-900 tracking-tight leading-tight">
               Running a club shouldn&apos;t feel this scattered.
             </h2>
-            <h2 ref={headline2Ref} className="absolute inset-0 flex items-center justify-center font-bold text-2xl text-zinc-900 tracking-tight leading-tight opacity-0">
+            <h2 ref={headline2Ref} className="chaos2-clarity-headline-final absolute inset-0 flex items-center justify-center font-bold text-2xl text-zinc-900 tracking-tight leading-tight opacity-0">
               Everything your club needs. Together.
             </h2>
           </div>
           <div className="relative h-4 w-full flex justify-center">
-            <p ref={subtitleRef} className="absolute text-zinc-500 text-xs max-w-md font-sans">
+            <p ref={subtitleRef} className="chaos2-clarity-subtitle-initial absolute text-zinc-500 text-xs max-w-md font-sans">
               Spreadsheets, group chats, and disconnected schedules — all in one place.
             </p>
-            <p ref={subtitle2Ref} className="absolute text-zinc-500 text-xs max-w-md font-sans opacity-0">
+            <p ref={subtitle2Ref} className="chaos2-clarity-subtitle-final absolute text-zinc-500 text-xs max-w-md font-sans opacity-0">
               One workspace. Every part of your club, organised.
             </p>
           </div>
         </div>
 
         {/* Chaos cards — below headline strip (top-16 + h-24 = top-40) */}
-        <div ref={cardFieldRef} className="absolute inset-x-0 bottom-0 top-40 pointer-events-auto **:select-none **:[-webkit-user-drag:none]">
+        <div ref={cardFieldRef} className="chaos-card-field absolute inset-x-0 bottom-0 top-40 pointer-events-auto **:select-none **:[-webkit-user-drag:none]">
           {chaosCards.map((card) => (
             <div
               key={card.id}
               data-chaos-card={card.id}
               data-layer={card.layer}
-              className={`absolute h-34 w-auto cursor-grab active:cursor-grabbing shadow-md rounded-lg select-none ${card.positionClass}`}
+              className={`chaos-card absolute h-34 w-auto shadow-md rounded-lg select-none ${card.positionClass}`}
               draggable="false"
               style={{ zIndex: Z.base }}
             >
@@ -365,8 +330,34 @@ export function Chaos2ClaritySection() {
         </div>
 
         {/* Dashboard — same region as card field */}
-        <div className="absolute inset-x-0 bottom-0 top-40 z-20 pointer-events-none">
+        <div className="chaos2-clarity-layer absolute inset-x-0 bottom-0 top-40 z-20 pointer-events-none">
           <ClarityState containerRef={containerRef} chromeRef={chromeRef} />
+        </div>
+
+        {/* Lightweight mobile story: the desktop card field becomes a readable text sequence. */}
+        <div className="chaos-mobile-text absolute inset-x-0 bottom-0 top-40 hidden flex-col items-center justify-center px-6 text-center md:hidden">
+          <h2 className="text-2xl font-bold leading-tight text-zinc-900">Everything your club needs. Together.</h2>
+          <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-500">
+            Turn scattered tools into one clear workspace.
+          </p>
+
+          <div className="chaos-mobile-badge-field mt-8 flex w-full max-w-sm flex-wrap justify-center gap-2">
+            {['Spreadsheets', 'Group chats', 'Schedules', 'Athletes', 'Staff', 'Permissions'].map((label, index) => (
+              <span
+                key={label}
+                className="chaos-mobile-badge rounded-full border border-secondary bg-white px-3 py-1.5 text-xs font-semibold text-zinc-600 shadow-sm"
+                style={{ animationDelay: `${index * 0.12}s` }}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+
+          <ArrowDown className="chaos-mobile-arrow my-5 h-5 w-5 text-primary" aria-hidden="true" />
+
+          <div className="rounded-2xl border border-primary/20 bg-primary px-6 py-4 text-lg font-bold text-primary-foreground shadow-lg">
+            ClubSheet
+          </div>
         </div>
       </div>
     </div>
