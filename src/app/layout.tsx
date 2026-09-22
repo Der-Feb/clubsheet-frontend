@@ -5,8 +5,6 @@ import Script from "next/script";
 import type { CSSProperties } from "react";
 import { ThemeProvider } from "@/components/theme-provider.component";
 import { BodyScrollArea } from "@/components/ScrollArea";
-import { RouteTopLoaderBridge } from "@/components/route-top-loader-bridge";
-import { ThemedTopLoader } from "@/components/themed-top-loader";
 import { DARK_MODE_ENABLED, DEFAULT_CLUBSHEET_BRAND } from "@/config/theme.config";
 import { MOCK_ACTIVE_CLUB, MOCK_CLUBS } from "@/mocks/clubs.mock";
 import { getThemeCssVariables } from "@/lib/palette-generator.utils";
@@ -17,7 +15,6 @@ import {
 import type { ClubBrand, ThemeMode } from "@/types/theme.types";
 import "./globals.css";
 import Providers from "./provider";
-import NextTopLoader from "nextjs-toploader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -121,10 +118,6 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <BodyScrollArea className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
-        <ThemedTopLoader />
-        <RouteTopLoaderBridge />
-        <NextTopLoader height={3} showSpinner={false} color="var(--color-primary)" />
-        <RouteTopLoaderBridge />
         <Script
           id="theme-anti-flash"
           strategy="beforeInteractive"

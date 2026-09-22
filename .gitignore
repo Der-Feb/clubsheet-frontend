@@ -50,10 +50,11 @@ next-env.d.ts
 todo.md
 
 # documents
-/documents/
-/docs/
+documents/
+docs/
+.codex/
+.kiro/
 config.bat
 
-
-# environmeent variables file
-.env
+# env variable
+*.env*
