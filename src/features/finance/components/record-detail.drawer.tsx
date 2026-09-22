@@ -15,6 +15,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import type { FinancialRecord } from "@/types/finance.types";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface RecordDetailDrawerProps {
   isOpen: boolean;
@@ -114,7 +115,7 @@ export function RecordDetailDrawer({
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             {/* Amount Banner */}
             <div
               className={`rounded-2xl border p-5 text-center space-y-1 ${
@@ -167,7 +168,7 @@ export function RecordDetailDrawer({
                 )}
               </div>
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Footer Actions */}
           <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">

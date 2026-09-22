@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X, ArrowRightLeft, DollarSign, Building2, User } from "lucide-react";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface OpenTransferModalProps {
   isOpen: boolean;
@@ -94,7 +95,7 @@ export function OpenTransferModal({
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
           {/* Scrollable Body */}
-          <div className="flex-1 overflow-y-auto py-4 space-y-4 text-xs pr-1">
+          <ScrollArea className="flex-1 py-4 space-y-4 text-xs pr-1">
             {/* Athlete Name & Position */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div className="sm:col-span-2">
@@ -203,7 +204,7 @@ export function OpenTransferModal({
                 className="w-full rounded-xl border border-border bg-card p-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Footer Actions */}
           <div className="flex items-center justify-end gap-2 pt-3 border-t border-border shrink-0">

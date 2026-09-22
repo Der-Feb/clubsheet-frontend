@@ -12,6 +12,7 @@ import {
 import { useRoles, useMembers } from "@/hooks/use-members-roles.hook";
 import type { PermissionDefinition } from "@/types/members-roles.types";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface PermissionDetailDrawerProps {
   isOpen: boolean;
@@ -92,7 +93,7 @@ export function PermissionDetailDrawer({
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             {/* Permission Key & Description */}
             <div className="rounded-2xl border border-border bg-muted/20 p-4 space-y-2">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -138,7 +139,7 @@ export function PermissionDetailDrawer({
                 <Users className="h-3.5 w-3.5 text-primary" />
                 Authorized Staff Members ({authorizedMembers.length})
               </h3>
-              <div className="space-y-2 max-h-52 overflow-y-auto">
+              <ScrollArea className="space-y-2 max-h-52">
                 {authorizedMembers.map((m) => (
                   <div
                     key={m.id}
@@ -162,9 +163,9 @@ export function PermissionDetailDrawer({
                     No staff members currently hold this permission.
                   </span>
                 )}
-              </div>
+              </ScrollArea>
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Drawer Footer with Link to Full Permission Page */}
           <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">

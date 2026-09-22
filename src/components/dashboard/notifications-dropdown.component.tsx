@@ -14,6 +14,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ScrollArea";
 import {
   MOCK_NOTIFICATIONS,
   type MockNotification,
@@ -195,7 +196,7 @@ export function NotificationsDropdown() {
           </div>
 
           {/* Notifications List */}
-          <div className="max-h-[22.5rem] overflow-y-auto divide-y divide-border">
+          <ScrollArea className="max-h-[22.5rem] divide-y divide-border">
             {filteredNotifications.length === 0 ? (
               <div className="py-10 text-center px-4">
                 <p className="text-sm font-medium text-foreground">
@@ -285,7 +286,7 @@ export function NotificationsDropdown() {
                 );
               })
             )}
-          </div>
+          </ScrollArea>
 
           {/* Footer */}
           <div className="border-t border-border bg-muted/30 p-2.5 text-center">

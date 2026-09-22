@@ -6,6 +6,7 @@ import { MOCK_USER } from "@/mocks/user.mock";
 import { ClubSwitcher } from "./club-switcher.component";
 import { UserMenu } from "./user-menu.component";
 import { DashboardNav } from "./navigation/dashboard-nav.component";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface MobileSidebarDrawerProps {
   open: boolean;
@@ -57,9 +58,9 @@ export function MobileSidebarDrawer({ open, onClose, initialClubId }: MobileSide
         </div>
 
         {/* Nav */}
-        <div className="flex-1 overflow-y-auto px-2 py-4">
+        <ScrollArea className="flex-1 px-2 py-4">
           <DashboardNav isCollapsed={false} onNavigate={onClose} />
-        </div>
+        </ScrollArea>
 
         {/* User */}
         <div className="border-t border-border px-2 py-3">

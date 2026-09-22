@@ -84,7 +84,7 @@ export function NewHireModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
@@ -124,7 +124,7 @@ export function NewHireModal({
           </div>
 
           {/* Scrollable Form Body */}
-          <form id="new-hire-form" onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
+          <form id="new-hire-form" onSubmit={handleSubmit} className="flex-1 p-6 space-y-5">
             {/* Person Info */}
             <div className="space-y-3">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">

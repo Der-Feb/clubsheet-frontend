@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { ScrollArea } from '@/components/ScrollArea';
 
 // ─── Shared card shell props ──────────────────────────────────────────────
 interface CardProps {
@@ -194,7 +195,7 @@ export const SpreadSheet: React.FC<CardProps> = ({ height = '8.5rem', className 
         <div className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
       </div>
     </div>
-    <div className="overflow-auto flex-1">
+    <ScrollArea className="flex-1">
       <table className="w-full border-collapse text-left text-[10px]">
         <thead className="sticky top-0 bg-quinary border-b border-secondary text-[9px] uppercase tracking-wider text-zinc-500">
           <tr>
@@ -216,7 +217,7 @@ export const SpreadSheet: React.FC<CardProps> = ({ height = '8.5rem', className 
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollArea>
   </div>
 );
 

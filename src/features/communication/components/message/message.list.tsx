@@ -7,6 +7,7 @@ import type { Message, CommunicationMember, EventResponse } from '../../types/co
 import { MessageBubble } from './message.bubble';
 import { DateSeparator } from './date.separator';
 import { SystemMessage } from './system.message';
+import { ScrollArea } from '@/components/ScrollArea';
 
 export interface MessageListProps {
   messages: Message[];
@@ -32,7 +33,6 @@ export function MessageList({
   onScrollToMessage,
 }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll to bottom when new messages arrive
   useEffect(() => {
@@ -58,9 +58,8 @@ export function MessageList({
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="flex-1 overflow-y-auto px-4 py-3 space-y-1 focus:outline-none"
+    <ScrollArea
+      className="flex-1 px-4 py-3 space-y-1 focus:outline-none"
     >
       <ul className="list-none m-0 p-0 space-y-1">
         {messages.map((msg, index) => {
@@ -103,6 +102,6 @@ export function MessageList({
         })}
       </ul>
       <div ref={bottomRef} />
-    </div>
+    </ScrollArea>
   );
 }

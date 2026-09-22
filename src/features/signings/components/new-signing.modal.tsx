@@ -148,7 +148,7 @@ export function NewSigningModal({
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
           {/* Scrollable Form Body */}
-          <div className="flex-1 overflow-y-auto py-4 space-y-4 text-xs pr-1">
+          <div className="flex-1 py-4 space-y-4 text-xs pr-1">
             {/* Athlete Name */}
             <div>
               <label className="block font-semibold text-foreground mb-1">
@@ -303,7 +303,7 @@ export function NewSigningModal({
               </div>
 
               {otherFees.length > 0 && (
-                <div className="max-h-40 overflow-y-auto space-y-2 pr-1">
+                <div className="max-h-40 space-y-2 pr-1">
                   {otherFees.map((fee) => (
                     <div key={fee.id} className="flex items-center gap-2">
                       <input

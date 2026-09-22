@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import type { Signing, SigningStatus } from "@/types/signings.types";
 import { useContractDetail } from "@/hooks/use-contracts.hook";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface SigningDetailDrawerProps {
   isOpen: boolean;
@@ -138,7 +139,7 @@ export function SigningDetailDrawer({
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             {/* Registration Window Closed Warning Banner */}
             {isWindowClosed && signing.status !== "REGISTERED" && (
               <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-amber-700 dark:text-amber-400 space-y-1">
@@ -325,7 +326,7 @@ export function SigningDetailDrawer({
                 </div>
               )}
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Footer */}
           <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">

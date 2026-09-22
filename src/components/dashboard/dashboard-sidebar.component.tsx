@@ -7,6 +7,7 @@ import { MOCK_USER } from "@/mocks/user.mock";
 import { ClubSwitcher } from "./club-switcher.component";
 import { UserMenu } from "./user-menu.component";
 import { DashboardNav } from "./navigation/dashboard-nav.component";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface DashboardSidebarProps {
   isCollapsed: boolean;
@@ -67,9 +68,9 @@ export function DashboardSidebar({
       </div>
 
       {/* Scrollable nav */}
-      <div className="flex-1 overflow-y-auto px-2 py-4">
+      <ScrollArea className="flex-1 px-2 py-4">
         <DashboardNav isCollapsed={isCollapsed} />
-      </div>
+      </ScrollArea>
 
       {/* Bottom: user menu */}
       <div className="border-t border-border px-2 py-3">

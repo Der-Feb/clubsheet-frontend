@@ -4,7 +4,7 @@ import ResetForm from "./reset.form";
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-dvh w-full overflow-y-auto flex items-center justify-center bg-linear-to-br from-amber-50 via-teal-50 to-emerald-100 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-dvh w-full flex items-center justify-center bg-linear-to-br from-amber-50 via-teal-50 to-emerald-100 p-4 sm:p-6 lg:p-8">
       <div className="relative w-full max-w-5xl min-h-0 rounded-3xl bg-[#111111] shadow-2xl flex flex-col overflow-hidden lg:h-[90dvh] lg:max-h-[90dvh] lg:flex-row">
         {/* Left Hero Brand Panel - Server Rendered */}
         <div className="relative w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col justify-between text-white z-10 overflow-hidden">
@@ -40,7 +40,7 @@ export default function ResetPasswordPage() {
         </div>
 
         {/* Right Form Panel */}
-        <div className="relative z-20 flex w-full shrink-0 flex-col justify-start overflow-visible rounded-t-3xl bg-[#f8fbf6] p-6 lg:min-h-0 lg:w-1/2 lg:flex-1 lg:overflow-y-auto lg:rounded-none sm:p-8">
+        <div className="relative z-20 flex w-full shrink-0 flex-col justify-start overflow-visible rounded-t-3xl bg-[#f8fbf6] p-6 lg:min-h-0 lg:w-1/2 lg:flex-1 lg:rounded-none sm:p-8">
           <div className="mx-auto w-full max-w-md py-4 space-y-4 sm:py-6 sm:space-y-5 lg:py-8">
             <div>
               <h1 className="text-lg font-bold text-gray-900 sm:text-xl">Reset Password</h1>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ScrollArea";
 import {
   X,
   ArrowRight,
@@ -348,7 +349,7 @@ export function TransferDetailDrawer({
           </div>
 
           {/* Drawer Body - Negotiation Thread */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             {/* Resolution Banner: ACCEPTED */}
             {transfer.status === "ACCEPTED" && (
               <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-700 dark:text-emerald-400 space-y-2 animate-in fade-in duration-200">
@@ -427,7 +428,7 @@ export function TransferDetailDrawer({
               </div>
 
               {/* Scrollable Container for overflowing thread history */}
-              <div className="max-h-96 overflow-y-auto space-y-3 relative pr-1 before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
+              <div className="max-h-96 space-y-3 relative pr-1 before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
                 {visibleOffers.map((offer) => {
                   const isExpanded = expandedOfferIds[offer.id] ?? false;
 
@@ -846,7 +847,7 @@ export function TransferDetailDrawer({
                 </p>
               </div>
             )}
-          </div>
+          </ScrollArea>
 
           {/* Drawer Footer */}
           <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3 shrink-0">

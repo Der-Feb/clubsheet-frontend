@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Search, X, Check, Shield, Users } from "lucide-react";
 import { useRoles } from "@/hooks/use-members-roles.hook";
 import type { Member, Role } from "@/types/members-roles.types";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface RolePickerModalProps {
   isOpen: boolean;
@@ -69,7 +70,7 @@ export function RolePickerModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="role-picker-title"
-        className="relative z-10 flex max-h-[calc(100dvh-2rem)] w-full max-w-lg flex-col overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
+        className="relative z-10 flex max-h-[calc(100dvh-2rem)] w-full max-w-lg flex-col rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
       >
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-border">
@@ -108,7 +109,7 @@ export function RolePickerModal({
         </div>
 
         {/* Role List */}
-        <div className="mt-4 flex-1 overflow-y-auto space-y-2.5 pr-1 max-h-72">
+        <ScrollArea className="mt-4 flex-1 space-y-2.5 pr-1 max-h-72">
           {filteredRoles.map((role: Role) => {
             const isSelected = selectedRoleId === role.id;
             return (
@@ -163,7 +164,7 @@ export function RolePickerModal({
               No matching roles found.
             </div>
           )}
-        </div>
+        </ScrollArea>
 
         {/* Footer */}
         <div className="mt-6 flex items-center justify-end gap-2 pt-4 border-t border-border">
