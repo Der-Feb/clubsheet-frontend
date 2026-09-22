@@ -8,6 +8,7 @@ import { SidebarHeader } from './sidebar.header';
 import { FavoritesSection } from './favorites.section';
 import { GroupCategorySection } from './group.category-section';
 import { DmSection } from './dm.section';
+import { ScrollArea } from '@/components/ScrollArea';
 
 export interface ConversationSidebarProps {
   onOpenCreateGroup: () => void;
@@ -34,11 +35,8 @@ export function ConversationSidebar({ onOpenCreateGroup }: ConversationSidebarPr
       <SidebarHeader onOpenSearch={toggleSearch} onOpenCreateGroup={onOpenCreateGroup} />
 
       {/* Navigation List */}
-      <nav
-        role="navigation"
-        aria-label="Conversations"
-        className="flex-1 overflow-y-auto px-2 py-3 space-y-1"
-      >
+      <nav role="navigation" aria-label="Conversations" className="flex-1 min-h-0">
+        <ScrollArea className="h-full px-2 py-3 space-y-1">
         {!hasAnyConversations ? (
           <div className="flex flex-col items-center justify-center h-48 px-4 text-center">
             <MessageSquare className="w-10 h-10 text-muted-foreground/50 mb-2" />
@@ -111,6 +109,7 @@ export function ConversationSidebar({ onOpenCreateGroup }: ConversationSidebarPr
             />
           </>
         )}
+        </ScrollArea>
       </nav>
     </aside>
   );

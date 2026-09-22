@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { AlertTriangle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -49,11 +50,11 @@ export function ConfirmDialog({
       />
 
       {/* Dialog box */}
-      <div
+      <ScrollArea
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"
-        className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
+        className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
       >
         <button
           type="button"
@@ -74,7 +75,7 @@ export function ConfirmDialog({
             )}
           >
             <AlertTriangle className="h-5 w-5" />
-          </div>
+            </div>
 
           <div className="space-y-1">
             <h3
@@ -112,7 +113,7 @@ export function ConfirmDialog({
             {isLoading ? "Processing..." : confirmText}
           </button>
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

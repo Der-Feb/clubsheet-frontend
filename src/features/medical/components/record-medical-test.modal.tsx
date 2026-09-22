@@ -85,7 +85,7 @@ export function RecordMedicalTestModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50">
       <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={onClose} aria-hidden="true" />
       <div className="flex min-h-full items-center justify-center p-4">
         <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col rounded-2xl border border-border bg-card text-card-foreground shadow-2xl" onClick={(event) => event.stopPropagation()}>
@@ -100,7 +100,7 @@ export function RecordMedicalTestModal({
             <button type="button" onClick={onClose} aria-label="Close modal" className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"><X className="h-5 w-5" /></button>
           </div>
 
-          <form id="record-medical-test" onSubmit={handleSubmit} className="space-y-5 overflow-y-auto p-5 text-xs">
+          <form id="record-medical-test" onSubmit={handleSubmit} className="space-y-5 p-5 text-xs">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <label className="space-y-1 sm:col-span-2"><span className="font-medium text-foreground">Member <span className="text-danger">*</span></span>
                 <select required value={membershipId} onChange={(event) => setMembershipId(event.target.value)} className="w-full rounded-xl border border-input bg-background px-3 py-2 text-foreground">

@@ -5,6 +5,7 @@ import { Search, X, Users } from 'lucide-react';
 import { format } from 'date-fns';
 import { useCommunication } from '../../context/communication.context';
 import { searchMessages } from '../../utils/search.utils';
+import { ScrollArea } from '@/components/ScrollArea';
 
 export interface SearchOverlayProps {
   onSelectResult?: (messageId: string) => void;
@@ -114,7 +115,7 @@ export function SearchOverlay({ onSelectResult }: SearchOverlayProps) {
       </div>
 
       {/* Results Container */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <ScrollArea className="flex-1 p-4">
         {!query.trim() ? (
           <div className="flex flex-col items-center justify-center h-48 text-center text-muted-foreground">
             <Search className="w-8 h-8 mb-2 text-muted-foreground/40" />
@@ -199,7 +200,7 @@ export function SearchOverlay({ onSelectResult }: SearchOverlayProps) {
             ))}
           </div>
         )}
-      </div>
+      </ScrollArea>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DashboardSidebar } from "./dashboard-sidebar.component";
 import { DashboardHeader } from "./dashboard-header.component";
 import { MobileSidebarDrawer } from "./mobile-sidebar-drawer.component";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -39,9 +40,9 @@ export function DashboardShell({ children, initialClubId }: DashboardShellProps)
         />
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto">
+        <ScrollArea className="flex-1">
           {children}
-        </main>
+        </ScrollArea>
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { ScoutingTarget, ScoutingAttribute } from "@/types/scouting.types";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface ProspectDetailDrawerProps {
   isOpen: boolean;
@@ -119,7 +120,7 @@ export function ProspectDetailDrawer({
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             {/* Rating & Market Value Overview */}
             <div className="grid grid-cols-1 gap-3 p-4 rounded-2xl border border-border bg-card shadow-xs sm:grid-cols-2">
               <div className="space-y-0.5">
@@ -286,7 +287,7 @@ export function ProspectDetailDrawer({
                 )}
               </div>
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Drawer Footer with Link to Full Prospect Page */}
           <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">

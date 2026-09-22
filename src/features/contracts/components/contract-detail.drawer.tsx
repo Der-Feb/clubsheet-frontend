@@ -15,6 +15,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import type { Contract } from "@/types/contracts.types";
+import { ScrollArea } from "@/components/ScrollArea";
 import { useSignings } from "@/hooks/use-signings.hook";
 import { useHires } from "@/hooks/use-hires.hook";
 import { useMembers } from "@/hooks/use-members-roles.hook";
@@ -139,7 +140,7 @@ export function ContractDetailDrawer({
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             {/* Origin Integration Card */}
             <div className="rounded-2xl border border-border bg-muted/20 p-4 space-y-3">
               <div className="flex items-center justify-between">
@@ -323,7 +324,7 @@ export function ContractDetailDrawer({
                 </button>
               </div>
             )}
-          </div>
+          </ScrollArea>
 
           {/* Footer */}
           <div className="flex shrink-0 flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">

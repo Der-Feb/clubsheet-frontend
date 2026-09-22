@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import Script from "next/script";
 import type { CSSProperties } from "react";
 import { ThemeProvider } from "@/components/theme-provider.component";
+import { BodyScrollArea } from "@/components/ScrollArea";
 import { DARK_MODE_ENABLED, DEFAULT_CLUBSHEET_BRAND } from "@/config/theme.config";
 import { MOCK_ACTIVE_CLUB, MOCK_CLUBS } from "@/mocks/clubs.mock";
 import { getThemeCssVariables } from "@/lib/palette-generator.utils";
@@ -116,7 +117,7 @@ export default async function RootLayout({
       style={initialThemeStyle}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
+      <BodyScrollArea className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
         <Script
           id="theme-anti-flash"
           strategy="beforeInteractive"
@@ -131,7 +132,7 @@ export default async function RootLayout({
             {children}
           </ThemeProvider>
         </Providers>
-      </body>
+      </BodyScrollArea>
     </html>
   );
 }

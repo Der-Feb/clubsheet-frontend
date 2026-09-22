@@ -5,6 +5,7 @@ import { Dialog } from '@base-ui/react/dialog';
 import { X, Users, Shield, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useCommunication } from '../../context/communication.context';
 import type { GroupType, GroupPermissions, CreateGroupConfig } from '../../types/communication.types';
+import { ScrollArea } from '@/components/ScrollArea';
 
 export interface CreateGroupDialogProps {
   isOpen: boolean;
@@ -184,7 +185,7 @@ export function CreateGroupDialog({ isOpen, onClose }: CreateGroupDialogProps) {
                 <label className="block text-xs font-semibold text-foreground mb-1">
                   Select Initial Members ({selectedMemberIds.length})
                 </label>
-                <div className="max-h-36 overflow-y-auto space-y-1 pr-1 border border-border rounded-xl p-2 bg-muted/20">
+                <ScrollArea className="max-h-36 space-y-1 pr-1 border border-border rounded-xl p-2 bg-muted/20">
                   {availableMembers.map(m => {
                     const isSelected = selectedMemberIds.includes(m.id);
                     return (
@@ -217,7 +218,7 @@ export function CreateGroupDialog({ isOpen, onClose }: CreateGroupDialogProps) {
                       </button>
                     );
                   })}
-                </div>
+                </ScrollArea>
               </div>
 
               <div className="flex items-center justify-between gap-2 pt-2">

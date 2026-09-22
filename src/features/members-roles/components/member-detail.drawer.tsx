@@ -16,6 +16,7 @@ import {
   KeyRound,
   Activity,
 } from "lucide-react";
+import { ScrollArea } from "@/components/ScrollArea";
 import { useRoles, usePermissions } from "@/hooks/use-members-roles.hook";
 import type { Member } from "@/types/members-roles.types";
 import Link from "next/link";
@@ -129,7 +130,7 @@ export function MemberDetailDrawer({
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             <div className="flex gap-4 border-b border-border">
               <button
                 type="button"
@@ -288,7 +289,7 @@ export function MemberDetailDrawer({
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto pt-1">
+              <ScrollArea className="flex flex-wrap gap-1.5 max-h-40 pt-1">
                 {grantedPermissions.map((perm) => (
                   <span
                     key={perm.id}
@@ -298,7 +299,7 @@ export function MemberDetailDrawer({
                     {perm.name}
                   </span>
                 ))}
-              </div>
+              </ScrollArea>
             </div>
             </>}
 
@@ -315,7 +316,7 @@ export function MemberDetailDrawer({
                 <MedicalHistoryTable membershipId={member.id} />
               </section>
             )}
-          </div>
+          </ScrollArea>
 
           {/* Drawer Footer with Full Page Link */}
           <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">

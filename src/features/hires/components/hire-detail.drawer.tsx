@@ -16,6 +16,7 @@ import {
 import type { DirectHire, HireStatus } from "@/types/hires.types";
 import { useContractDetail } from "@/hooks/use-contracts.hook";
 import { useInvitationDetail } from "@/hooks/use-invitations.hook";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface HireDetailDrawerProps {
   isOpen: boolean;
@@ -128,7 +129,7 @@ export function HireDetailDrawer({
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             {/* Status-specific Action / Banner */}
             {hire.status === "INVITED" && (
               <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 space-y-3">
@@ -274,7 +275,7 @@ export function HireDetailDrawer({
                 <span className="font-mono text-primary font-medium">{hire.contractId}</span>
               </div>
             </div>
-          </div>
+          </ScrollArea>
 
           {/* Footer */}
           <div className="p-4 border-t border-border bg-card shrink-0 flex items-center justify-between gap-3">

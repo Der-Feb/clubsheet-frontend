@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, Plus, DollarSign, Calendar, Tag, FileText, User } from "lucide-react";
 import { useMembers } from "@/hooks/use-members-roles.hook";
+import { ScrollArea } from "@/components/ScrollArea";
 import type {
   FinancialRecordType,
   FinancialCategory,
@@ -111,11 +112,11 @@ export function AddRecordModal({
       />
 
       {/* Modal Dialog */}
-      <div
+      <ScrollArea
         role="dialog"
         aria-modal="true"
         aria-labelledby="add-record-title"
-        className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
+        className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl text-card-foreground animate-in fade-in zoom-in-95 duration-150"
       >
         <div className="flex items-center justify-between pb-4 border-b border-border">
           <div className="flex items-center gap-2">
@@ -123,7 +124,7 @@ export function AddRecordModal({
             <h2 id="add-record-title" className="text-base font-bold text-foreground">
               Add Financial Record
             </h2>
-          </div>
+            </div>
           <button
             type="button"
             onClick={onClose}
@@ -303,7 +304,7 @@ export function AddRecordModal({
             </button>
           </div>
         </form>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

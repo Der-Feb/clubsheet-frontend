@@ -3,6 +3,7 @@
 import { use, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ScrollArea";
 import {
   ArrowLeft,
   ArrowRightLeft,
@@ -374,7 +375,7 @@ export default function TransferDetailPage({
           </h2>
 
           {/* Scrollable Thread History Container */}
-          <div className="max-h-120 overflow-y-auto space-y-4 relative pr-1 before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-border pt-2">
+          <ScrollArea className="max-h-120 space-y-4 relative pr-1 before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-border pt-2">
             {transfer.negotiationHistory.map((offer, idx) => {
               const isExpanded =
                 expandedOfferIds[offer.id] ??
@@ -575,7 +576,7 @@ export default function TransferDetailPage({
                 </div>
               </div>
             )}
-          </div>
+          </ScrollArea>
 
           {/* Action Bar / Form */}
           {!isTerminal && (

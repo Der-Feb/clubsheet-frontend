@@ -14,6 +14,7 @@ import {
 import { usePermissions } from "@/hooks/use-members-roles.hook";
 import type { Role, PermissionCategory } from "@/types/members-roles.types";
 import Link from "next/link";
+import { ScrollArea } from "@/components/ScrollArea";
 
 interface RoleDetailDrawerProps {
   isOpen: boolean;
@@ -151,7 +152,7 @@ export function RoleDetailDrawer({
           </div>
 
           {/* Permissions Matrix Body */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <ScrollArea className="flex-1 p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
@@ -232,7 +233,7 @@ export function RoleDetailDrawer({
                 </div>
               );
             })}
-          </div>
+          </ScrollArea>
 
           {/* Drawer Footer */}
           <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card p-4 sm:flex-row sm:items-center">

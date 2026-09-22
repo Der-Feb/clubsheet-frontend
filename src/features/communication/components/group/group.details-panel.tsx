@@ -11,6 +11,7 @@ import { MediaGallery } from './media.gallery';
 import { FilesSection } from './files.section';
 import { LinksSection } from './links.section';
 import { NotificationSettings } from './notification.settings';
+import { ScrollArea } from '@/components/ScrollArea';
 
 export interface GroupDetailsPanelProps {
   onOpenInvite?: () => void;
@@ -59,7 +60,7 @@ export function GroupDetailsPanel({ onOpenInvite }: GroupDetailsPanelProps) {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <ScrollArea className="flex-1">
         {/* Info Banner if group */}
         {groupConv && <GroupInfoSection group={groupConv} />}
 
@@ -182,7 +183,7 @@ export function GroupDetailsPanel({ onOpenInvite }: GroupDetailsPanelProps) {
             }
           />
         )}
-      </div>
+      </ScrollArea>
     </aside>
   );
 }

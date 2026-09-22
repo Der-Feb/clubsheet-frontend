@@ -63,7 +63,7 @@ export function RecordMedicalFindingModal({ isOpen, transfer, onClose, onRecord,
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50">
       <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={onClose} aria-hidden="true" />
       <div className="flex min-h-full items-center justify-center p-4">
         <div className="relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-2xl" onClick={(event) => event.stopPropagation()}>
@@ -75,7 +75,7 @@ export function RecordMedicalFindingModal({ isOpen, transfer, onClose, onRecord,
             <button type="button" onClick={onClose} aria-label="Close modal" className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"><X className="h-5 w-5" /></button>
           </div>
           <form id="record-medical-finding" onSubmit={handleSubmit} className="flex min-h-0 flex-col gap-4 p-5 text-xs">
-            <div className="min-h-0 space-y-3 overflow-y-auto pr-1">
+              <div className="min-h-0 space-y-3 pr-1">
               {findings.map((finding, index) => (
                 <div key={index} className="rounded-xl border border-border bg-muted/20 p-3">
                   <div className="flex items-center justify-between">

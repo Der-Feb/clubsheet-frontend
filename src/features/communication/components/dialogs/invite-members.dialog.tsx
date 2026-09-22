@@ -5,6 +5,7 @@ import { Dialog } from '@base-ui/react/dialog';
 import { X, Search, UserPlus } from 'lucide-react';
 import { useCommunication } from '../../context/communication.context';
 import type { Group } from '../../types/communication.types';
+import { ScrollArea } from '@/components/ScrollArea';
 
 export interface InviteMembersDialogProps {
   isOpen: boolean;
@@ -80,7 +81,7 @@ export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDia
           </div>
 
           {/* Members List */}
-          <div className="max-h-56 overflow-y-auto space-y-1 mb-4 border border-border rounded-xl p-2 bg-muted/20">
+          <ScrollArea className="max-h-56 space-y-1 mb-4 border border-border rounded-xl p-2 bg-muted/20">
             {filteredMembers.length === 0 ? (
               <div className="p-4 text-center text-xs text-muted-foreground">
                 No eligible members found
@@ -124,7 +125,7 @@ export function InviteMembersDialog({ isOpen, onClose, group }: InviteMembersDia
                 );
               })
             )}
-          </div>
+          </ScrollArea>
 
           {/* Actions */}
           <div className="flex items-center justify-end gap-2">

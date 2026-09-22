@@ -134,7 +134,7 @@ export function AddScoutingReportModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-4 flex-1 overflow-y-auto space-y-4 pr-1">
+        <form onSubmit={handleSubmit} className="mt-4 flex-1 space-y-4 pr-1">
           {/* Calculated Overall Preview */}
           <div className="flex items-center justify-between p-3.5 rounded-xl bg-primary-subtle border border-primary/20">
             <div>
