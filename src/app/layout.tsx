@@ -122,6 +122,8 @@ export default async function RootLayout({
       <BodyScrollArea className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground">
         <NextTopLoader height={3} showSpinner={false} color="var(--color-primary)" />
         <RouteTopLoaderBridge />
+        <NextTopLoader height={3} showSpinner={false} color="var(--color-primary)" />
+        <RouteTopLoaderBridge />
         <Script
           id="theme-anti-flash"
           strategy="beforeInteractive"
