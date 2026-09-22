@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import LoginForm from "./login.form";
+import { ScrollArea } from "@/components/ScrollArea";
 
 export default function LoginPage() {
   return (
@@ -40,7 +41,7 @@ export default function LoginPage() {
         </div>
 
         {/* Right Form Panel */}
-        <div className="relative z-20 flex w-full shrink-0 flex-col justify-start overflow-visible rounded-t-3xl bg-[#f8fbf6] p-6 lg:min-h-0 lg:w-1/2 lg:flex-1 lg:rounded-none sm:p-8">
+        <ScrollArea className="relative z-20 flex w-full shrink-0 flex-col justify-start rounded-t-3xl bg-[#f8fbf6] p-6 lg:min-h-0 lg:w-1/2 lg:flex-1 lg:rounded-none sm:p-8">
           <div className="mx-auto w-full max-w-md py-4 space-y-4 sm:py-6 sm:space-y-5 lg:py-8">
             <div>
               <h1 className="text-base font-bold text-gray-900 sm:text-lg">Welcome Back</h1>
@@ -51,7 +52,7 @@ export default function LoginPage() {
 
             <LoginForm />
           </div>
-        </div>
+        </ScrollArea>
       </div>
     </div>
   );

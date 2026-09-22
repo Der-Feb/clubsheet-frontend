@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import RegisterForm from "./register.form";
+import { ScrollArea } from "@/components/ScrollArea";
 
 export default function RegisterPage() {
   return (
@@ -37,7 +38,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Form Column */}
-        <div className="relative z-20 flex w-full shrink-0 flex-col justify-start overflow-visible rounded-t-3xl bg-[#f8fbf6] p-6 lg:min-h-0 lg:w-1/2 lg:flex-1 lg:rounded-none sm:p-8">
+        <ScrollArea className="relative z-20 flex w-full shrink-0 flex-col justify-start rounded-t-3xl bg-[#f8fbf6] p-6 lg:min-h-0 lg:w-1/2 lg:flex-1 lg:rounded-none sm:p-8">
           <div className="mx-auto w-full max-w-md py-3 space-y-2 sm:py-5 sm:space-y-2.5 lg:py-6">
             <div>
               <h1 className="text-base font-bold text-gray-900 sm:text-lg">Create Account</h1>
@@ -46,7 +47,7 @@ export default function RegisterPage() {
 
             <RegisterForm />
           </div>
-        </div>
+        </ScrollArea>
       </div>
     </div>
   );

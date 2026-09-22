@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useTopLoader } from "nextjs-toploader";
 
 export function RouteTopLoaderBridge() {
   const pathname = usePathname();
   const loader = useTopLoader();
+  const loaderRef = useRef(loader);
+  loaderRef.current = loader;
 
   useEffect(() => {
     const currentUrl = window.location.href;
@@ -16,9 +18,9 @@ export function RouteTopLoaderBridge() {
     const startAfterPackageCompletion = (url?: string | URL | null) => {
       const nextUrl = url ? new URL(String(url), currentUrl).href : currentUrl;
       if (nextUrl !== currentUrl) {
-        // nextjs-toploader completes its own pushState handler first. Starting
-        // on the next frame keeps the bar active until App Router commits.
-        window.requestAnimationFrame(() => loader.start());
+        // nextjs-toploader completes its own pushState handler first. Restart
+        // immediately so the bar remains active until App Router commits.
+        loaderRef.current.start();
       }
     };
 
@@ -34,7 +36,7 @@ export function RouteTopLoaderBridge() {
       return result;
     };
 
-    const handlePopState = () => loader.start();
+    const handlePopState = () => loaderRef.current.start();
     window.addEventListener("popstate", handlePopState);
 
     return () => {
@@ -42,11 +44,11 @@ export function RouteTopLoaderBridge() {
       window.history.replaceState = originalReplaceState;
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [loader]);
+  }, []);
 
   useEffect(() => {
-    loader.done(true);
-  }, [loader, pathname]);
+    loaderRef.current.done(true);
+  }, [pathname]);
 
   return null;
 }
