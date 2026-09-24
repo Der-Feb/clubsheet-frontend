@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, Filter } from "lucide-react";
+import { X, Calendar } from "lucide-react";
 import { ScrollArea } from "@/components/ScrollArea";
 
 interface DateRangeModalProps {
@@ -40,7 +40,6 @@ export function DateRangeModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onApplyRange(startDate, endDate);
-    onClose();
   };
 
   return (
