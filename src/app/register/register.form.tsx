@@ -73,7 +73,7 @@ export default function RegisterForm() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-700"
+            className="absolute right-2 top-1/2 inline-flex min-h-10 min-w-10 -translate-y-1/2 items-center justify-center cursor-pointer text-gray-400 hover:text-gray-700"
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -105,7 +105,7 @@ export default function RegisterForm() {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-700"
+            className="absolute right-2 top-1/2 inline-flex min-h-10 min-w-10 -translate-y-1/2 items-center justify-center cursor-pointer text-gray-400 hover:text-gray-700"
             aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
           >
             {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -193,7 +193,7 @@ export default function RegisterForm() {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
           type="button"
-          className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 py-1.5 text-[0.7rem] font-medium text-gray-700 transition-colors hover:bg-gray-50 sm:py-2 sm:text-xs cursor-pointer"
+            className="flex min-h-10 items-center justify-center gap-2 rounded-lg border border-gray-300 px-2 py-1.5 text-[0.7rem] font-medium text-gray-700 transition-colors hover:bg-gray-50 sm:py-2 sm:text-xs cursor-pointer"
         >
           <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -217,7 +217,7 @@ export default function RegisterForm() {
         </button>
         <button
           type="button"
-          className="flex items-center justify-center gap-2 rounded-lg bg-black py-1.5 text-[0.7rem] font-medium text-white transition-colors hover:bg-gray-800 sm:py-2 sm:text-xs cursor-pointer"
+            className="flex min-h-10 items-center justify-center gap-2 rounded-lg bg-black px-2 py-1.5 text-[0.7rem] font-medium text-white transition-colors hover:bg-gray-800 sm:py-2 sm:text-xs cursor-pointer"
         >
           {/* Inline Apple brand mark; lucide-react does not include brand logos. */}
           <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">

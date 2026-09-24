@@ -58,7 +58,7 @@ export function ActionsMenu({
         aria-label={`Actions for ${member.name}`}
         aria-expanded={isOpen}
         onClick={() => setIsOpen((prev) => !prev)}
-        className="rounded-lg p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer transition-colors"
+        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-lg p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer transition-colors"
       >
         <MoreVertical className="h-4 w-4" />
       </button>
