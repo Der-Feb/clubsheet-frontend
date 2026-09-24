@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Calendar,
@@ -80,9 +81,14 @@ const INITIAL_MATCHES: Match[] = [
   },
 ];
 
-export default function MatchesPage() {
+function MatchesContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [matches, setMatches] = useState<Match[]>(INITIAL_MATCHES);
-  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const isScheduleModalOpen = searchParams.get("newMatch") === "active";
+
+  const openScheduleModal = () => router.push("/dashboard/matches?newMatch=active");
+  const closeScheduleModal = () => router.push("/dashboard/matches");
 
   const handleScheduleMatch = (newMatch: NewMatchInput) => {
     const created: Match = {
@@ -110,7 +116,7 @@ export default function MatchesPage() {
 
         <button
           type="button"
-          onClick={() => setIsScheduleModalOpen(true)}
+          onClick={openScheduleModal}
           className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
@@ -217,9 +223,17 @@ export default function MatchesPage() {
 
       <ScheduleMatchModal
         isOpen={isScheduleModalOpen}
-        onClose={() => setIsScheduleModalOpen(false)}
+        onClose={closeScheduleModal}
         onScheduleMatch={handleScheduleMatch}
       />
     </div>
+  );
+}
+
+export default function MatchesPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-xs text-muted-foreground">Loading matches...</div>}>
+      <MatchesContent />
+    </Suspense>
   );
 }

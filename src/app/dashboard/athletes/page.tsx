@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Search,
@@ -109,12 +110,17 @@ const INITIAL_ATHLETES: Athlete[] = [
   },
 ];
 
-export default function AthletesPage() {
+function AthletesContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [athletes, setAthletes] = useState<Athlete[]>(INITIAL_ATHLETES);
   const [searchQuery, setSearchQuery] = useState("");
   const [teamFilter, setTeamFilter] = useState("ALL");
   const [statusFilter, setStatusFilter] = useState<"ALL" | Athlete["status"]>("ALL");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const isAddModalOpen = searchParams.get("newAthlete") === "active";
+
+  const openAddModal = () => router.push("/dashboard/athletes?newAthlete=active");
+  const closeAddModal = () => router.push("/dashboard/athletes");
 
   const handleAddAthlete = (newAthlete: NewAthleteInput) => {
     const created: Athlete = {
@@ -187,7 +193,7 @@ export default function AthletesPage() {
           </button>
           <button
             type="button"
-            onClick={() => setIsAddModalOpen(true)}
+            onClick={openAddModal}
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary-hover transition-colors cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
@@ -350,9 +356,17 @@ export default function AthletesPage() {
 
       <AddAthleteModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={closeAddModal}
         onAddAthlete={handleAddAthlete}
       />
     </div>
+  );
+}
+
+export default function AthletesPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-xs text-muted-foreground">Loading athletes...</div>}>
+      <AthletesContent />
+    </Suspense>
   );
 }
