@@ -43,15 +43,15 @@ next-env.d.ts
 # editors
 .trae/
 .kiro/
+.codex/
+.kiro/
 
 # md files
 todo.md
 
 # documents
-documents/
-docs/
-.codex/
-.kiro/
+/documents/
+/docs/
 config.bat
 
 
