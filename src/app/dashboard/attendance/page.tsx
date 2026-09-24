@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ClipboardCheck,
   Calendar,
@@ -86,11 +87,16 @@ const INITIAL_RECORDS: AttendanceRecord[] = [
   },
 ];
 
-export default function AttendancePage() {
+function AttendanceContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [records, setRecords] = useState<AttendanceRecord[]>(INITIAL_RECORDS);
   const [searchQuery, setSearchQuery] = useState("");
   const [teamFilter, setTeamFilter] = useState("ALL");
-  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
+  const isAttendanceModalOpen = searchParams.get("takeAttendance") === "active";
+
+  const openAttendanceModal = () => router.push("/dashboard/attendance?takeAttendance=active");
+  const closeAttendanceModal = () => router.push("/dashboard/attendance");
 
   const handleSaveAttendance = (
     sessionDate: string,
@@ -166,7 +172,7 @@ export default function AttendancePage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setIsAttendanceModalOpen(true)}
+            onClick={openAttendanceModal}
             className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
             <ClipboardCheck className="h-3.5 w-3.5" />
@@ -316,10 +322,18 @@ export default function AttendancePage() {
 
       <TakeAttendanceModal
         isOpen={isAttendanceModalOpen}
-        onClose={() => setIsAttendanceModalOpen(false)}
+        onClose={closeAttendanceModal}
         athletes={athletesForModal}
         onSaveAttendance={handleSaveAttendance}
       />
     </div>
+  );
+}
+
+export default function AttendancePage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-xs text-muted-foreground">Loading attendance...</div>}>
+      <AttendanceContent />
+    </Suspense>
   );
 }

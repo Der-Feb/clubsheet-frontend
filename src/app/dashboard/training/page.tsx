@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Plus,
@@ -81,9 +82,14 @@ const SESSIONS: TrainingSession[] = [
   },
 ];
 
-export default function TrainingPage() {
+function TrainingContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [sessions, setSessions] = useState<TrainingSession[]>(SESSIONS);
-  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const isScheduleModalOpen = searchParams.get("newSession") === "active";
+
+  const openScheduleModal = () => router.push("/dashboard/training?newSession=active");
+  const closeScheduleModal = () => router.push("/dashboard/training");
 
   const handleCreateSession = (input: NewTrainingSession) => {
     const { startTime, endTime, ...sessionInput } = input;
@@ -104,7 +110,7 @@ export default function TrainingPage() {
       },
       ...current,
     ]);
-    setIsScheduleModalOpen(false);
+    closeScheduleModal();
   };
 
   return (
@@ -131,7 +137,7 @@ export default function TrainingPage() {
           </button>
           <button
             type="button"
-            onClick={() => setIsScheduleModalOpen(true)}
+            onClick={openScheduleModal}
             className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
@@ -249,9 +255,17 @@ export default function TrainingPage() {
 
       <ScheduleSessionModal
         isOpen={isScheduleModalOpen}
-        onClose={() => setIsScheduleModalOpen(false)}
+        onClose={closeScheduleModal}
         onCreate={handleCreateSession}
       />
     </div>
+  );
+}
+
+export default function TrainingPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-xs text-muted-foreground">Loading training...</div>}>
+      <TrainingContent />
+    </Suspense>
   );
 }
