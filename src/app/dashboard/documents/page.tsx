@@ -316,18 +316,22 @@ export default function DocumentsPage() {
         </div>
       </div>
 
-      <NewFolderModal
-        isOpen={isNewFolderModalOpen}
-        onClose={() => setIsNewFolderModalOpen(false)}
-        onCreateFolder={handleCreateFolder}
-      />
+      {isNewFolderModalOpen && (
+        <NewFolderModal
+          isOpen
+          onClose={() => setIsNewFolderModalOpen(false)}
+          onCreateFolder={handleCreateFolder}
+        />
+      )}
 
-      <UploadDocumentModal
-        isOpen={isUploadModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-        folders={folders.map((f) => f.name)}
-        onUploadDocument={handleUploadDocument}
-      />
+      {isUploadModalOpen && (
+        <UploadDocumentModal
+          isOpen
+          onClose={() => setIsUploadModalOpen(false)}
+          folders={folders.map((f) => f.name)}
+          onUploadDocument={handleUploadDocument}
+        />
+      )}
     </div>
   );
 }

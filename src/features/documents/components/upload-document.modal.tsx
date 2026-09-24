@@ -33,14 +33,6 @@ export function UploadDocumentModal({
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (isOpen) {
-      setName("");
-      setFolder(folders[0] ?? "");
-      setUploadedBy("");
-      setFile(null);
-      setError("");
-    }
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && isOpen) onClose();
     };

@@ -23,11 +23,6 @@ export function DateRangeModal({
   const [endDate, setEndDate] = useState(initialEnd);
 
   useEffect(() => {
-    if (isOpen) {
-      setStartDate(initialStart);
-      setEndDate(initialEnd);
-    }
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onClose();
     };

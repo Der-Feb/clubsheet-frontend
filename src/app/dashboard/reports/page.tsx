@@ -222,13 +222,15 @@ function ReportsContent() {
         })}
       </div>
 
-      <DateRangeModal
-        isOpen={isDateModalOpen}
-        onClose={closeDateModal}
-        startDate={startDate}
-        endDate={endDate}
-        onApplyRange={handleApplyRange}
-      />
+      {isDateModalOpen && (
+        <DateRangeModal
+          isOpen
+          onClose={closeDateModal}
+          startDate={startDate}
+          endDate={endDate}
+          onApplyRange={handleApplyRange}
+        />
+      )}
     </div>
   );
 }
