@@ -18,7 +18,7 @@ export function HeaderActions({ onToggleSearch, onToggleDetails }: HeaderActions
         type="button"
         onClick={() => setMobileView('list')}
         aria-label="Back to conversations"
-        className="md:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+        className="md:hidden inline-flex min-h-10 min-w-10 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
       >
         <ArrowLeft className="w-5 h-5" />
       </button>
@@ -28,7 +28,7 @@ export function HeaderActions({ onToggleSearch, onToggleDetails }: HeaderActions
         type="button"
         onClick={onToggleSearch}
         aria-label="Search in conversation"
-        className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
       >
         <Search className="w-4 h-4" />
       </button>
@@ -38,7 +38,7 @@ export function HeaderActions({ onToggleSearch, onToggleDetails }: HeaderActions
         type="button"
         onClick={onToggleDetails}
         aria-label="Group info and settings"
-        className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
       >
         <Info className="w-4 h-4" />
       </button>

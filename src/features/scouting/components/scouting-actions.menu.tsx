@@ -66,7 +66,7 @@ export function ScoutingActionsMenu({
         aria-label={`Actions for ${target.externalName}`}
         aria-expanded={isOpen}
         onClick={() => setIsOpen((prev) => !prev)}
-        className="rounded-lg p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer transition-colors"
+        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-lg p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer transition-colors"
       >
         <MoreVertical className="h-4 w-4" />
       </button>
@@ -79,7 +79,7 @@ export function ScoutingActionsMenu({
               setIsOpen(false);
               onViewProfile();
             }}
-            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors"
+            className="flex min-h-10 w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors"
           >
             <User className="h-3.5 w-3.5 text-muted-foreground" />
             <span>View Profile</span>
@@ -91,7 +91,7 @@ export function ScoutingActionsMenu({
               setIsOpen(false);
               onAddReport();
             }}
-            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors"
+            className="flex min-h-10 w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors"
           >
             <FilePlus className="h-3.5 w-3.5 text-primary" />
             <span>Add Report</span>
