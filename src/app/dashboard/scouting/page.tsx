@@ -59,6 +59,8 @@ function ScoutingContent() {
       setIsCreateModalOpen(false);
     }
 
+    if (isLoading) return;
+
     if (targets.length === 0) {
       setIsDrawerOpen(false);
       setIsAddReportModalOpen(false);
@@ -144,8 +146,9 @@ function ScoutingContent() {
   const handleCloseAddReportModal = () => {
     setIsAddReportModalOpen(false);
     setSelectedTargetForReport(null);
-    if (selectedTargetForDrawer) {
-      router.push(`/dashboard/scouting?targetId=${selectedTargetForDrawer.id}`);
+    const tid = selectedTargetForDrawer?.id || targetIdParam;
+    if (tid) {
+      router.push(`/dashboard/scouting?targetId=${tid}`);
     } else {
       router.push("/dashboard/scouting");
     }

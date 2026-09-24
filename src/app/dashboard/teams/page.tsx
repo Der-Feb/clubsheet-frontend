@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import {
   Shield,
@@ -8,6 +11,10 @@ import {
   UserCheck,
   Trophy,
 } from "lucide-react";
+import {
+  CreateTeamModal,
+  type NewTeamInput,
+} from "@/features/teams/components/create-team.modal";
 
 interface Team {
   id: string;
@@ -21,7 +28,7 @@ interface Team {
   league: string;
 }
 
-const TEAMS: Team[] = [
+const INITIAL_TEAMS: Team[] = [
   {
     id: "team-senior",
     name: "Senior First Team",
@@ -80,6 +87,19 @@ const TEAMS: Team[] = [
 ];
 
 export default function TeamsPage() {
+  const [teams, setTeams] = useState<Team[]>(INITIAL_TEAMS);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const handleCreateTeam = (newTeam: NewTeamInput) => {
+    const created: Team = {
+      ...newTeam,
+      id: `team-${Date.now()}`,
+    };
+    setTeams((prev) => [...prev, created]);
+  };
+
+  const totalAthletes = teams.reduce((sum, t) => sum + t.athleteCount, 0);
+
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto">
       {/* Page Header */}
@@ -93,6 +113,7 @@ export default function TeamsPage() {
 
         <button
           type="button"
+          onClick={() => setIsCreateModalOpen(true)}
           className="inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary-hover transition-colors cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
@@ -104,94 +125,94 @@ export default function TeamsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
           <p className="text-xs font-medium text-muted-foreground uppercase">Active Squads</p>
-          <p className="mt-1 text-2xl font-bold text-foreground">5 Divisions</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">{teams.length} Divisions</p>
           <p className="mt-0.5 text-xs text-muted-foreground">Junior, Youth, and Senior</p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
           <p className="text-xs font-medium text-muted-foreground uppercase">Rostered Athletes</p>
-          <p className="mt-1 text-2xl font-bold text-primary">115 Athletes</p>
+          <p className="mt-1 text-2xl font-bold text-primary">{totalAthletes} Athletes</p>
           <p className="mt-0.5 text-xs text-muted-foreground">Across all competitive squads</p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
           <p className="text-xs font-medium text-muted-foreground uppercase">Coaching Staff</p>
-          <p className="mt-1 text-2xl font-bold text-foreground">10 Coaches</p>
-          <p className="mt-0.5 text-xs text-muted-foreground">Licensed technical directors</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">{teams.length * 2} Coaches</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">Licensed technical staff</p>
         </div>
       </div>
 
       {/* Teams Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {TEAMS.map((team) => (
+        {teams.map((team) => (
           <div
             key={team.id}
-            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all text-card-foreground"
+            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all space-y-4 text-card-foreground"
           >
-            <div>
+            <div className="space-y-3">
               <div className="flex items-start justify-between">
-                <div>
-                  <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold text-foreground border border-border">
-                    {team.category}
-                  </span>
-                  <h3 className="mt-2 text-base font-bold text-foreground">
-                    {team.name}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">{team.league}</p>
-                </div>
-
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-subtle text-primary border border-primary/20">
-                  <Shield className="h-5 w-5" />
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-subtle text-primary border border-primary/20">
+                    <Shield className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-foreground text-sm">{team.name}</h3>
+                    <span className="text-[11px] font-medium text-muted-foreground">
+                      {team.category} • {team.league}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-5 space-y-3 pt-4 border-t border-border text-xs">
+              <div className="space-y-2 pt-2 border-t border-border text-xs">
                 <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <UserCheck className="h-3.5 w-3.5" /> Head Coach
+                  <span className="flex items-center gap-1.5">
+                    <UserCheck className="h-3.5 w-3.5" /> Head Coach:
                   </span>
                   <span className="font-semibold text-foreground">{team.headCoach}</span>
                 </div>
-
                 <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Users className="h-3.5 w-3.5" /> Squad Size
+                  <span className="flex items-center gap-1.5">
+                    <Users className="h-3.5 w-3.5" /> Squad Size:
                   </span>
                   <span className="font-semibold text-foreground">
                     {team.athleteCount} Athletes
                   </span>
                 </div>
-
                 <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Clock className="h-3.5 w-3.5" /> Next Session
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5" /> Next Session:
                   </span>
-                  <span className="font-medium text-foreground text-right truncate max-w-42.5">
+                  <span className="font-medium text-foreground text-[11px]">
                     {team.nextSession}
                   </span>
                 </div>
-
                 <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Trophy className="h-3.5 w-3.5" /> Next Match
+                  <span className="flex items-center gap-1.5">
+                    <Trophy className="h-3.5 w-3.5" /> Next Match:
                   </span>
-                  <span className="font-medium text-primary text-right truncate max-w-42.5">
+                  <span className="font-medium text-primary text-[11px]">
                     {team.nextMatch}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 pt-3 border-t border-border">
+            <div className="pt-3 border-t border-border">
               <Link
                 href={`/dashboard/teams/${team.id}`}
-                className="flex items-center justify-between text-xs font-semibold text-primary hover:text-primary-hover transition-colors"
+                className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-border bg-card py-2 text-xs font-semibold text-foreground hover:bg-muted transition-colors"
               >
-                <span>View squad & roster</span>
-                <ChevronRight className="h-3.5 w-3.5" />
+                Manage Squad & Staff <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
         ))}
       </div>
+
+      <CreateTeamModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onCreateTeam={handleCreateTeam}
+      />
     </div>
   );
 }

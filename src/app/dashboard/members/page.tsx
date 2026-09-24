@@ -203,7 +203,7 @@ function MembersContent() {
         <button
           type="button"
           onClick={() => {
-            alert("Invite Staff Member feature triggered.");
+            router.push("/dashboard/hires?newHire=active");
           }}
           className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
         >
