@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import {
   Calendar,
@@ -6,6 +9,10 @@ import {
   ChevronRight,
   Plus,
 } from "lucide-react";
+import {
+  ScheduleMatchModal,
+  type NewMatchInput,
+} from "@/features/matches/components/schedule-match.modal";
 
 interface Match {
   id: string;
@@ -21,7 +28,7 @@ interface Match {
   team: string;
 }
 
-const MATCHES: Match[] = [
+const INITIAL_MATCHES: Match[] = [
   {
     id: "m-201",
     opponent: "APR FC",
@@ -74,6 +81,20 @@ const MATCHES: Match[] = [
 ];
 
 export default function MatchesPage() {
+  const [matches, setMatches] = useState<Match[]>(INITIAL_MATCHES);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+
+  const handleScheduleMatch = (newMatch: NewMatchInput) => {
+    const created: Match = {
+      ...newMatch,
+      id: `m-${Date.now()}`,
+    };
+    setMatches((prev) => [created, ...prev]);
+  };
+
+  const upcomingMatches = matches.filter((m) => m.status === "Upcoming");
+  const nextMatch = upcomingMatches[0];
+
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto">
       {/* Page Header */}
@@ -89,6 +110,7 @@ export default function MatchesPage() {
 
         <button
           type="button"
+          onClick={() => setIsScheduleModalOpen(true)}
           className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
@@ -100,8 +122,12 @@ export default function MatchesPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
           <p className="text-xs font-medium text-muted-foreground uppercase">Next Match</p>
-          <p className="mt-1 text-lg font-bold text-foreground">vs APR FC</p>
-          <p className="mt-0.5 text-xs text-primary font-medium">Sat, 15:00 at Amahoro</p>
+          <p className="mt-1 text-lg font-bold text-foreground">
+            {nextMatch ? `vs ${nextMatch.opponent}` : "No upcoming fixtures"}
+          </p>
+          <p className="mt-0.5 text-xs text-primary font-medium">
+            {nextMatch ? `${nextMatch.date.split(",")[0]}, ${nextMatch.time} (${nextMatch.venue})` : "Season break"}
+          </p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs text-card-foreground">
           <p className="text-xs font-medium text-muted-foreground uppercase">League Position</p>
@@ -122,7 +148,7 @@ export default function MatchesPage() {
         </h2>
 
         <div className="space-y-3">
-          {MATCHES.map((match) => (
+          {matches.map((match) => (
             <div
               key={match.id}
               className="rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-card-foreground"
@@ -140,59 +166,60 @@ export default function MatchesPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-[10px] font-bold text-primary-foreground shadow-xs">
-                      KFC
-                    </span>
-                    <span className="text-base font-bold text-foreground">
-                      Kigali FC
-                    </span>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-xs font-bold text-primary-foreground shadow-xs">
+                    {match.opponentLogo}
                   </div>
-
-                  <span className="text-xs font-semibold text-muted-foreground px-1">
-                    {match.status === "Completed" ? match.score : "vs"}
-                  </span>
-
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted border border-border text-[10px] font-bold text-foreground">
-                      {match.opponentLogo}
-                    </span>
-                    <span className="text-base font-bold text-foreground">
-                      {match.opponent}
-                    </span>
+                  <div>
+                    <h3 className="font-bold text-foreground text-sm">
+                      {match.isHome ? `Club vs ${match.opponent}` : `${match.opponent} vs Club`}
+                    </h3>
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" /> {match.date}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-3.5 w-3.5" /> {match.time}
+                      </span>
+                      <span className="flex items-center gap-1 hidden md:flex">
+                        <MapPin className="h-3.5 w-3.5" /> {match.venue}
+                      </span>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground pt-1">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                    {match.date}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                    {match.time}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
-                    {match.venue} ({match.isHome ? "Home" : "Away"})
-                  </span>
                 </div>
               </div>
 
-              {/* Right: Actions */}
-              <div className="flex items-center gap-3 self-end sm:self-center">
+              {/* Right: Status / Score & Action */}
+              <div className="flex items-center justify-between sm:justify-end gap-4 pt-3 sm:pt-0 border-t sm:border-t-0 border-border">
+                {match.status === "Completed" ? (
+                  <div className="text-right">
+                    <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-foreground border border-border">
+                      Final
+                    </span>
+                    <p className="text-base font-bold text-foreground mt-1">{match.score}</p>
+                  </div>
+                ) : (
+                  <span className="rounded-full bg-primary-subtle px-2.5 py-0.5 text-[10px] font-semibold text-primary border border-primary/20">
+                    {match.status}
+                  </span>
+                )}
+
                 <Link
                   href={`/dashboard/matches/${match.id}`}
-                  className="inline-flex items-center gap-1 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors"
+                  className="inline-flex items-center gap-1 rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted transition-colors"
                 >
-                  <span>Match Centre</span>
-                  <ChevronRight className="h-3 w-3" />
+                  Matchday Center <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      <ScheduleMatchModal
+        isOpen={isScheduleModalOpen}
+        onClose={() => setIsScheduleModalOpen(false)}
+        onScheduleMatch={handleScheduleMatch}
+      />
     </div>
   );
 }
