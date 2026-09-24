@@ -322,19 +322,19 @@ export function TransferDetailDrawer({
             </div>
 
             {/* From Club -> To Club Flow & Status Badge */}
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3">
-              <div className="flex items-center gap-2 text-xs">
-                <span className="font-semibold text-foreground">
+            <div className="flex flex-col items-start gap-2 rounded-xl border border-border bg-card p-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2 text-xs">
+                <span className="min-w-0 break-words font-semibold text-foreground">
                   {transfer.fromClubName}
                 </span>
                 <ArrowRight className="h-3.5 w-3.5 text-primary shrink-0" />
-                <span className="font-semibold text-foreground">
+                <span className="min-w-0 break-words font-semibold text-foreground">
                   {transfer.toClubName}
                 </span>
               </div>
 
               <span
-                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${
+                className={`inline-flex max-w-full shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${
                   STATUS_BADGE[transfer.status]?.style || STATUS_BADGE.OPEN.style
                 }`}
               >
@@ -428,17 +428,17 @@ export function TransferDetailDrawer({
               </div>
 
               {/* Scrollable Container for overflowing thread history */}
-              <div className="max-h-96 space-y-3 relative pr-1 before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
+              <div className="max-h-96 space-y-3 relative pr-1 before:absolute before:left-3 sm:before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
                 {visibleOffers.map((offer) => {
                   const isExpanded = expandedOfferIds[offer.id] ?? false;
 
                   return (
-                    <div key={offer.id} className="relative pl-9">
+                    <div key={offer.id} className="relative pl-7 sm:pl-9">
                       {/* Enlarged Dot on timeline */}
                       <button
                         type="button"
                         onClick={() => toggleOfferExpand(offer.id)}
-                        className={`absolute left-4 top-4 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-card shadow-xs transition-transform cursor-pointer hover:scale-110 ${
+                        className={`absolute left-3 sm:left-4 top-4 h-3.5 w-3.5 sm:h-4 sm:w-4 -translate-x-1/2 rounded-full border-2 border-card shadow-xs transition-transform cursor-pointer hover:scale-110 ${
                           offer.isCounter ? "bg-amber-500" : "bg-primary"
                         }`}
                         title={isExpanded ? "Collapse item" : "Expand item"}
@@ -455,49 +455,52 @@ export function TransferDetailDrawer({
                         {/* Collapsible Header */}
                         <div
                           onClick={() => toggleOfferExpand(offer.id)}
-                          className="flex items-center justify-between p-3.5 cursor-pointer hover:bg-muted/30 transition-colors"
+                          className="flex flex-col gap-2 p-3 sm:p-3.5 cursor-pointer hover:bg-muted/30 transition-colors"
                         >
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-bold text-foreground">
-                              {offer.clubName}
-                            </span>
-                            {offer.isCounter ? (
-                              <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                                <CornerDownRight className="h-3 w-3" />
-                                Counter
+                          <div className="flex min-w-0 w-full flex-wrap items-center justify-between gap-2">
+                            <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+                              <span className="min-w-0 break-words font-bold text-foreground">
+                                {offer.clubName}
                               </span>
-                            ) : (
-                              <span className="inline-flex items-center rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary border border-primary/20">
-                                Opening Offer
-                              </span>
-                            )}
-
-                            {/* Cites Finding Chip */}
-                            {offer.citesFindingCondition && (
-                              <span className="inline-flex items-center gap-1 rounded-md bg-purple-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-purple-600 dark:text-purple-400 border border-purple-500/20">
-                                <Activity className="h-3 w-3" />
-                                Cites: {offer.citesFindingCondition}
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-foreground">
-                              {formatCurrency(offer.feeAmount)}
-                            </span>
-                            <span className="text-muted-foreground p-0.5 rounded hover:bg-muted">
-                              {isExpanded ? (
-                                <ChevronUp className="h-3.5 w-3.5" />
+                              {offer.isCounter ? (
+                                <span className="inline-flex items-center gap-1 rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                                  <CornerDownRight className="h-3 w-3" />
+                                  Counter
+                                </span>
                               ) : (
-                                <ChevronDown className="h-3.5 w-3.5" />
+                                <span className="inline-flex items-center rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary border border-primary/20 shrink-0">
+                                  Opening Offer
+                                </span>
                               )}
-                            </span>
+                            </div>
+
+                            <div className="flex shrink-0 items-center gap-2">
+                              <span className="font-bold text-foreground">
+                                {formatCurrency(offer.feeAmount)}
+                              </span>
+                              <span className="text-muted-foreground p-0.5 rounded hover:bg-muted">
+                                {isExpanded ? (
+                                  <ChevronUp className="h-3.5 w-3.5" />
+                                ) : (
+                                  <ChevronDown className="h-3.5 w-3.5" />
+                                )}
+                              </span>
+                            </div>
                           </div>
+
+                          {offer.citesFindingCondition && (
+                            <div className="flex max-w-full flex-wrap items-center">
+                              <span className="inline-flex max-w-full items-center gap-1 rounded-md bg-purple-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-purple-600 dark:text-purple-400 border border-purple-500/20 break-words">
+                                <Activity className="h-3 w-3 shrink-0" />
+                                <span className="truncate max-w-[14rem] sm:max-w-xs">Cites: {offer.citesFindingCondition}</span>
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Collapsible Body */}
                         {isExpanded && (
-                          <div className="p-3.5 pt-0 border-t border-border/40 space-y-2 animate-in fade-in duration-150">
+                          <div className="p-3 sm:p-3.5 pt-0 border-t border-border/40 space-y-2 animate-in fade-in duration-150">
                             <div className="flex justify-between items-center text-[10px] text-muted-foreground pt-1">
                               <span>Submitted:</span>
                               <span>{offer.createdAt}</span>
@@ -508,17 +511,17 @@ export function TransferDetailDrawer({
                                 <span className="font-semibold text-muted-foreground block text-[10px] uppercase">
                                   Key Terms
                                 </span>
-                                <span className="text-foreground">{offer.terms}</span>
+                                <span className="text-foreground break-words">{offer.terms}</span>
                               </div>
                             )}
 
                             {offer.notes && (
                               <div className="rounded-xl border border-border bg-card p-2.5 text-[11px] text-foreground space-y-1">
                                 <span className="font-semibold text-muted-foreground text-[10px] uppercase flex items-center gap-1">
-                                  <MessageSquare className="h-3 w-3 text-primary" />
+                                  <MessageSquare className="h-3 w-3 text-primary shrink-0" />
                                   Negotiation Comment
                                 </span>
-                                <p className="italic text-foreground/90">"{offer.notes}"</p>
+                                <p className="italic text-foreground/90 break-words">"{offer.notes}"</p>
                               </div>
                             )}
                           </div>
@@ -530,26 +533,28 @@ export function TransferDetailDrawer({
 
                 {/* Medical Review Event Card in Thread (Outlined Neutral Card, distinct from bubble) */}
                 {transfer.medicalExam && (
-                  <div className="relative pl-9 pt-1">
+                  <div className="relative pl-7 sm:pl-9 pt-1">
                     {/* Medical Timeline Dot */}
-                    <div className="absolute left-4 top-5 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-card bg-teal-500 shadow-xs" />
+                    <div className="absolute left-3 sm:left-4 top-5 h-3.5 w-3.5 sm:h-4 sm:w-4 -translate-x-1/2 rounded-full border-2 border-card bg-teal-500 shadow-xs" />
 
-                    <div className="rounded-2xl border-2 border-border bg-muted/20 p-4 space-y-3 text-xs shadow-xs">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Stethoscope className="h-4 w-4 text-teal-600 dark:text-teal-400" />
-                          <h4 className="font-bold text-foreground">
-                            Medical Examination
-                          </h4>
+                    <div className="rounded-2xl border-2 border-border bg-muted/20 p-3 sm:p-4 space-y-3 text-xs shadow-xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex min-w-0 flex-wrap items-center gap-2">
+                          <div className="flex items-center gap-1.5">
+                            <Stethoscope className="h-4 w-4 text-teal-600 dark:text-teal-400 shrink-0" />
+                            <h4 className="font-bold text-foreground">
+                              Medical Examination
+                            </h4>
+                          </div>
+                          <Link
+                            href={`/dashboard/medical?transferId=${transfer.id}&recordFinding=active`}
+                            className="text-[10px] font-semibold text-primary hover:underline"
+                          >
+                            Open in Medical
+                          </Link>
                         </div>
-                        <Link
-                          href={`/dashboard/medical?transferId=${transfer.id}&recordFinding=active`}
-                          className="text-[10px] font-semibold text-primary hover:underline"
-                        >
-                          Open in Medical
-                        </Link>
                         <span
-                          className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
+                          className={`inline-flex max-w-full shrink-0 items-center whitespace-normal rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
                             EXAM_STATUS_BADGE[transfer.medicalExam.status]?.style ||
                             EXAM_STATUS_BADGE.SCHEDULED.style
                           }`}
@@ -583,11 +588,11 @@ export function TransferDetailDrawer({
                                 key={finding.id}
                                 className="rounded-xl border border-border bg-card p-3 space-y-2"
                               >
-                                <div className="flex items-center justify-between">
-                                  <span className="font-semibold text-foreground">
+                                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1.5 sm:gap-2">
+                                  <span className="min-w-0 break-words font-semibold text-foreground">
                                     {finding.condition}
                                   </span>
-                                  <div className="flex items-center gap-1.5">
+                                  <div className="flex max-w-full shrink-0 flex-wrap items-center gap-1.5">
                                     {formatSeverity(finding.severity)}
                                     {finding.disqualifying && (
                                       <span className="inline-flex items-center rounded-md bg-rose-500/10 border border-rose-500/30 px-1.5 py-0.5 text-[10px] font-bold text-rose-500">
@@ -597,7 +602,7 @@ export function TransferDetailDrawer({
                                   </div>
                                 </div>
 
-                                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                <p className="text-[11px] text-muted-foreground leading-relaxed break-words">
                                   {finding.note}
                                 </p>
 
@@ -825,8 +830,8 @@ export function TransferDetailDrawer({
             {/* Scouting Report Summary Card Footer */}
             {transfer.scoutingReport && (
               <div className="rounded-2xl border border-border bg-card p-4 space-y-3 shadow-xs text-xs">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h4 className="min-w-0 font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                     <Target className="h-3.5 w-3.5 text-primary" />
                     Originating Scouting Report
                   </h4>
@@ -850,11 +855,11 @@ export function TransferDetailDrawer({
           </ScrollArea>
 
           {/* Drawer Footer */}
-          <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3 shrink-0">
+          <div className="p-4 border-t border-border bg-card flex flex-col-reverse items-stretch justify-between gap-2 shrink-0 sm:flex-row sm:items-center">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-border bg-card px-4 py-2 text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors"
+              className="rounded-xl border border-border bg-card px-4 py-2 text-center text-xs font-medium text-foreground hover:bg-muted cursor-pointer transition-colors sm:text-left"
             >
               Close
             </button>
@@ -863,7 +868,7 @@ export function TransferDetailDrawer({
               href={`/dashboard/transfers/${transfer.id}`}
               replace
               onClick={onClose}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
+              className="inline-flex min-w-0 items-center justify-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-center text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
             >
               <span>View Full Negotiation Page</span>
               <ArrowRight className="h-3.5 w-3.5" />
