@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -17,15 +18,23 @@ export function NavItem({
   onClick,
 }: NavItemProps) {
   const pathname = usePathname();
+  const linkRef = useRef<HTMLAnchorElement>(null);
 
   const isActive = item.matchExact
     ? pathname === item.href
     : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
+  useEffect(() => {
+    if (isActive) {
+      linkRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }, [isActive, pathname]);
+
   const Icon = item.icon;
 
   return (
     <Link
+      ref={linkRef}
       href={item.href}
       onClick={onClick}
       title={isCollapsed ? item.label : undefined}

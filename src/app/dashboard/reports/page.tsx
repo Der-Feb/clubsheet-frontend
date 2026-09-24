@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   BarChart3,
   Calendar,
@@ -61,25 +62,41 @@ const INITIAL_REPORTS: ReportCard[] = [
   },
 ];
 
-export default function ReportsPage() {
-  const [reports, setReports] = useState<ReportCard[]>(INITIAL_REPORTS);
-  const [isDateModalOpen, setIsDateModalOpen] = useState(false);
-  const [startDate, setStartDate] = useState("2026-08-01");
-  const [endDate, setEndDate] = useState("2026-09-30");
-  const [customPeriodLabel, setCustomPeriodLabel] = useState<string | null>(null);
+function ReportsContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const startDate = searchParams.get("startDate") ?? "2026-08-01";
+  const endDate = searchParams.get("endDate") ?? "2026-09-30";
+  const hasCustomRange = searchParams.has("startDate") && searchParams.has("endDate");
+  const isDateModalOpen = searchParams.get("dateRange") === "active";
+  const customPeriodLabel = hasCustomRange ? `${startDate} to ${endDate}` : null;
+  const reports = customPeriodLabel
+    ? INITIAL_REPORTS.map((report) => ({ ...report, period: customPeriodLabel }))
+    : INITIAL_REPORTS;
   const [downloadSuccess, setDownloadSuccess] = useState<string | null>(null);
 
+  const openDateModal = () => {
+    const params = new URLSearchParams();
+    params.set("dateRange", "active");
+    if (hasCustomRange) {
+      params.set("startDate", startDate);
+      params.set("endDate", endDate);
+    }
+    router.push(`/dashboard/reports?${params.toString()}`);
+  };
+
+  const closeDateModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("dateRange");
+    const query = params.toString();
+    router.push(query ? `/dashboard/reports?${query}` : "/dashboard/reports");
+  };
+
   const handleApplyRange = (start: string, end: string) => {
-    setStartDate(start);
-    setEndDate(end);
-    const label = `${start} to ${end}`;
-    setCustomPeriodLabel(label);
-    setReports((prev) =>
-      prev.map((r) => ({
-        ...r,
-        period: label,
-      }))
-    );
+    const params = new URLSearchParams();
+    params.set("startDate", start);
+    params.set("endDate", end);
+    router.push(`/dashboard/reports?${params.toString()}`);
   };
 
   const handleExport = (reportTitle: string, format: "CSV" | "PDF") => {
@@ -118,8 +135,7 @@ export default function ReportsPage() {
             <button
               type="button"
               onClick={() => {
-                setCustomPeriodLabel(null);
-                setReports(INITIAL_REPORTS);
+                router.push("/dashboard/reports");
               }}
               className="text-xs font-semibold text-primary hover:underline cursor-pointer"
             >
@@ -128,7 +144,7 @@ export default function ReportsPage() {
           )}
           <button
             type="button"
-            onClick={() => setIsDateModalOpen(true)}
+            onClick={openDateModal}
             className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors cursor-pointer"
           >
             <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
@@ -208,11 +224,19 @@ export default function ReportsPage() {
 
       <DateRangeModal
         isOpen={isDateModalOpen}
-        onClose={() => setIsDateModalOpen(false)}
+        onClose={closeDateModal}
         startDate={startDate}
         endDate={endDate}
         onApplyRange={handleApplyRange}
       />
     </div>
+  );
+}
+
+export default function ReportsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-xs text-muted-foreground">Loading reports...</div>}>
+      <ReportsContent />
+    </Suspense>
   );
 }
