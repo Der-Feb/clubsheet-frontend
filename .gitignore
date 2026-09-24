@@ -53,3 +53,7 @@ docs/
 .codex/
 .kiro/
 config.bat
+
+
+# environmeent variables file
+.env
