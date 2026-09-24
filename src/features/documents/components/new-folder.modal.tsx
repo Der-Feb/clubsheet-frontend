@@ -35,12 +35,6 @@ export function NewFolderModal({
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (isOpen) {
-      setName("");
-      setDepartment(DEPARTMENTS[0]);
-      setError("");
-    }
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onClose();
     };
