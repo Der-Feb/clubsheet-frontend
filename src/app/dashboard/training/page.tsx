@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import {
   Plus,
@@ -8,6 +11,11 @@ import {
   ChevronRight,
   Filter,
 } from "lucide-react";
+import {
+  ScheduleSessionModal,
+  type NewTrainingSession,
+  type TrainingSessionType,
+} from "@/features/training/components/schedule-session.modal";
 
 interface TrainingSession {
   id: string;
@@ -19,7 +27,7 @@ interface TrainingSession {
   coach: string;
   confirmedAthletes: number;
   totalAthletes: number;
-  type: "Tactical" | "Technical" | "Conditioning" | "Recovery";
+  type: TrainingSessionType;
 }
 
 const SESSIONS: TrainingSession[] = [
@@ -74,6 +82,31 @@ const SESSIONS: TrainingSession[] = [
 ];
 
 export default function TrainingPage() {
+  const [sessions, setSessions] = useState<TrainingSession[]>(SESSIONS);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+
+  const handleCreateSession = (input: NewTrainingSession) => {
+    const { startTime, endTime, ...sessionInput } = input;
+    const sessionDate = new Date(`${input.date}T12:00:00`);
+    const date = sessionDate.toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "short",
+      day: "numeric",
+    });
+
+    setSessions((current) => [
+      {
+        ...sessionInput,
+        id: `tr-${crypto.randomUUID()}`,
+        date,
+        time: `${startTime} - ${endTime}`,
+        confirmedAthletes: 0,
+      },
+      ...current,
+    ]);
+    setIsScheduleModalOpen(false);
+  };
+
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto">
       {/* Page Header */}
@@ -88,7 +121,7 @@ export default function TrainingPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted shadow-xs transition-colors cursor-pointer"
@@ -98,6 +131,7 @@ export default function TrainingPage() {
           </button>
           <button
             type="button"
+            onClick={() => setIsScheduleModalOpen(true)}
             className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
@@ -148,7 +182,7 @@ export default function TrainingPage() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {SESSIONS.map((session) => (
+          {sessions.map((session) => (
             <div
               key={session.id}
               className="rounded-2xl border border-border bg-card p-5 shadow-xs hover:border-primary/40 transition-all space-y-4 flex flex-col justify-between text-card-foreground"
@@ -212,6 +246,12 @@ export default function TrainingPage() {
           ))}
         </div>
       </div>
+
+      <ScheduleSessionModal
+        isOpen={isScheduleModalOpen}
+        onClose={() => setIsScheduleModalOpen(false)}
+        onCreate={handleCreateSession}
+      />
     </div>
   );
 }
