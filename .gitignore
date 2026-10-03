@@ -45,15 +45,15 @@ next-env.d.ts
 .kiro/
 .codex/
 .kiro/
+.codex/
+.kiro/
 
 # md files
 todo.md
 
 # documents
-documents/
-docs/
-.codex/
-.kiro/
+/documents/
+/docs/
 config.bat
 
 # env variable

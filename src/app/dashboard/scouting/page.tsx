@@ -56,6 +56,8 @@ function ScoutingContent() {
   useEffect(() => {
     if (isLoading) return;
 
+    if (isLoading) return;
+
     if (targets.length === 0) {
       setIsDrawerOpen(false);
       setIsAddReportModalOpen(false);
