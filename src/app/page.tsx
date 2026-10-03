@@ -12,10 +12,10 @@ import { FaqSection, WhoSection } from "@/components/home/home.section";
 import { HomeNavbar } from "@/components/home/home.navbar";
 
 const avatarLinks = [
-  "https://images.unsplash.com/photo-1615109398623-88346a601842?ixid=M3w4MjcwNjd8MHwxfHNlYXJjaHwxfHxodW1hbnxlbnwwfHx8fDE3ODc1NzY5NDZ8MA&ixlib=rb-4.1.0&fit=max&q=80",
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=M3w4MjcwNjd8MHwxfHNlYXJjaHw2fHxodW1hbnxlbnwwfHx8fDE3ODc1NzY5NDZ8MA&ixlib=rb-4.1.0&fit=max&q=80",
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=M3w4MjcwNjd8MHwxfHNlYXJjaHw3fHxodW1hbnxlbnwwfHx8fDE3ODc1NzY5NDZ8MA&ixlib=rb-4.1.0&fit=max&q=80",
-  "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixid=M3w4MjcwNjd8MHwxfHNlYXJjaHwxMHx8aHVtYW58ZW58MHx8fHwxNzg3NTc2OTQ2fDA&ixlib=rb-4.1.0&fit=max&q=80",
+  "https://i.pinimg.com/736x/33/33/f6/3333f6710fc6b5366b92c45c7e526725.jpg",
+  "https://i.pinimg.com/736x/cf/81/0c/cf810cfafc88445f525e984064ce542d.jpg",
+  "https://i.pinimg.com/736x/9c/a0/2a/9ca02a569d26dc9e5bce8337b8b1782b.jpg",
+  "https://i.pinimg.com/1200x/34/c0/fd/34c0fd7103dfc73d80e520d84ddcbea4.jpg",
 ];
 
 const starterItems = [
@@ -36,14 +36,14 @@ export default function Home() {
       <HomeNavbar />
 
       {/* Hero */}
-      <section id="hero" className="flex min-h-[calc(100svh-4rem)] w-full flex-col overflow-hidden lg:flex-row">
-        <div className="flex min-w-0 flex-1 flex-col justify-center px-6 py-10 sm:px-10 lg:pl-13 lg:pr-6 lg:py-8 left-home-hero-section">
+      <section id="hero" className="flex min-h-svh w-full flex-col overflow-hidden lg:flex-row">
+        <div className="flex min-w-0 flex-1 flex-col justify-start px-6 pt-[4.5rem] pb-8 sm:px-10 lg:pl-13 lg:pr-6 lg:justify-center lg:pt-[5rem] lg:pb-10 left-home-hero-section">
           <div className="inline-flex w-max items-center gap-2 bg-secondary rounded-[.4rem] px-3 py-1.5">
             <div className="h-[.6rem] w-[.6rem] bg-primary rounded-full shrink-0 animate-swell" />
             <span className="font-semibold text-[.65rem] leading-none text-zinc-700">NEW PLATFORM UPDATE</span>
           </div>
 
-          <div className="pt-10">
+          <div className="pt-6">
             <span className="text-3xl block font-bold text-zinc-900">Run your club with</span>
             <span className="text-3xl block text-primary font-bold pt-3">clarity.</span>
             <span className="block w-full max-w-md pt-8 text-sm leading-relaxed text-zinc-700 sm:w-2/3">
@@ -110,11 +110,11 @@ export default function Home() {
           </div>
 
           <div className="mt-8 w-full max-w-2xl translate-y-2 overflow-hidden rounded-2xl home-brand-shadow-frame transition-transform duration-300 hover:scale-[1.02] cursor-default lg:mt-0 lg:translate-y-5">
-            <Image src="/images/hero-image.jpeg" alt="ClubSheet dashboard" width={1360} height={768} className="h-auto max-h-[calc(100svh-12rem)] w-full rounded-2xl object-contain" />
+            <Image src="/images/hero-image.jpeg" alt="ClubSheet dashboard" width={1360} height={768} className="h-auto max-h-[calc(100svh-12rem)] w-full rounded-2xl object-contain" priority />
           </div>
 
           <div
-            className="absolute bottom-0 -left-8 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl home-brand-shadow-card border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
+            className="absolute bottom-35 -left-8 z-20 bg-white/95 backdrop-blur-md p-3 rounded-2xl home-brand-shadow-card border border-secondary flex items-center gap-3 animate-wave hover:scale-105 transition-transform cursor-default"
             style={{ animationDelay: ".2s" }}
           >
             <div className="w-8 h-8 rounded-full bg-quinary flex items-center justify-center text-primary">
