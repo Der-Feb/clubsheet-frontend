@@ -57,25 +57,20 @@ function MemberDetailContent({ memberId }: { memberId: string }) {
   // Granular Direct Permissions state
   const [directPermissions, setDirectPermissions] = useState<string[]>([]);
   const [revokedPermissions, setRevokedPermissions] = useState<string[]>([]);
-  const [isRolePickerOpen, setIsRolePickerOpen] = useState(false);
   const [hasPermChanges, setHasPermChanges] = useState(false);
 
-  // Sync direct permissions when member loads
+  // Sync direct permissions when member loads — intentional URL→state sync
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (member) {
       setDirectPermissions(member.directPermissions || []);
       setRevokedPermissions(member.revokedPermissions || []);
     }
-  }, [member]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [member?.id]);
 
   // Sync changeRole query param
-  useEffect(() => {
-    if (changeRoleParam === "active" || changeRoleParam === "true") {
-      setIsRolePickerOpen(true);
-    } else {
-      setIsRolePickerOpen(false);
-    }
-  }, [changeRoleParam]);
+  const isRolePickerOpen = changeRoleParam === "active" || changeRoleParam === "true";
 
   if (!member) {
     return (
@@ -104,12 +99,10 @@ function MemberDetailContent({ memberId }: { memberId: string }) {
   const isSuspended = member.status === "Suspended";
 
   const handleOpenRolePicker = () => {
-    setIsRolePickerOpen(true);
     router.push(`/dashboard/members/${member.id}?changeRole=active`);
   };
 
   const handleCloseRolePicker = () => {
-    setIsRolePickerOpen(false);
     router.push(`/dashboard/members/${member.id}`);
   };
 

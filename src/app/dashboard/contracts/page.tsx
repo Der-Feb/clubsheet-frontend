@@ -91,13 +91,14 @@ function ContractsContent() {
     .filter((c) => c.createdAt.startsWith(currentMonth))
     .reduce((sum, c) => sum + (c.signingBonus || 0), 0);
 
+  const now = new Date();
+  const in30Days = new Date(now.getTime() + 30 * 86400000);
   const expiringCount = contracts.filter((c) => {
     if (!c.startDate) return false;
     const start = new Date(c.startDate);
     const end = new Date(start);
     end.setMonth(end.getMonth() + c.lengthMonths);
-    const in30Days = new Date(Date.now() + 30 * 86400000);
-    return end <= in30Days && end >= new Date();
+    return end <= in30Days && end >= now;
   }).length;
 
   const handleOpenDrawer = (contract: Contract) => {

@@ -45,39 +45,30 @@ function RolesContent() {
     useState<Role | null>(null);
   const [isDetailDrawerOpen, setIsDetailDrawerOpen] = useState(false);
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
   const [selectedRoleForDelete, setSelectedRoleForDelete] =
     useState<Role | null>(null);
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
-  // Sync role drawer & modals with query params on load or URL change
+  // Derive modal/drawer open states from URL params (no setState in effect)
+  const isCreateModalOpen = createRoleParam === "active" || createRoleParam === "true";
+  const isDeleteConfirmOpen =
+    Boolean(roleIdParam) && (deleteRoleParam === "active" || deleteRoleParam === "true");
+
+  // Sync selected role for detail/delete — intentional URL→state sync
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
-    if (createRoleParam === "active" || createRoleParam === "true") {
-      setIsCreateModalOpen(true);
-    } else {
-      setIsCreateModalOpen(false);
-    }
-
     if (roleIdParam && roles.length > 0) {
       const targetRole = roles.find((r) => r.id === roleIdParam);
       if (targetRole) {
         setSelectedRoleForDetail(targetRole);
-
         if (deleteRoleParam === "active" || deleteRoleParam === "true") {
           setSelectedRoleForDelete(targetRole);
-          setIsDeleteConfirmOpen(true);
-        } else {
-          setIsDeleteConfirmOpen(false);
         }
-
         setIsDetailDrawerOpen(true);
       }
     } else {
       setIsDetailDrawerOpen(false);
-      setIsDeleteConfirmOpen(false);
     }
-  }, [roleIdParam, createRoleParam, deleteRoleParam, roles]);
+  }, [roleIdParam, deleteRoleParam, roles]);
 
   const filteredRoles = roles.filter(
     (role) =>
@@ -105,12 +96,10 @@ function RolesContent() {
   };
 
   const handleOpenCreateModal = () => {
-    setIsCreateModalOpen(true);
     router.push("/dashboard/roles?createRole=active");
   };
 
   const handleCloseCreateModal = () => {
-    setIsCreateModalOpen(false);
     router.push("/dashboard/roles");
   };
 
@@ -144,13 +133,11 @@ function RolesContent() {
     const roleToDelete = roles.find((r) => r.id === roleId);
     if (roleToDelete) {
       setSelectedRoleForDelete(roleToDelete);
-      setIsDeleteConfirmOpen(true);
       router.push(`/dashboard/roles?roleId=${roleId}&deleteRole=active`);
     }
   };
 
   const handleCloseDeleteConfirm = () => {
-    setIsDeleteConfirmOpen(false);
     if (selectedRoleForDetail) {
       router.push(`/dashboard/roles?roleId=${selectedRoleForDetail.id}`);
     } else {
@@ -162,7 +149,6 @@ function RolesContent() {
     if (!selectedRoleForDelete) return;
     deleteRoleMutation.mutate(selectedRoleForDelete.id, {
       onSuccess: () => {
-        setIsDeleteConfirmOpen(false);
         handleCloseDetail();
       },
     });
