@@ -40,43 +40,39 @@ function MembersContent() {
 
   const [selectedMemberForRolePicker, setSelectedMemberForRolePicker] =
     useState<Member | null>(null);
-  const [isRolePickerOpen, setIsRolePickerOpen] = useState(false);
 
   const [selectedMemberForRemove, setSelectedMemberForRemove] =
     useState<Member | null>(null);
-  const [isRemoveConfirmOpen, setIsRemoveConfirmOpen] = useState(false);
 
-  // Sync drawer and modals with query params on load or URL change
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (membershipIdParam && members.length > 0) {
       const foundMember = members.find((m) => m.id === membershipIdParam);
       if (foundMember) {
         setSelectedMemberForDrawer(foundMember);
 
-        // Check if changeRole is active
         if (changeRoleParam === "active" || changeRoleParam === "true") {
           setSelectedMemberForRolePicker(foundMember);
-          setIsRolePickerOpen(true);
-        } else {
-          setIsRolePickerOpen(false);
         }
 
-        // Check if removeMember is active
         if (removeMemberParam === "active" || removeMemberParam === "true") {
           setSelectedMemberForRemove(foundMember);
-          setIsRemoveConfirmOpen(true);
-        } else {
-          setIsRemoveConfirmOpen(false);
         }
 
         setIsDrawerOpen(true);
       }
     } else {
       setIsDrawerOpen(false);
-      setIsRolePickerOpen(false);
-      setIsRemoveConfirmOpen(false);
     }
   }, [membershipIdParam, changeRoleParam, removeMemberParam, members]);
+
+  const isRolePickerOpen =
+    Boolean(membershipIdParam) &&
+    (changeRoleParam === "active" || changeRoleParam === "true");
+
+  const isRemoveConfirmOpen =
+    Boolean(membershipIdParam) &&
+    (removeMemberParam === "active" || removeMemberParam === "true");
 
   // Derived filtered members
   const filteredMembers = members.filter((member) => {
@@ -117,14 +113,12 @@ function MembersContent() {
 
   const handleOpenRolePicker = (member: Member) => {
     setSelectedMemberForRolePicker(member);
-    setIsRolePickerOpen(true);
     router.push(
       `/dashboard/members?membershipId=${member.id}&changeRole=active`
     );
   };
 
   const handleCloseRolePicker = () => {
-    setIsRolePickerOpen(false);
     if (selectedMemberForDrawer) {
       router.push(`/dashboard/members?membershipId=${selectedMemberForDrawer.id}`);
     } else {
@@ -162,14 +156,12 @@ function MembersContent() {
 
   const handleOpenRemoveConfirm = (member: Member) => {
     setSelectedMemberForRemove(member);
-    setIsRemoveConfirmOpen(true);
     router.push(
       `/dashboard/members?membershipId=${member.id}&removeMember=active`
     );
   };
 
   const handleCloseRemoveConfirm = () => {
-    setIsRemoveConfirmOpen(false);
     if (selectedMemberForDrawer) {
       router.push(`/dashboard/members?membershipId=${selectedMemberForDrawer.id}`);
     } else {
@@ -181,7 +173,6 @@ function MembersContent() {
     if (!selectedMemberForRemove) return;
     removeMemberMutation.mutate(selectedMemberForRemove.id, {
       onSuccess: () => {
-        setIsRemoveConfirmOpen(false);
         handleCloseDrawer();
       },
     });

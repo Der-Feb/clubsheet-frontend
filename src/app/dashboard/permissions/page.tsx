@@ -35,23 +35,16 @@ function PermissionsContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<PermissionCategory | "All">("All");
 
-  // Drawer state
+  // Drawer state (selected item for display)
   const [selectedPermissionForDrawer, setSelectedPermissionForDrawer] =
     useState<PermissionDefinition | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // Sync drawer with ?permissionId query param on load or URL change
-  useEffect(() => {
-    if (permissionIdParam) {
-      const foundPerm = allPermissions.find((p) => p.id === permissionIdParam);
-      if (foundPerm) {
-        setSelectedPermissionForDrawer(foundPerm);
-        setIsDrawerOpen(true);
-      }
-    } else {
-      setIsDrawerOpen(false);
-    }
-  }, [permissionIdParam, allPermissions]);
+  // Derive drawer state from URL params (no setState in effect)
+  const drawerPermission = permissionIdParam
+    ? (allPermissions.find((p) => p.id === permissionIdParam) ?? null)
+    : null;
+  const isDrawerOpen = Boolean(drawerPermission);
+  const effectiveSelectedPermission = drawerPermission ?? selectedPermissionForDrawer;
 
   const categories: PermissionCategory[] = [
     "Members & HR",
@@ -82,12 +75,10 @@ function PermissionsContent() {
   // Drawer handlers with URL param sync
   const handleOpenDrawer = (perm: PermissionDefinition) => {
     setSelectedPermissionForDrawer(perm);
-    setIsDrawerOpen(true);
     router.push(`/dashboard/permissions?permissionId=${perm.id}`);
   };
 
   const handleCloseDrawer = () => {
-    setIsDrawerOpen(false);
     router.push("/dashboard/permissions");
   };
 
@@ -454,7 +445,7 @@ function PermissionsContent() {
       <PermissionDetailDrawer
         isOpen={isDrawerOpen}
         onClose={handleCloseDrawer}
-        permission={selectedPermissionForDrawer}
+        permission={effectiveSelectedPermission}
       />
     </div>
   );

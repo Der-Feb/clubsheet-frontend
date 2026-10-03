@@ -45,19 +45,16 @@ function ScoutingContent() {
   const [selectedTargetForDrawer, setSelectedTargetForDrawer] = useState<ScoutingTarget | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
   const [selectedTargetForReport, setSelectedTargetForReport] = useState<ScoutingTarget | null>(null);
   const [isAddReportModalOpen, setIsAddReportModalOpen] = useState(false);
 
-  // Sync drawer and modals with query params
+  // Derive modal/drawer states from URL params (no setState in effect)
+  const isCreateModalOpen = createTargetParam === "active" || createTargetParam === "true";
+
+  // Sync drawer/modal state with URL params — intentional URL→state sync
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
-    // Check createTarget regardless of targets list length
-    if (createTargetParam === "active" || createTargetParam === "true") {
-      setIsCreateModalOpen(true);
-    } else {
-      setIsCreateModalOpen(false);
-    }
+    if (isLoading) return;
 
     if (isLoading) return;
 
@@ -88,7 +85,7 @@ function ScoutingContent() {
       setIsDrawerOpen(false);
       setIsAddReportModalOpen(false);
     }
-  }, [targetIdParam, createTargetParam, addReportParam, targets]);
+  }, [targetIdParam, addReportParam, targets, isLoading]);
 
   // Derived list
   const filteredTargets = targets.filter((target) => {
@@ -124,12 +121,10 @@ function ScoutingContent() {
   };
 
   const handleOpenCreateModal = () => {
-    setIsCreateModalOpen(true);
     router.push("/dashboard/scouting?createTarget=active");
   };
 
   const handleCloseCreateModal = () => {
-    setIsCreateModalOpen(false);
     if (targetIdParam) {
       router.push(`/dashboard/scouting?targetId=${targetIdParam}`);
     } else {

@@ -75,35 +75,18 @@ function FinanceContent() {
   const createRecordMutation = useCreateFinancialRecord();
   const deleteRecordMutation = useDeleteFinancialRecord();
 
-  // Modal & Drawer state
+  // Drawer and modal state
   const [selectedRecordForDrawer, setSelectedRecordForDrawer] = useState<FinancialRecord | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Delete confirmation state
   const [recordIdToDelete, setRecordIdToDelete] = useState<string | null>(null);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
-  // Sync state with URL params
-  useEffect(() => {
-    if (recordIdParam) {
-      const found = records.find((r) => r.id === recordIdParam);
-      if (found) {
-        setSelectedRecordForDrawer(found);
-        setIsDrawerOpen(true);
-      } else {
-        setIsDrawerOpen(false);
-      }
-    } else {
-      setIsDrawerOpen(false);
-    }
-
-    if (addRecordParam === "active" || addRecordParam === "true") {
-      setIsAddModalOpen(true);
-    } else {
-      setIsAddModalOpen(false);
-    }
-  }, [recordIdParam, addRecordParam, records]);
+  // Derive drawer/modal open state directly from URL params (no setState-in-effect)
+  const drawerRecord = recordIdParam ? (records.find((r) => r.id === recordIdParam) ?? null) : null;
+  const isDrawerOpen = Boolean(drawerRecord);
+  const isAddModalOpen = addRecordParam === "active" || addRecordParam === "true";
+  const effectiveSelectedRecord = drawerRecord ?? selectedRecordForDrawer;
 
   // Derived filtered records by client search
   const filteredRecords = records.filter((rec) => {
@@ -118,23 +101,19 @@ function FinanceContent() {
   // Handlers with URL param syncing
   const handleOpenDrawer = (record: FinancialRecord) => {
     setSelectedRecordForDrawer(record);
-    setIsDrawerOpen(true);
     router.push(`/dashboard/finance?recordId=${record.id}`);
   };
 
   const handleCloseDrawer = () => {
-    setIsDrawerOpen(false);
     setSelectedRecordForDrawer(null);
     router.push("/dashboard/finance");
   };
 
   const handleOpenAddModal = () => {
-    setIsAddModalOpen(true);
     router.push("/dashboard/finance?addRecord=active");
   };
 
   const handleCloseAddModal = () => {
-    setIsAddModalOpen(false);
     if (recordIdParam) {
       router.push(`/dashboard/finance?recordId=${recordIdParam}`);
     } else {
@@ -169,7 +148,7 @@ function FinanceContent() {
       onSuccess: () => {
         setIsConfirmDeleteOpen(false);
         setRecordIdToDelete(null);
-        if (selectedRecordForDrawer?.id === recordIdToDelete) {
+        if (effectiveSelectedRecord?.id === recordIdToDelete) {
           handleCloseDrawer();
         }
       },
@@ -559,7 +538,7 @@ function FinanceContent() {
       <RecordDetailDrawer
         isOpen={isDrawerOpen}
         onClose={handleCloseDrawer}
-        record={selectedRecordForDrawer}
+        record={effectiveSelectedRecord}
         onDeleteRecord={handleDeleteRecord}
       />
 

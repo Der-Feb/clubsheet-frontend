@@ -46,23 +46,20 @@ function RoleDetailContent({ roleId }: { roleId: string }) {
   const [activeTab, setActiveTab] = useState<"matrix" | "members" | "activity">("matrix");
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
   const [hasChanges, setHasChanges] = useState(false);
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
-  // Sync selected permissions when role loads
+  // Derive isDeleteConfirmOpen from URL params
+  const isDeleteConfirmOpen = deleteRoleParam === "active" || deleteRoleParam === "true";
+
+  // Sync selected permissions when role loads — intentional data→state sync
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (role) {
       setSelectedPermissions(role.permissions || []);
     }
-  }, [role]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [role?.id]);
 
-  // Sync deleteRole query param
-  useEffect(() => {
-    if (deleteRoleParam === "active" || deleteRoleParam === "true") {
-      setIsDeleteConfirmOpen(true);
-    } else {
-      setIsDeleteConfirmOpen(false);
-    }
-  }, [deleteRoleParam]);
+  // Sync deleteRole query param — derived above as isDeleteConfirmOpen
 
   if (!role) {
     return (
@@ -91,12 +88,10 @@ function RoleDetailContent({ roleId }: { roleId: string }) {
   ];
 
   const handleOpenDeleteConfirm = () => {
-    setIsDeleteConfirmOpen(true);
     router.push(`/dashboard/roles/${role.id}?deleteRole=active`);
   };
 
   const handleCloseDeleteConfirm = () => {
-    setIsDeleteConfirmOpen(false);
     router.push(`/dashboard/roles/${role.id}`);
   };
 

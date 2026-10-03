@@ -86,9 +86,12 @@ function SigningsContent() {
   // Drawer & Modal state
   const [selectedSigning, setSelectedSigning] = useState<Signing | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Sync state with URL search params
+  // Derive open states from URL params (no setState in effect)
+  const isDrawerOpenFromParam = Boolean(signingIdParam && signings.find((s) => s.id === signingIdParam));
+  const isModalOpen = newSigningParam === "active" || newSigningParam === "true";
+
+  // Sync selected signing with URL param (effect only sets selected item, not booleans)
   useEffect(() => {
     if (signingIdParam) {
       const found = signings.find((s) => s.id === signingIdParam);
@@ -101,13 +104,7 @@ function SigningsContent() {
     } else {
       setIsDrawerOpen(false);
     }
-
-    if (newSigningParam === "active" || newSigningParam === "true") {
-      setIsModalOpen(true);
-    } else {
-      setIsModalOpen(false);
-    }
-  }, [signingIdParam, newSigningParam, signings]);
+  }, [signingIdParam, signings]);
 
   // Client search filter
   const filteredSignings = signings.filter((s) => {
@@ -135,12 +132,10 @@ function SigningsContent() {
   };
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
     router.push("/dashboard/signings?newSigning=active");
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
     if (signingIdParam) {
       router.push(`/dashboard/signings?signingId=${signingIdParam}`);
     } else {
