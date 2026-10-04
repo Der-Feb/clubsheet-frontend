@@ -58,3 +58,5 @@ config.bat
 
 # env variable
 *.env*
+
+/public/images/chaos-clarity

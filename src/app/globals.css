@@ -48,6 +48,38 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
+  /* ── Type scale ────────────────────────────────────────────────────────────
+   *
+   * Sub-xs sizes (the ones that appear most as text-[Npx] / text-[N.Nrem])
+   * are mapped to named tokens here so components can use utility classes
+   * instead of arbitrary values.
+   *
+   * Mapping (base 16px):
+   *   3xs  →  7px   / 0.4375rem   — micro labels, tiny decorative text
+   *   2xs  →  9px   / 0.5625rem   — caps labels, badge text, table headers
+   *   xs   → 12px   / 0.75rem     — body small (Tailwind default text-xs)
+   *   sm   → 14px   / 0.875rem    — body default (Tailwind default text-sm)
+   *   base → 16px   / 1rem        — paragraph default
+   *   lg   → 18px   / 1.125rem
+   *   xl   → 20px   / 1.25rem
+   *   2xl  → 24px   / 1.5rem
+   *   3xl  → 30px   / 1.875rem
+   *
+   * Sizes between 3xs and xs that don't fit cleanly (9.5px, 10px, 10.4px, 11px)
+   * are covered by the 2xs–xs gap tokens below.
+   *
+   * The existing text-[Npx] / text-[N.Nrem] usages throughout the codebase
+   * continue to work. These tokens exist so NEW code can use semantic names.
+   * ────────────────────────────────────────────────────────────────────────── */
+
+  /* Micro sizes */
+  --text-3xs: 0.4375rem;   /* 7px  */
+  --text-2xs: 0.5625rem;   /* 9px  */
+
+  /* These fill the 9px–12px gap that Tailwind has no names for */
+  --text-2xs--line-height: 1rem;
+  --text-3xs--line-height: 0.75rem;
+
   /* Semantic Brand Tokens */
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
@@ -97,6 +129,37 @@
 
 :root {
   color-scheme: light;
+
+  /* ── Type scale ──────────────────────────────────────────────────────────
+   *
+   * Central font-size tokens. These are the values Tailwind's @theme block
+   * exposes as utility classes (text-3xs, text-2xs) and can also be
+   * consumed directly as var(--fs-*) in CSS when needed.
+   *
+   * Standard Tailwind sizes (text-xs through text-3xl) are left as-is.
+   * These tokens cover the sub-xs range that was previously scattered as
+   * arbitrary text-[Npx] / text-[N.Nrem] values across the codebase.
+   *
+   * Pixel reference (base 16px):
+   *   --fs-3xs  →  7px    micro labels, tiny decorative text
+   *   --fs-2xs  →  9px    caps labels, badge text, mono table headers
+   *   --fs-xs   → 12px    small body text           (= Tailwind text-xs)
+   *   --fs-sm   → 14px    default body text          (= Tailwind text-sm)
+   *   --fs-base → 16px    paragraph / input default  (= Tailwind text-base)
+   *   --fs-lg   → 18px                               (= Tailwind text-lg)
+   *   --fs-xl   → 20px                               (= Tailwind text-xl)
+   *   --fs-2xl  → 24px                               (= Tailwind text-2xl)
+   *   --fs-3xl  → 30px                               (= Tailwind text-3xl)
+   * ────────────────────────────────────────────────────────────────────── */
+  --fs-3xs:  0.4375rem;   /* 7px  */
+  --fs-2xs:  0.5625rem;   /* 9px  */
+  --fs-xs:   0.75rem;     /* 12px */
+  --fs-sm:   0.875rem;    /* 14px */
+  --fs-base: 1rem;        /* 16px */
+  --fs-lg:   1.125rem;    /* 18px */
+  --fs-xl:   1.25rem;     /* 20px */
+  --fs-2xl:  1.5rem;      /* 24px */
+  --fs-3xl:  1.875rem;    /* 30px */
 
   /* Default Light Mode CSS variable fallbacks */
   --color-primary: #005F31;
@@ -268,14 +331,16 @@
     transition-duration: 0.01ms !important;
   }
 
-  .chaos-card-field {
-    display: none;
+  /* Canvas sequence: skip the scroll pin entirely, show mobile fallback */
+  .chaos2-clarity-wrap {
+    height: auto !important;
   }
 
-  .clarity-state-container,
-  .clarity-state-chrome,
-  .clarity-state-container [data-slot-panel] {
-    opacity: 1 !important;
+  .chaos2-clarity-sticky {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: 28rem !important;
   }
 
   .chaos2-clarity-headline-initial,
@@ -287,6 +352,14 @@
   .chaos2-clarity-subtitle-final {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .chaos-mobile-text {
+    display: flex !important;
+  }
+
+  .chaos2-clarity-scroll-hint {
+    display: none;
   }
 }
 
@@ -333,12 +406,6 @@
   box-shadow: 0 2rem 5rem color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
-/* The source card content expands with its shell only when the morph begins. */
-.chaos-card-morphing > * {
-  width: 100%;
-  max-width: none;
-}
-
 @keyframes chaos-badge-drift {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-0.25rem); }
@@ -348,16 +415,10 @@
   animation: chaos-badge-drift 2.8s ease-in-out infinite;
 }
 
-.chaos-mobile-arrow {
-  animation: chaos-arrow-pulse 1.8s ease-in-out infinite;
-}
+/* ── Chaos → Clarity: canvas image-sequence section ─────────────────────── */
 
-@keyframes chaos-arrow-pulse {
-  0%, 100% { transform: translateY(0); opacity: 0.65; }
-  50% { transform: translateY(0.35rem); opacity: 1; }
-}
-
-@media (max-width: 1023px) {
+/* Below 768 px: collapse the tall scroll spacer, show the mobile fallback */
+@media (max-width: 767px) {
   .chaos2-clarity-wrap {
     height: auto;
   }
@@ -366,59 +427,21 @@
     position: relative;
     top: auto;
     height: auto;
-    min-height: 32rem;
-    overflow: visible;
+    min-height: 28rem;
+    overflow: hidden;
   }
 
-  .chaos2-clarity-layer {
-    position: relative;
-    inset: auto;
-    min-height: 32rem;
+  .chaos-mobile-text {
+    display: flex;
   }
 
-  .chaos-card-field {
+  /* Canvas is still rendered but sits behind the mobile overlay */
+  .chaos2-clarity-sticky canvas {
+    opacity: 0.25;
+  }
+
+  .chaos2-clarity-scroll-hint {
     display: none;
-  }
-
-  .clarity-state-container {
-    height: auto !important;
-    min-height: 32rem;
-    opacity: 1 !important;
-    padding: 0.75rem;
-  }
-
-  .clarity-state-chrome {
-    width: 100%;
-    max-width: none;
-    height: auto;
-    min-height: 38rem;
-    opacity: 1 !important;
-  }
-
-  .clarity-dashboard-grid {
-    flex: none;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: none;
-    overflow: visible;
-  }
-
-  .clarity-dashboard-grid > [id] {
-    grid-column: span 1 !important;
-    grid-row: auto !important;
-    min-height: 5rem;
-  }
-
-  .clarity-dashboard-grid > #slot-spreadsheet,
-  .clarity-dashboard-grid > #slot-groupChat {
-    min-height: 15rem;
-  }
-
-  .chaos2-clarity-layer [data-slot-panel] {
-    opacity: 1 !important;
-  }
-
-  .clarity-state-chrome > .clarity-dashboard-grid {
-    min-height: 34rem;
   }
 
   .chaos2-clarity-headline-initial,
@@ -433,51 +456,10 @@
   }
 }
 
-@media (max-width: 767px) {
-  .chaos2-clarity-headline-strip {
-    display: none;
-  }
-
-  .chaos2-clarity-layer {
-    display: none;
-  }
-
-  .chaos-mobile-text {
-    display: flex;
-  }
-
-  .clarity-state-chrome {
-    min-height: 0;
-  }
-
-  .clarity-state-chrome > .clarity-dashboard-grid {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    gap: 0.75rem;
-    overflow: visible;
-  }
-
-  .clarity-dashboard-grid > [id] {
-    min-height: 5.5rem;
-  }
-
-  .clarity-dashboard-grid > #slot-spreadsheet,
-  .clarity-dashboard-grid > #slot-groupChat {
-    min-height: 16rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .chaos-mobile-badge,
-  .chaos-mobile-arrow {
+  .chaos-mobile-badge {
     animation: none;
   }
-}
-
-/* Chaos→Clarity: slot panels start hidden; GSAP reveals them during scroll */
-[data-slot-panel] {
-  opacity: 0;
 }
 
 /* Coarse-pointer (touch) visibility utilities */
